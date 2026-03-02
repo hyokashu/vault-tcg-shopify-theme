@@ -1260,6 +1260,122 @@ class PromoCountdown {
 
 
 /* ========================================================================
+   PRODUCT TABS — Description / Box Contents / Reviews
+   ======================================================================== */
+
+class ProductTabs {
+  constructor() {
+    document.querySelectorAll('[data-product-tabs]').forEach(el => this.init(el));
+    // Handle "Jump to reviews" link from rating row
+    document.querySelectorAll('[data-tab-jump]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.dataset.tabJump;
+        const tabsEl = document.querySelector('[data-product-tabs]');
+        if (!tabsEl) return;
+        this.switchTab(tabsEl, target);
+        tabsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  init(el) {
+    const btns = el.querySelectorAll('[data-tab-target]');
+    const panels = el.querySelectorAll('[data-tab-panel]');
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.switchTab(el, btn.dataset.tabTarget);
+      });
+    });
+  }
+
+  switchTab(el, target) {
+    const btns = el.querySelectorAll('[data-tab-target]');
+    const panels = el.querySelectorAll('[data-tab-panel]');
+    btns.forEach(b => {
+      const active = b.dataset.tabTarget === target;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panels.forEach(p => {
+      p.classList.toggle('is-active', p.dataset.tabPanel === target);
+    });
+  }
+}
+
+/* ========================================================================
+   WISHLIST TOGGLE — localStorage-based heart button
+   ======================================================================== */
+
+class WishlistToggle {
+  constructor() {
+    this.storageKey = 'vault_tcg_wishlist';
+
+    document.querySelectorAll('[data-wishlist-btn]').forEach(btn => {
+      const handle = document.querySelector('[data-product-handle]')?.dataset.productHandle;
+      if (!handle) return;
+
+      // Set initial state
+      const list = this.getList();
+      if (list.includes(handle)) btn.classList.add('is-active');
+
+      btn.addEventListener('click', () => {
+        const saved = this.toggle(handle);
+        btn.classList.toggle('is-active', saved);
+
+        if (window.toast) {
+          window.toast.show(saved ? '❤️ Saved to wishlist' : 'Removed from wishlist');
+        }
+      });
+    });
+  }
+
+  getList() {
+    try { return JSON.parse(localStorage.getItem(this.storageKey)) || []; }
+    catch { return []; }
+  }
+
+  toggle(handle) {
+    let list = this.getList();
+    const idx = list.indexOf(handle);
+    if (idx > -1) { list.splice(idx, 1); }
+    else { list.push(handle); }
+    try { localStorage.setItem(this.storageKey, JSON.stringify(list)); } catch {}
+    return idx === -1;
+  }
+}
+
+/* ========================================================================
+   GALLERY — Arrow nav + thumbnail switching (upgraded)
+   ======================================================================== */
+
+function initGalleryControls() {
+  const gallery = document.querySelector('[data-product-gallery]');
+  if (!gallery) return;
+
+  const slides = gallery.querySelectorAll('[data-image-slide]');
+  const thumbs = document.querySelectorAll('[data-thumb-index]');
+  const counter = gallery.querySelector('[data-image-current]');
+  if (!slides.length) return;
+
+  let current = 0;
+
+  const goTo = (idx) => {
+    slides[current]?.classList.remove('is-active');
+    thumbs[current]?.classList.remove('is-active');
+    current = (idx + slides.length) % slides.length;
+    slides[current]?.classList.add('is-active');
+    thumbs[current]?.classList.add('is-active');
+    if (counter) counter.textContent = current + 1;
+  };
+
+  gallery.querySelector('[data-gallery-prev]')?.addEventListener('click', () => goTo(current - 1));
+  gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => goTo(current + 1));
+  thumbs.forEach(t => t.addEventListener('click', () => goTo(parseInt(t.dataset.thumbIndex))));
+}
+
+/* ========================================================================
    INIT — Run everything on DOMContentLoaded
    ======================================================================== */
 
@@ -1287,10 +1403,14 @@ document.addEventListener('DOMContentLoaded', () => {
   new BrandTicker();
   new PromoCountdown();
 
+  // Product page v3 components
+  new ProductTabs();
+  new WishlistToggle();
+  initGalleryControls();
+
   // Animations & polish
   new ScrollAnimations();
   new AnnouncementBar();
-  initGallery();
   initQuantityControls();
   initLazyImages();
   initImageErrorHandling();
