@@ -1,12 +1,12 @@
 {%- style -%}
-  #section-{{ section.id }} .tab-btn.is-active {
+  #shop-by-game .tab-btn.is-active {
     background: var(--color-primary);
     color: #fff;
     border-color: var(--color-primary);
   }
 {%- endstyle -%}
 
-<div class="section-spacing" id="section-{{ section.id }}" data-tabs>
+<div class="section-spacing" id="shop-by-game" data-section-id="{{ section.id }}" data-tabs>
   <div class="container">
     <div class="section-header">
       {%- if section.settings.tag != blank -%}
@@ -53,7 +53,7 @@
         {%- assign tab_products = block.settings.products -%}
 
         {%- if tab_products.size > 0 -%}
-          {%- comment -%} Products hand-picked in editor {%- endcomment -%}
+          {%- comment %} Hand-picked products from editor {% endcomment -%}
           <div class="product-grid product-grid--{{ section.settings.columns }}">
             {%- for product in tab_products -%}
               {% render 'product-card',
@@ -66,32 +66,30 @@
             {%- endfor -%}
           </div>
 
-          {%- if section.settings.show_view_all and block.settings.view_all_url != blank -%}
+          {%- if section.settings.show_view_all -%}
+            {%- assign view_href = block.settings.view_all_url | default: '/collections/all' -%}
             <div class="tab-panel__footer">
-              <a href="{{ block.settings.view_all_url }}" class="btn btn--outline">
+              <a href="{{ view_href }}" class="btn btn--outline">
                 View All {{ block.settings.label }} →
               </a>
             </div>
           {%- endif -%}
 
         {%- else -%}
-          {%- comment -%} No products selected yet — show visual placeholders {%- endcomment -%}
+          {%- comment %} No products yet — show animated placeholder cards {% endcomment -%}
           {%- assign placeholder_count = section.settings.columns | plus: 0 | times: 2 -%}
           <div class="product-grid product-grid--{{ section.settings.columns }}">
             {%- for i in (1..placeholder_count) -%}
-              {%- assign hue_from = block.settings.badge_color | color_darken: 20 -%}
               <div class="product-card product-card--placeholder">
                 <div class="product-card__img-wrap">
                   {% render 'placeholder-pack-art',
-                    color_from: hue_from,
+                    color_from: '#1a0a2e',
                     color_to: block.settings.badge_color,
                     index: i
                   %}
                   <div class="product-card__badges">
-                    <span
-                      class="product-card__badge product-card__badge--game"
-                      style="background:{{ block.settings.badge_color }}"
-                    >{{ block.settings.label }}</span>
+                    <span class="product-card__badge product-card__badge--game"
+                      style="background:{{ block.settings.badge_color }}">{{ block.settings.label }}</span>
                   </div>
                 </div>
                 <div class="product-card__info">
@@ -104,9 +102,8 @@
               </div>
             {%- endfor -%}
           </div>
-
           <p class="tab-panel__empty-notice">
-            ← Select this tab in the editor and use <strong>Products</strong> to pick what shows here.
+            ← Click this tab in the editor, then use the <strong>Products</strong> picker to choose which products appear here.
           </p>
         {%- endif -%}
       </div>
@@ -120,9 +117,9 @@
   "tag": "section",
   "class": "tabbed-collections-section",
   "settings": [
-    { "type": "text",     "id": "tag",           "label": "Eyebrow tag",        "default": "🃏 SHOP BY GAME" },
-    { "type": "text",     "id": "heading",        "label": "Heading",            "default": "Shop Your Game" },
-    { "type": "textarea", "id": "subheading",     "label": "Subheading",         "default": "Find sealed booster boxes, ETBs, and packs from all the major TCGs." },
+    { "type": "text",     "id": "tag",           "label": "Eyebrow tag",            "default": "🃏 SHOP BY GAME" },
+    { "type": "text",     "id": "heading",        "label": "Heading",                "default": "Shop Your Game" },
+    { "type": "textarea", "id": "subheading",     "label": "Subheading",             "default": "Find sealed booster boxes, ETBs, and packs from all the major TCGs." },
     {
       "type": "select", "id": "columns", "label": "Grid columns",
       "default": "4",
@@ -140,11 +137,11 @@
       "type": "tab",
       "name": "Game tab",
       "settings": [
-        { "type": "text",         "id": "label",        "label": "Tab label",              "default": "Pokémon" },
-        { "type": "text",         "id": "icon",         "label": "Emoji icon (optional)",  "default": "⚡" },
-        { "type": "product_list", "id": "products",     "label": "Products",               "limit": 12 },
-        { "type": "url",          "id": "view_all_url", "label": "\"View all\" link URL (optional)" },
-        { "type": "color",        "id": "badge_color",  "label": "Badge colour",           "default": "#F5C400" }
+        { "type": "text",         "id": "label",        "label": "Tab label",                        "default": "Pokémon" },
+        { "type": "text",         "id": "icon",         "label": "Emoji icon (optional)",            "default": "⚡" },
+        { "type": "product_list", "id": "products",     "label": "Products",                         "limit": 12 },
+        { "type": "url",          "id": "view_all_url", "label": "\"View all\" link (optional)",     "info": "Falls back to /collections/all if empty" },
+        { "type": "color",        "id": "badge_color",  "label": "Badge colour",                     "default": "#F5C400" }
       ]
     }
   ],
@@ -152,10 +149,10 @@
     {
       "name": "Tabbed collections",
       "blocks": [
-        { "type": "tab", "settings": { "label": "Pokémon",  "icon": "⚡", "badge_color": "#F5C400" } },
-        { "type": "tab", "settings": { "label": "Magic",    "icon": "✨", "badge_color": "#8B5CF6" } },
-        { "type": "tab", "settings": { "label": "One Piece","icon": "⚓", "badge_color": "#06B6D4" } },
-        { "type": "tab", "settings": { "label": "Yu-Gi-Oh!","icon": "👁", "badge_color": "#EF4444" } }
+        { "type": "tab", "settings": { "label": "Pokémon",   "icon": "⚡", "badge_color": "#F5C400" } },
+        { "type": "tab", "settings": { "label": "Magic",     "icon": "✨", "badge_color": "#8B5CF6" } },
+        { "type": "tab", "settings": { "label": "One Piece", "icon": "⚓", "badge_color": "#06B6D4" } },
+        { "type": "tab", "settings": { "label": "Yu-Gi-Oh!", "icon": "👁", "badge_color": "#EF4444" } }
       ]
     }
   ]

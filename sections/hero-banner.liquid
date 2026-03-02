@@ -43,10 +43,12 @@
             {%- endif -%}
             <div class="hero__actions">
               {%- if section.settings.btn1_label != blank -%}
-                <a href="{{ section.settings.btn1_link }}" class="btn btn--primary btn--large btn--glow">{{ section.settings.btn1_label }}</a>
+                {%- assign btn1_href = section.settings.btn1_link | default: '/collections/all' -%}
+                <a href="{{ btn1_href }}" class="btn btn--primary btn--large btn--glow">{{ section.settings.btn1_label }}</a>
               {%- endif -%}
               {%- if section.settings.btn2_label != blank -%}
-                <a href="{{ section.settings.btn2_link }}" class="btn btn--ghost btn--large">{{ section.settings.btn2_label }}</a>
+                {%- assign btn2_href = section.settings.btn2_link | default: '#shop-by-game' -%}
+                <a href="{{ btn2_href }}" class="btn btn--ghost btn--large">{{ section.settings.btn2_label }}</a>
               {%- endif -%}
             </div>
             {%- if section.settings.show_social_proof -%}
@@ -94,7 +96,7 @@
     </div>
 
     {%- if section.settings.show_scroll_cue -%}
-      <a href="#main-content" class="hero__scroll-cue" aria-label="Scroll down">
+      <a href="#shop-by-game" class="hero__scroll-cue" aria-label="Scroll down to products">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
       </a>
     {%- endif -%}
