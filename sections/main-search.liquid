@@ -1,0 +1,54 @@
+<div class="section-spacing">
+  <div class="container">
+    <div class="search-page">
+      <h1 class="section-heading">Search</h1>
+      <form action="{{ routes.search_url }}" method="get" class="search-page__form" role="search">
+        <input type="hidden" name="type" value="product">
+        <div class="search-page__input-wrap">
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search for products..." class="search-page__input" autofocus autocomplete="off">
+          <button type="submit" class="btn btn--primary">Search</button>
+        </div>
+      </form>
+
+      {%- if search.performed -%}
+        {%- if search.results.size > 0 -%}
+          <p class="search-page__count">{{ search.results_count }} results for "{{ search.terms }}"</p>
+          <div class="product-grid product-grid--3">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', product: item, show_vendor: true, show_quick_view: true %}
+              {%- elsif item.object_type == 'article' -%}
+                <article class="blog-card">
+                  {%- if item.image -%}
+                    <a href="{{ item.url }}" class="blog-card__image-wrap">
+                      <img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.title }}" width="400" loading="lazy" class="blog-card__image">
+                    </a>
+                  {%- endif -%}
+                  <div class="blog-card__content">
+                    <h3 class="blog-card__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                    <p class="blog-card__excerpt">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                  </div>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="search-page__empty">
+            <p>No results found for "{{ search.terms }}"</p>
+            <p class="text-muted">Try a different search term or browse our collections.</p>
+            <a href="/collections/all" class="btn btn--primary">Browse All Products</a>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search page",
+  "tag": "section",
+  "class": "search-section",
+  "settings": []
+}
+{% endschema %}

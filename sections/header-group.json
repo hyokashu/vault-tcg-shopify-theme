@@ -1,0 +1,23 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {},
+      "blocks": {
+        "nav-1": { "type": "nav_link", "settings": { "label": "Shop", "link": "/collections/all" } },
+        "nav-2": { "type": "nav_link", "settings": { "label": "New Drops", "link": "/collections" } },
+        "nav-3": { "type": "nav_link", "settings": { "label": "Blog", "link": "/blogs/news" } },
+        "nav-4": { "type": "nav_link", "settings": { "label": "About", "link": "/pages/about" } },
+        "nav-5": { "type": "nav_link", "settings": { "label": "FAQ", "link": "/pages/faq" } }
+      },
+      "block_order": ["nav-1", "nav-2", "nav-3", "nav-4", "nav-5"]
+    }
+  },
+  "order": ["announcement-bar", "header"]
+}

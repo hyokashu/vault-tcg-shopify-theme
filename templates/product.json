@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main-product": {
+      "type": "main-product",
+      "settings": {
+        "show_trust_badges": true,
+        "show_notify": true
+      },
+      "blocks": {
+        "badge-1": { "type": "trust_badge", "settings": { "icon": "shield", "text": "Authentic Guaranteed" } },
+        "badge-2": { "type": "trust_badge", "settings": { "icon": "truck", "text": "Fast Shipping" } },
+        "badge-3": { "type": "trust_badge", "settings": { "icon": "check", "text": "Factory Sealed" } },
+        "badge-4": { "type": "trust_badge", "settings": { "icon": "refresh", "text": "Easy Returns" } },
+        "tab-1": { "type": "tab", "settings": { "title": "Shipping Info", "content": "<p>Orders ship within 1-2 business days. Free shipping on orders over $75. We ship via USPS Priority Mail and UPS Ground.</p>" } },
+        "tab-2": { "type": "tab", "settings": { "title": "Return Policy", "content": "<p>We accept returns within 14 days for unopened, factory-sealed products. Please contact us before sending a return.</p>" } },
+        "tab-3": { "type": "tab", "settings": { "title": "Authenticity", "content": "<p>All products are sourced directly from authorized distributors and are 100% authentic. We never sell resealed or tampered products.</p>" } }
+      },
+      "block_order": ["badge-1", "badge-2", "badge-3", "badge-4", "tab-1", "tab-2", "tab-3"]
+    }
+  },
+  "order": ["main-product"]
+}

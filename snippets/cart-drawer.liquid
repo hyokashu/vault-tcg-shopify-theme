@@ -1,0 +1,96 @@
+{%- comment -%}
+  Slide-out AJAX cart drawer.
+  Rendered in layout/theme.liquid.
+{%- endcomment -%}
+
+<div class="cart-drawer" data-cart-drawer aria-hidden="true" role="dialog" aria-label="Shopping cart">
+  <div class="cart-drawer__header">
+    <h2 class="cart-drawer__title">
+      Your Cart
+      <span class="cart-drawer__count" data-cart-drawer-count>({{ cart.item_count }})</span>
+    </h2>
+    <button class="cart-drawer__close" data-cart-drawer-close aria-label="Close cart">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- Free shipping progress bar -->
+  {%- if settings.cart_free_shipping_threshold != blank -%}
+    {%- assign threshold = settings.cart_free_shipping_threshold | times: 100 -%}
+    {%- assign remaining = threshold | minus: cart.total_price -%}
+    {%- if remaining > 0 -%}
+      {%- assign progress = cart.total_price | times: 100 | divided_by: threshold -%}
+    {%- else -%}
+      {%- assign progress = 100 -%}
+    {%- endif -%}
+    <div class="cart-drawer__shipping" data-shipping-bar>
+      {%- if remaining > 0 -%}
+        <p class="cart-drawer__shipping-text">
+          You're <strong>{{ remaining | money }}</strong> away from free shipping!
+        </p>
+      {%- else -%}
+        <p class="cart-drawer__shipping-text cart-drawer__shipping-text--success">
+          🎉 You've unlocked free shipping!
+        </p>
+      {%- endif -%}
+      <div class="cart-drawer__shipping-bar">
+        <div class="cart-drawer__shipping-progress" style="width: {{ progress }}%" data-shipping-progress></div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="cart-drawer__body" data-cart-drawer-body>
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-drawer__items" data-cart-drawer-items>
+        {%- for item in cart.items -%}
+          <div class="cart-drawer__item" data-cart-drawer-item data-variant-id="{{ item.variant.id }}" data-line="{{ forloop.index }}">
+            <a href="{{ item.url }}" class="cart-drawer__item-image">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title }}" width="80" height="80" loading="lazy">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-img' }}
+              {%- endif -%}
+            </a>
+            <div class="cart-drawer__item-details">
+              <a href="{{ item.url }}" class="cart-drawer__item-title">{{ item.product.title }}</a>
+              {%- unless item.product.has_only_default_variant -%}
+                <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
+              {%- endunless -%}
+              <div class="cart-drawer__item-bottom">
+                <div class="cart-drawer__item-qty">
+                  <button type="button" class="qty-btn qty-btn--small" data-drawer-qty-minus data-line="{{ forloop.index }}" aria-label="Decrease">−</button>
+                  <span class="cart-drawer__item-qty-value" data-drawer-qty-value>{{ item.quantity }}</span>
+                  <button type="button" class="qty-btn qty-btn--small" data-drawer-qty-plus data-line="{{ forloop.index }}" aria-label="Increase">+</button>
+                </div>
+                <span class="cart-drawer__item-price">{{ item.final_line_price | money }}</span>
+              </div>
+            </div>
+            <button class="cart-drawer__item-remove" data-drawer-remove data-line="{{ forloop.index }}" aria-label="Remove {{ item.title }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="cart-drawer__empty" data-cart-drawer-empty>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <p>Your cart is empty</p>
+        <a href="/collections/all" class="btn btn--primary">Start Shopping</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if cart.item_count > 0 -%}
+    <div class="cart-drawer__footer" data-cart-drawer-footer>
+      <div class="cart-drawer__subtotal">
+        <span>Subtotal</span>
+        <span data-cart-drawer-total>{{ cart.total_price | money }}</span>
+      </div>
+      <p class="cart-drawer__shipping-note">Shipping & taxes calculated at checkout</p>
+      <a href="/checkout" class="btn btn--primary btn--large btn--full cart-drawer__checkout">
+        Checkout
+      </a>
+      <a href="{{ routes.cart_url }}" class="cart-drawer__view-cart">View Cart</a>
+    </div>
+  {%- endif -%}
+</div>

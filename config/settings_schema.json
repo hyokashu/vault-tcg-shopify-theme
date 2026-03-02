@@ -1,0 +1,200 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Vault TCG",
+    "theme_version": "1.0.0",
+    "theme_author": "Custom",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Primary colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary accent",
+        "default": "#7C3AED",
+        "info": "Used for buttons, links, and highlights"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary accent",
+        "default": "#06B6D4",
+        "info": "Used for secondary elements and hover states"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Highlight accent",
+        "default": "#FBBF24",
+        "info": "Used for badges, alerts, and special callouts"
+      },
+      {
+        "type": "header",
+        "content": "Background colors"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_dark",
+        "label": "Dark background",
+        "default": "#0B0B1A",
+        "info": "Main dark background"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_card",
+        "label": "Card background",
+        "default": "#151530",
+        "info": "Card and section backgrounds"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_elevated",
+        "label": "Elevated background",
+        "default": "#1E1E3F",
+        "info": "Hover states and elevated elements"
+      },
+      {
+        "type": "header",
+        "content": "Text colors"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Primary text",
+        "default": "#F1F1F6",
+        "info": "Main body text color"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted text",
+        "default": "#9CA3AF",
+        "info": "Secondary and helper text"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "bebas_neue_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "inter_n4"
+      },
+      {
+        "type": "range",
+        "id": "font_body_size",
+        "label": "Base font size",
+        "min": 14,
+        "max": 20,
+        "step": 1,
+        "default": 16,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "max_width",
+        "label": "Max page width",
+        "min": 1000,
+        "max": 1600,
+        "step": 50,
+        "default": 1300,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "label": "Space between sections",
+        "min": 20,
+        "max": 100,
+        "step": 5,
+        "default": 60,
+        "unit": "px"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "X / Twitter URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_discord",
+        "label": "Discord invite URL"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_drawer_enabled",
+        "label": "Enable slide-out cart drawer",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free shipping threshold (number only)",
+        "default": "75",
+        "info": "Leave blank to hide the free shipping progress bar"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_note_placeholder",
+        "label": "Cart note placeholder text",
+        "default": "Special instructions (e.g., gift wrapping)"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32x32px .png recommended"
+      }
+    ]
+  }
+]

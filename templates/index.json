@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "heading": "Rip. Collect. Dominate.",
+        "subheading": "Premium sealed TCG products. Booster boxes, ETBs, and packs from all your favorite games.",
+        "tag": "🔥 NEW DROP",
+        "button_label": "Shop Now",
+        "button_2_label": "View Latest Drops",
+        "height": 80,
+        "overlay_opacity": 40,
+        "text_align": "center",
+        "show_scroll_indicator": true
+      }
+    },
+    "featured-product": {
+      "type": "featured-product",
+      "settings": {
+        "tag": "⚡ HERO PRODUCT",
+        "heading": "This Week's Featured Drop",
+        "text_align": "center",
+        "show_trust_badges": true
+      }
+    },
+    "collection": {
+      "type": "featured-collection",
+      "settings": {
+        "tag": "🃏 BROWSE",
+        "heading": "All Products",
+        "products_to_show": 8,
+        "columns": "4",
+        "text_align": "center",
+        "show_vendor": true,
+        "show_quick_view": true,
+        "show_view_all": true
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "tag": "⭐ REVIEWS",
+        "heading": "What Collectors Are Saying"
+      },
+      "blocks": {
+        "review-1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Best place to get sealed product. Fast shipping and everything arrives in perfect condition!",
+            "name": "Alex R.",
+            "detail": "Verified Buyer"
+          }
+        },
+        "review-2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Amazing selection and prices. My go-to store for booster boxes. The packaging is always top-notch.",
+            "name": "Jordan M.",
+            "detail": "Repeat Customer"
+          }
+        },
+        "review-3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Ordered a case and it arrived next day. Can't beat the service. Will definitely be back for more!",
+            "name": "Sam K.",
+            "detail": "Verified Buyer"
+          }
+        }
+      },
+      "block_order": ["review-1", "review-2", "review-3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join the Drop List",
+        "subheading": "Be the first to know about new product drops, restocks, and exclusive deals.",
+        "placeholder": "Enter your email",
+        "button_label": "Subscribe",
+        "full_width": true
+      }
+    }
+  },
+  "order": ["hero", "featured-product", "collection", "testimonials", "newsletter"]
+}

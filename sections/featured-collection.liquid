@@ -1,0 +1,131 @@
+{%- assign collection = section.settings.collection -%}
+{%- assign limit = section.settings.products_to_show -%}
+
+<div class="section-spacing">
+  <div class="container">
+    <div class="section-header section-header--{{ section.settings.text_align }}">
+      {%- if section.settings.tag != blank -%}
+        <span class="section-tag">{{ section.settings.tag }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="section-subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="product-grid product-grid--{{ section.settings.columns }}">
+      {%- if collection != blank -%}
+        {%- for product in collection.products limit: limit -%}
+          {% render 'product-card', product: product, show_vendor: section.settings.show_vendor, show_quick_view: section.settings.show_quick_view %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+          <div class="product-card product-card--placeholder">
+            <div class="product-card__image-wrap">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-img' }}
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title">Example Product {{ i }}</h3>
+              <p class="product-card__price">$29.99</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_view_all and collection != blank -%}
+      <div class="section-footer">
+        <a href="{{ collection.url }}" class="btn btn--outline">
+          View All {{ collection.title }} →
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "tag": "section",
+  "class": "featured-collection-section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag line",
+      "default": "🃏 BROWSE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "All Products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "default": "4",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Header alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Show quick view button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection"
+    }
+  ]
+}
+{% endschema %}

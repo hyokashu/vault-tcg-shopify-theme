@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "about-hero": {
+      "type": "about-hero",
+      "settings": {
+        "tag": "OUR STORY",
+        "heading": "Built by Collectors, for Collectors",
+        "text": "<p>We started as a group of friends who were tired of overpriced, unreliable TCG shops. So we built our own. Every product is sourced directly from authorized distributors, stored properly, and shipped fast. We're collectors ourselves — and we treat your orders the way we'd want ours treated.</p>"
+      },
+      "blocks": {
+        "v1": { "type": "value", "settings": { "title": "Passion-Driven", "icon": "heart", "text": "We're collectors first, sellers second. We know what matters." } },
+        "v2": { "type": "value", "settings": { "title": "100% Authentic", "icon": "shield", "text": "Every product sourced directly from authorized distributors." } },
+        "v3": { "type": "value", "settings": { "title": "Lightning Fast", "icon": "zap", "text": "Same-day shipping on orders placed before 2 PM EST." } }
+      },
+      "block_order": ["v1", "v2", "v3"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join the Community",
+        "subheading": "Get notified about new drops, restocks, and exclusive deals.",
+        "full_width": true
+      }
+    }
+  },
+  "order": ["about-hero", "newsletter"]
+}

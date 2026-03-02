@@ -1,0 +1,97 @@
+{%- comment -%}
+  Renders a product card.
+  Accepts:
+    - product: {Object} Shopify product object
+    - show_vendor: {Boolean} Show vendor name
+    - show_quick_view: {Boolean} Show quick view button
+{%- endcomment -%}
+
+<div class="product-card" data-product-card data-product-url="{{ product.url }}">
+  <div class="product-card__image-wrap">
+    <a href="{{ product.url }}" class="product-card__image-link" aria-label="{{ product.title }}">
+      {%- if product.featured_image -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 500 }}"
+          srcset="
+            {{ product.featured_image | image_url: width: 300 }} 300w,
+            {{ product.featured_image | image_url: width: 500 }} 500w
+          "
+          sizes="(max-width: 768px) 50vw, 25vw"
+          alt="{{ product.featured_image.alt | default: product.title }}"
+          width="500"
+          height="{{ 500 | divided_by: product.featured_image.aspect_ratio | round }}"
+          loading="lazy"
+          class="product-card__image"
+        >
+        {%- if product.images.size > 1 -%}
+          <img
+            src="{{ product.images[1] | image_url: width: 500 }}"
+            alt=""
+            width="500"
+            height="{{ 500 | divided_by: product.images[1].aspect_ratio | round }}"
+            loading="lazy"
+            class="product-card__image product-card__image--hover"
+          >
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-img' }}
+      {%- endif -%}
+    </a>
+
+    <!-- Badges -->
+    <div class="product-card__badges">
+      {%- if product.compare_at_price > product.price -%}
+        {%- assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+        <span class="product-card__badge product-card__badge--sale">-{{ savings }}%</span>
+      {%- endif -%}
+      {%- unless product.available -%}
+        <span class="product-card__badge product-card__badge--sold-out">Sold Out</span>
+      {%- endunless -%}
+      {%- if product.tags contains 'new' -%}
+        <span class="product-card__badge product-card__badge--new">New</span>
+      {%- endif -%}
+      {%- if product.tags contains 'hot' -%}
+        <span class="product-card__badge product-card__badge--hot">🔥 Hot</span>
+      {%- endif -%}
+    </div>
+
+    <!-- Quick actions overlay -->
+    <div class="product-card__actions">
+      {%- if product.available -%}
+        <form method="post" action="/cart/add" data-add-to-cart-form>
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="product-card__add-btn" data-add-to-cart aria-label="Add to cart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>Add to Cart</span>
+          </button>
+        </form>
+      {%- endif -%}
+      {%- if show_quick_view -%}
+        <button class="product-card__quick-btn" data-quick-view="{{ product.url }}" aria-label="Quick view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Quick View</span>
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-card__info">
+    {%- if show_vendor and product.vendor != blank -%}
+      <span class="product-card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <div class="product-card__price">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="product-card__price-sale">{{ product.price | money }}</span>
+        <span class="product-card__price-compare">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="product-card__price-regular">{{ product.price | money }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

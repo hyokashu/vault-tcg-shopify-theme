@@ -1,0 +1,75 @@
+<div class="section-spacing">
+  <div class="container">
+    <div class="section-header section-header--left">
+      <h1 class="section-heading">{{ blog.title }}</h1>
+    </div>
+
+    {%- if blog.articles.size > 0 -%}
+      <div class="blog-grid">
+        {%- for article in blog.articles -%}
+          <article class="blog-card">
+            {%- if article.image -%}
+              <a href="{{ article.url }}" class="blog-card__image-wrap">
+                <img
+                  src="{{ article.image | image_url: width: 600 }}"
+                  srcset="
+                    {{ article.image | image_url: width: 400 }} 400w,
+                    {{ article.image | image_url: width: 600 }} 600w
+                  "
+                  alt="{{ article.image.alt | default: article.title }}"
+                  width="600"
+                  height="{{ 600 | divided_by: article.image.aspect_ratio | round }}"
+                  loading="lazy"
+                  class="blog-card__image"
+                >
+              </a>
+            {%- endif -%}
+            <div class="blog-card__content">
+              {%- if article.tags.size > 0 -%}
+                <div class="blog-card__tags">
+                  {%- for tag in article.tags limit: 2 -%}
+                    <span class="blog-card__tag">{{ tag }}</span>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+              <h2 class="blog-card__title">
+                <a href="{{ article.url }}">{{ article.title }}</a>
+              </h2>
+              <p class="blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 25 }}</p>
+              <div class="blog-card__meta">
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%b %d, %Y' }}</time>
+                <span>·</span>
+                <span>{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endif -%}
+    {%- else -%}
+      <p>No articles yet. Check back soon!</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog page",
+  "tag": "section",
+  "class": "blog-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 6
+    }
+  ]
+}
+{% endschema %}

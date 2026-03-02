@@ -1,0 +1,24 @@
+{
+  "current": {
+    "color_primary": "#7C3AED",
+    "color_secondary": "#06B6D4",
+    "color_accent": "#FBBF24",
+    "color_bg_dark": "#0B0B1A",
+    "color_bg_card": "#151530",
+    "color_bg_elevated": "#1E1E3F",
+    "color_text": "#F1F1F6",
+    "color_text_muted": "#9CA3AF",
+    "font_heading": "bebas_neue_n4",
+    "font_body": "inter_n4",
+    "font_body_size": 16,
+    "max_width": 1300,
+    "section_spacing": 60,
+    "cart_drawer_enabled": true,
+    "cart_free_shipping_threshold": "75",
+    "cart_note_placeholder": "Special instructions (e.g., gift wrapping)",
+    "content_for_index": {
+      "sections": {},
+      "order": []
+    }
+  }
+}

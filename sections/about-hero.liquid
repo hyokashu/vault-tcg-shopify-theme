@@ -1,0 +1,132 @@
+<div class="section-spacing">
+  <div class="container">
+    <div class="about-hero">
+      <div class="about-hero__content">
+        {%- if section.settings.tag != blank -%}
+          <span class="section-tag">{{ section.settings.tag }}</span>
+        {%- endif -%}
+        <h1 class="about-hero__heading">{{ section.settings.heading }}</h1>
+        <div class="about-hero__text rte">
+          {{ section.settings.text }}
+        </div>
+      </div>
+      {%- if section.settings.image != blank -%}
+        <div class="about-hero__image">
+          <img
+            src="{{ section.settings.image | image_url: width: 700 }}"
+            alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+            width="700"
+            loading="eager"
+            class="about-hero__img"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="about-values">
+        {%- for block in section.blocks -%}
+          <div class="about-value" {{ block.shopify_attributes }}>
+            <div class="about-value__icon">
+              {%- if block.settings.icon == 'heart' -%}
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              {%- elsif block.settings.icon == 'star' -%}
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- elsif block.settings.icon == 'shield' -%}
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {%- elsif block.settings.icon == 'zap' -%}
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              {%- endif -%}
+            </div>
+            <h3 class="about-value__title">{{ block.settings.title }}</h3>
+            <p class="about-value__text">{{ block.settings.text }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About hero",
+  "tag": "section",
+  "class": "about-hero-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag line",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Built by Collectors, for Collectors"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "About text",
+      "default": "<p>We started as a group of friends who were tired of overpriced, unreliable TCG shops. So we built our own. Every product is sourced directly from authorized distributors, stored properly, and shipped fast. We're collectors ourselves — and we treat your orders the way we'd want ours treated.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "heart",
+          "options": [
+            { "value": "heart", "label": "Heart" },
+            { "value": "star", "label": "Star" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "zap", "label": "Lightning" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Passion-Driven"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "We're collectors first. We know what matters because we care about the same things you do."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About hero",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": { "title": "Passion-Driven", "icon": "heart", "text": "We're collectors first, sellers second. We know what matters." }
+        },
+        {
+          "type": "value",
+          "settings": { "title": "100% Authentic", "icon": "shield", "text": "Every product sourced directly from authorized distributors." }
+        },
+        {
+          "type": "value",
+          "settings": { "title": "Lightning Fast", "icon": "zap", "text": "Same-day shipping on orders placed before 2 PM EST." }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

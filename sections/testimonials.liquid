@@ -1,0 +1,142 @@
+<div class="section-spacing">
+  <div class="container">
+    <div class="section-header section-header--center">
+      {%- if section.settings.tag != blank -%}
+        <span class="section-tag">{{ section.settings.tag }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    <div class="testimonials-grid">
+      {%- for block in section.blocks -%}
+        <div class="testimonial-card" {{ block.shopify_attributes }}>
+          <div class="testimonial-card__stars">
+            {%- for i in (1..block.settings.rating) -%}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--color-accent)" stroke="var(--color-accent)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            {%- endfor -%}
+          </div>
+          <blockquote class="testimonial-card__quote">
+            "{{ block.settings.quote }}"
+          </blockquote>
+          <div class="testimonial-card__author">
+            {%- if block.settings.avatar != blank -%}
+              <img
+                src="{{ block.settings.avatar | image_url: width: 48 }}"
+                alt="{{ block.settings.name }}"
+                class="testimonial-card__avatar"
+                width="48"
+                height="48"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="testimonial-card__avatar-placeholder">
+                {{ block.settings.name | slice: 0 }}
+              </div>
+            {%- endif -%}
+            <div>
+              <strong class="testimonial-card__name">{{ block.settings.name }}</strong>
+              {%- if block.settings.detail != blank -%}
+                <span class="testimonial-card__detail">{{ block.settings.detail }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "testimonials-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag",
+      "label": "Tag line",
+      "default": "⭐ REVIEWS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Collectors Are Saying"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review text",
+          "default": "Best place to get sealed product. Fast shipping and everything arrives in perfect condition. Already ordered three times!"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Alex R."
+        },
+        {
+          "type": "text",
+          "id": "detail",
+          "label": "Detail (e.g., Verified Buyer)",
+          "default": "Verified Buyer"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Best place to get sealed product. Fast shipping and everything arrives in perfect condition!",
+            "name": "Alex R.",
+            "detail": "Verified Buyer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Amazing selection and prices. My go-to store for booster boxes. The packaging is always top-notch.",
+            "name": "Jordan M.",
+            "detail": "Repeat Customer"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ordered a case and it arrived next day. Can't beat the service. Will definitely be back for more!",
+            "name": "Sam K.",
+            "detail": "Verified Buyer"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,105 @@
+<div class="section-spacing">
+  <div class="newsletter-section{% if section.settings.full_width %} newsletter-section--full{% endif %}">
+    <div class="container">
+      <div class="newsletter">
+        <div class="newsletter__content">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="newsletter__heading">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <p class="newsletter__subheading">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+        </div>
+        <div class="newsletter__form-wrap">
+          {% form 'customer', class: 'newsletter__form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            {%- if form.posted_successfully? -%}
+              <p class="newsletter__success">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                {{ section.settings.success_message }}
+              </p>
+            {%- else -%}
+              <div class="newsletter__input-group">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  placeholder="{{ section.settings.placeholder }}"
+                  required
+                  autocomplete="email"
+                  class="newsletter__input"
+                  aria-label="Email address"
+                >
+                <button type="submit" class="btn btn--primary newsletter__btn">
+                  {{ section.settings.button_label }}
+                </button>
+              </div>
+              {%- if form.errors -%}
+                <p class="newsletter__error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+              {%- endif -%}
+            {%- endif -%}
+          {% endform %}
+          {%- if section.settings.disclaimer != blank -%}
+            <p class="newsletter__disclaimer">{{ section.settings.disclaimer }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "newsletter-wrap-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the Drop List"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Be the first to know about new product drops, restocks, and exclusive deals."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "You're on the list! Watch your inbox."
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "label": "Disclaimer text",
+      "default": "No spam, ever. Unsubscribe anytime."
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width background",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

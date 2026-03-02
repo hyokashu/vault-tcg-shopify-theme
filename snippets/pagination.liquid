@@ -1,0 +1,43 @@
+{%- comment -%}
+  Renders pagination.
+  Accepts:
+    - paginate: {Object} Shopify paginate object
+{%- endcomment -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" aria-label="Pagination">
+    <ul class="pagination__list" role="list">
+      {%- if paginate.previous -%}
+        <li>
+          <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </a>
+        </li>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <li>
+            <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+          </li>
+        {%- elsif part.title == paginate.current_page -%}
+          <li>
+            <span class="pagination__link pagination__link--current" aria-current="page">{{ part.title }}</span>
+          </li>
+        {%- else -%}
+          <li>
+            <span class="pagination__link pagination__link--gap">{{ part.title }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if paginate.next -%}
+        <li>
+          <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}

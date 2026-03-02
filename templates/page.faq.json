@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "tag": "❓ FAQ",
+        "heading": "Frequently Asked Questions"
+      },
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "Are all products factory sealed?", "answer": "<p>Yes! Every product we sell is 100% factory sealed and sourced directly from authorized distributors. We never sell resealed or tampered products.</p>" } },
+        "q2": { "type": "question", "settings": { "question": "How fast do you ship?", "answer": "<p>Orders placed before 2 PM EST ship same day. Standard shipping is 3-5 business days. Express and overnight options are available at checkout.</p>" } },
+        "q3": { "type": "question", "settings": { "question": "Do you offer returns?", "answer": "<p>We accept returns within 14 days of delivery for unopened, sealed products in their original condition. Once a product is opened, we cannot accept returns.</p>" } },
+        "q4": { "type": "question", "settings": { "question": "Are your prices competitive?", "answer": "<p>We work directly with distributors to offer the best prices possible. If you find a lower price from an authorized seller, reach out and we'll do our best to match it.</p>" } },
+        "q5": { "type": "question", "settings": { "question": "Which TCGs do you carry?", "answer": "<p>We carry sealed product from Pokémon, Magic: The Gathering, Yu-Gi-Oh!, One Piece, Dragon Ball Super, and more. New game lines are added regularly.</p>" } },
+        "q6": { "type": "question", "settings": { "question": "How is my order packaged?", "answer": "<p>All orders are double-boxed with bubble wrap and padding to ensure your sealed products arrive in perfect condition. We take packaging seriously.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"]
+    }
+  },
+  "order": ["faq"]
+}
