@@ -7,7 +7,9 @@
         "heading": "Rip. Pull. Dominate.",
         "subheading": "Sealed TCG product from every major game — shipped fast, packed safe.",
         "btn1_label": "Shop All Products",
-        "btn2_label": "New Drops ↓",
+        "btn1_link": "/collections/all",
+        "btn2_label": "Browse by Game ↓",
+        "btn2_link": "#shop-by-game",
         "height": 85,
         "overlay_opacity": 55,
         "text_align": "left",
@@ -19,95 +21,84 @@
     },
     "trust-bar": {
       "type": "trust-bar",
-      "settings": {}
+      "settings": {},
+      "blocks": {
+        "trust-1": { "type": "trust_item", "settings": { "icon": "truck",   "title": "Free Shipping",    "subtitle": "On orders over $75" } },
+        "trust-2": { "type": "trust_item", "settings": { "icon": "shield",  "title": "100% Authentic",   "subtitle": "Authorised distributor" } },
+        "trust-3": { "type": "trust_item", "settings": { "icon": "box",     "title": "Factory Sealed",   "subtitle": "Guaranteed unopened" } },
+        "trust-4": { "type": "trust_item", "settings": { "icon": "refresh", "title": "Easy Returns",     "subtitle": "14-day return policy" } }
+      },
+      "block_order": ["trust-1", "trust-2", "trust-3", "trust-4"]
     },
     "brand-ticker": {
       "type": "brand-ticker",
-      "settings": {
-        "heading": "We Stock Every Major Game"
-      },
+      "settings": {},
       "blocks": {
-        "brand-poke": {
-          "type": "brand",
-          "settings": { "name": "Pokémon TCG", "color": "yellow" }
-        },
-        "brand-mtg": {
-          "type": "brand",
-          "settings": { "name": "Magic: The Gathering", "color": "purple" }
-        },
-        "brand-op": {
-          "type": "brand",
-          "settings": { "name": "One Piece TCG", "color": "orange" }
-        },
-        "brand-yugi": {
-          "type": "brand",
-          "settings": { "name": "Yu-Gi-Oh!", "color": "blue" }
-        },
-        "brand-lorcana": {
-          "type": "brand",
-          "settings": { "name": "Disney Lorcana", "color": "white" }
-        },
-        "brand-fab": {
-          "type": "brand",
-          "settings": { "name": "Flesh & Blood", "color": "red" }
-        },
-        "brand-dbs": {
-          "type": "brand",
-          "settings": { "name": "Dragon Ball Super", "color": "red" }
-        },
-        "brand-sw": {
-          "type": "brand",
-          "settings": { "name": "Star Wars: Unlimited", "color": "blue" }
-        }
+        "brand-poke":    { "type": "brand", "settings": { "name": "Pokémon TCG",           "color": "yellow" } },
+        "brand-mtg":     { "type": "brand", "settings": { "name": "Magic: The Gathering",  "color": "purple" } },
+        "brand-op":      { "type": "brand", "settings": { "name": "One Piece TCG",         "color": "orange" } },
+        "brand-yugi":    { "type": "brand", "settings": { "name": "Yu-Gi-Oh!",             "color": "blue"   } },
+        "brand-lorcana": { "type": "brand", "settings": { "name": "Disney Lorcana",        "color": "white"  } },
+        "brand-fab":     { "type": "brand", "settings": { "name": "Flesh & Blood",         "color": "red"    } },
+        "brand-dbs":     { "type": "brand", "settings": { "name": "Dragon Ball Super",     "color": "red"    } },
+        "brand-sw":      { "type": "brand", "settings": { "name": "Star Wars: Unlimited",  "color": "blue"   } }
       },
       "block_order": ["brand-poke", "brand-mtg", "brand-op", "brand-yugi", "brand-lorcana", "brand-fab", "brand-dbs", "brand-sw"]
     },
     "tabbed-collections": {
       "type": "tabbed-collections",
       "settings": {
-        "eyebrow": "🃏 BROWSE BY GAME",
+        "tag": "🃏 SHOP BY GAME",
         "heading": "Shop Your Game",
-        "subheading": "Find sealed booster boxes, ETBs, and packs from all the major TCGs."
+        "subheading": "Find sealed booster boxes, ETBs, and packs from all the major TCGs.",
+        "columns": "4",
+        "show_quick_view": true,
+        "show_view_all": true
       },
       "blocks": {
         "tab-pokemon": {
           "type": "tab",
           "settings": {
             "label": "Pokémon",
+            "icon": "⚡",
             "badge_color": "#F5C400",
-            "game_badge": "Pokemon"
+            "view_all_url": "/collections/pokemon"
           }
         },
         "tab-mtg": {
           "type": "tab",
           "settings": {
             "label": "Magic",
+            "icon": "✨",
             "badge_color": "#7C3AED",
-            "game_badge": "MTG"
+            "view_all_url": "/collections/magic-the-gathering"
           }
         },
         "tab-op": {
           "type": "tab",
           "settings": {
             "label": "One Piece",
+            "icon": "⚓",
             "badge_color": "#06B6D4",
-            "game_badge": "One Piece"
+            "view_all_url": "/collections/one-piece"
           }
         },
         "tab-yugi": {
           "type": "tab",
           "settings": {
             "label": "Yu-Gi-Oh!",
+            "icon": "👁",
             "badge_color": "#EF4444",
-            "game_badge": "YGO"
+            "view_all_url": "/collections/yu-gi-oh"
           }
         },
         "tab-lorcana": {
           "type": "tab",
           "settings": {
             "label": "Lorcana",
+            "icon": "🌟",
             "badge_color": "#F97316",
-            "game_badge": "Lorcana"
+            "view_all_url": "/collections/lorcana"
           }
         }
       },
@@ -123,10 +114,13 @@
             "eyebrow": "🔥 THIS WEEK ONLY",
             "heading": "Booster Box Blowout",
             "subtext": "Save big on select Pokémon and Magic booster boxes. While stocks last.",
-            "btn_label": "Shop Deals",
-            "gradient_from": "#7C3AED",
-            "gradient_to": "#F5C400",
-            "tall": true
+            "cta_label": "Shop Deals",
+            "cta_link": "/collections/all",
+            "bg_from": "#7C3AED",
+            "bg_to": "#F5C400",
+            "overlay_opacity": 30,
+            "align": "left",
+            "style": "tall"
           }
         },
         "promo-2": {
@@ -135,10 +129,13 @@
             "eyebrow": "📦 NEW ARRIVAL",
             "heading": "Fresh Drops Just Landed",
             "subtext": "The latest sealed product from One Piece, Lorcana, and more — in stock now.",
-            "btn_label": "See New Drops",
-            "gradient_from": "#06B6D4",
-            "gradient_to": "#10B981",
-            "tall": true
+            "cta_label": "See New Drops",
+            "cta_link": "/collections/all",
+            "bg_from": "#06B6D4",
+            "bg_to": "#10B981",
+            "overlay_opacity": 30,
+            "align": "right",
+            "style": "tall"
           }
         }
       },

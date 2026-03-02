@@ -26,7 +26,8 @@
               <p class="promo-banner__sub">{{ block.settings.subtext }}</p>
             {%- endif -%}
             {%- if block.settings.cta_label != blank -%}
-              <a href="{{ block.settings.cta_link }}" class="btn btn--promo">
+              {%- assign cta_href = block.settings.cta_link | default: '/collections/all' -%}
+              <a href="{{ cta_href }}" class="btn btn--promo">
                 {{ block.settings.cta_label }}
               </a>
             {%- endif -%}
