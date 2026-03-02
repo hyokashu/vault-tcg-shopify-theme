@@ -3,11 +3,15 @@
     "main-product": {
       "type": "main-product",
       "settings": {
+        "show_afterpay": true,
         "low_stock_threshold": 5,
         "show_viewing_now": true,
         "viewing_count": 8,
         "show_rating": true,
-        "review_count": 42,
+        "review_score": "4.9",
+        "review_count": 84,
+        "show_pull_rates": true,
+        "pull_rates_note": "While pull rates vary, a typical booster box from this set can yield the following on average:",
         "show_dynamic_checkout": true,
         "show_notify": true,
         "show_payment_icons": true,
@@ -15,29 +19,148 @@
         "related_count": 4
       },
       "blocks": {
+        "detail-set": {
+          "type": "detail_item",
+          "settings": { "label": "Set", "value": "Obsidian Flames" }
+        },
+        "detail-series": {
+          "type": "detail_item",
+          "settings": { "label": "Series", "value": "Scarlet & Violet" }
+        },
+        "detail-packs": {
+          "type": "detail_item",
+          "settings": { "label": "Packs", "value": "36 Packs" }
+        },
+        "detail-cards": {
+          "type": "detail_item",
+          "settings": { "label": "Cards Per Pack", "value": "10 Cards" }
+        },
+        "detail-language": {
+          "type": "detail_item",
+          "settings": { "label": "Language", "value": "English" }
+        },
+        "detail-release": {
+          "type": "detail_item",
+          "settings": { "label": "Release", "value": "Aug 2023" }
+        },
+        "box-packs": {
+          "type": "box_item",
+          "settings": {
+            "label": "Booster Packs",
+            "value": "36 packs",
+            "description": "Each pack contains 10 randomly assorted cards"
+          }
+        },
+        "box-cards": {
+          "type": "box_item",
+          "settings": {
+            "label": "Cards Per Pack",
+            "value": "10 cards",
+            "description": "Including at least 1 guaranteed holo or reverse holo"
+          }
+        },
+        "box-total": {
+          "type": "box_item",
+          "settings": {
+            "label": "Total Cards",
+            "value": "360 cards",
+            "description": "Across all 36 packs in the sealed box"
+          }
+        },
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "Alex M.",
+            "rating": 5,
+            "review_date": "Feb 12, 2026",
+            "review_text": "Amazing pull rates! Got two illustration rares and a gold card from this box. Arrived sealed and in perfect condition with great packaging.",
+            "verified": true,
+            "helpful_count": 34
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "Sarah K.",
+            "rating": 5,
+            "review_date": "Jan 28, 2026",
+            "review_text": "Fast shipping and the box was double-boxed with bubble wrap. Factory seal was intact. Best prices I've found online for this set.",
+            "verified": true,
+            "helpful_count": 21
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "reviewer_name": "David R.",
+            "rating": 4,
+            "review_date": "Jan 15, 2026",
+            "review_text": "Great box overall. Pull rates were decent though I didn't hit the big chase card. Packaging was excellent and arrived quickly. Will definitely order again.",
+            "verified": true,
+            "helpful_count": 15
+          }
+        },
+        "sale-1": {
+          "type": "recent_sale",
+          "settings": {
+            "product_name": "Obsidian Flames Booster Box",
+            "price": "$144.99",
+            "time_ago": "12 minutes ago"
+          }
+        },
+        "sale-2": {
+          "type": "recent_sale",
+          "settings": {
+            "product_name": "Paldea Evolved ETB",
+            "price": "$44.99",
+            "time_ago": "34 minutes ago"
+          }
+        },
+        "sale-3": {
+          "type": "recent_sale",
+          "settings": {
+            "product_name": "151 Booster Box (Japanese)",
+            "price": "$89.99",
+            "time_ago": "1 hour ago"
+          }
+        },
+        "sale-4": {
+          "type": "recent_sale",
+          "settings": {
+            "product_name": "Obsidian Flames Case (6 Boxes)",
+            "price": "$824.99",
+            "time_ago": "2 hours ago"
+          }
+        },
         "accordion-shipping": {
           "type": "accordion",
           "settings": {
             "title": "Shipping & Delivery",
-            "content": "<p><strong>Same-day dispatch</strong> on orders placed before 2pm AEST (Mon–Fri).</p><ul><li>Standard: 3–7 business days</li><li>Express: 1–3 business days</li><li>Free standard shipping on orders over $75</li></ul><p>All orders are tracked and insured.</p>"
+            "content": "<p>Orders are dispatched within 1\u20132 business days. Free shipping on orders over $75 Australia-wide. Express options available at checkout. All orders are tracked and insured.</p>"
           }
         },
         "accordion-returns": {
           "type": "accordion",
           "settings": {
             "title": "Returns & Refunds",
-            "content": "<p>We accept returns within <strong>14 days</strong> of delivery for unopened, factory-sealed products in original condition.</p><p>Please <a href='/pages/contact'>contact us</a> before sending a return. Refunds are processed within 3–5 business days of receiving the item.</p>"
+            "content": "<p>We accept returns on sealed, unopened product within 14 days of delivery. Item must be in original condition. Contact us to start a return. Refunds processed within 3\u20135 business days.</p>"
           }
         },
         "accordion-auth": {
           "type": "accordion",
           "settings": {
             "title": "Authenticity Guarantee",
-            "content": "<p>Every product we sell is sourced <strong>directly from authorised distributors</strong>. We never sell resealed, tampered, or grey-market product.</p><p>All sealed product is inspected and shipped in protective packaging to ensure it arrives in perfect condition.</p>"
+            "content": "<p>Every product we sell is 100% genuine and sourced directly from authorised distributors. Factory sealed products ship with their original shrink wrap and seal of authenticity intact.</p>"
           }
         }
       },
-      "block_order": ["accordion-shipping", "accordion-returns", "accordion-auth"]
+      "block_order": [
+        "detail-set", "detail-series", "detail-packs", "detail-cards", "detail-language", "detail-release",
+        "box-packs", "box-cards", "box-total",
+        "review-1", "review-2", "review-3",
+        "sale-1", "sale-2", "sale-3", "sale-4",
+        "accordion-shipping", "accordion-returns", "accordion-auth"
+      ]
     }
   },
   "order": ["main-product"]
