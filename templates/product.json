@@ -3,19 +3,41 @@
     "main-product": {
       "type": "main-product",
       "settings": {
-        "show_trust_badges": true,
-        "show_notify": true
+        "low_stock_threshold": 5,
+        "show_viewing_now": true,
+        "viewing_count": 8,
+        "show_rating": true,
+        "review_count": 42,
+        "show_dynamic_checkout": true,
+        "show_notify": true,
+        "show_payment_icons": true,
+        "show_related": true,
+        "related_count": 4
       },
       "blocks": {
-        "badge-1": { "type": "trust_badge", "settings": { "icon": "shield", "text": "Authentic Guaranteed" } },
-        "badge-2": { "type": "trust_badge", "settings": { "icon": "truck", "text": "Fast Shipping" } },
-        "badge-3": { "type": "trust_badge", "settings": { "icon": "check", "text": "Factory Sealed" } },
-        "badge-4": { "type": "trust_badge", "settings": { "icon": "refresh", "text": "Easy Returns" } },
-        "tab-1": { "type": "tab", "settings": { "title": "Shipping Info", "content": "<p>Orders ship within 1-2 business days. Free shipping on orders over $75. We ship via USPS Priority Mail and UPS Ground.</p>" } },
-        "tab-2": { "type": "tab", "settings": { "title": "Return Policy", "content": "<p>We accept returns within 14 days for unopened, factory-sealed products. Please contact us before sending a return.</p>" } },
-        "tab-3": { "type": "tab", "settings": { "title": "Authenticity", "content": "<p>All products are sourced directly from authorized distributors and are 100% authentic. We never sell resealed or tampered products.</p>" } }
+        "accordion-shipping": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & Delivery",
+            "content": "<p><strong>Same-day dispatch</strong> on orders placed before 2pm AEST (Mon–Fri).</p><ul><li>Standard: 3–7 business days</li><li>Express: 1–3 business days</li><li>Free standard shipping on orders over $75</li></ul><p>All orders are tracked and insured.</p>"
+          }
+        },
+        "accordion-returns": {
+          "type": "accordion",
+          "settings": {
+            "title": "Returns & Refunds",
+            "content": "<p>We accept returns within <strong>14 days</strong> of delivery for unopened, factory-sealed products in original condition.</p><p>Please <a href='/pages/contact'>contact us</a> before sending a return. Refunds are processed within 3–5 business days of receiving the item.</p>"
+          }
+        },
+        "accordion-auth": {
+          "type": "accordion",
+          "settings": {
+            "title": "Authenticity Guarantee",
+            "content": "<p>Every product we sell is sourced <strong>directly from authorised distributors</strong>. We never sell resealed, tampered, or grey-market product.</p><p>All sealed product is inspected and shipped in protective packaging to ensure it arrives in perfect condition.</p>"
+          }
+        }
       },
-      "block_order": ["badge-1", "badge-2", "badge-3", "badge-4", "tab-1", "tab-2", "tab-3"]
+      "block_order": ["accordion-shipping", "accordion-returns", "accordion-auth"]
     }
   },
   "order": ["main-product"]

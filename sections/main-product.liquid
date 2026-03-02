@@ -1,7 +1,44 @@
-{%- assign product = product -%}
+{%- liquid
+  assign product = product
+  assign current_variant = product.selected_or_first_available_variant
+  assign compare_price = product.compare_at_price
+  assign sale_price = product.price
+  assign on_sale = false
+  if compare_price > sale_price
+    assign on_sale = true
+    assign savings_amount = compare_price | minus: sale_price
+    assign savings_pct = savings_amount | times: 100 | divided_by: compare_price
+  endif
+  assign low_stock_threshold = section.settings.low_stock_threshold | default: 5
+  assign inventory = current_variant.inventory_quantity
+  assign track_inventory = current_variant.inventory_management
+-%}
 
-<div class="section-spacing">
+{%- comment -%} Recently viewed tracking {%- endcomment -%}
+<span data-product-handle="{{ product.handle }}" style="display:none" aria-hidden="true"></span>
+
+{%- comment -%} Sticky mobile ATC bar {%- endcomment -%}
+<div class="sticky-atc" data-sticky-atc aria-hidden="true">
+  <div class="sticky-atc__inner container">
+    <div class="sticky-atc__info">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 80 }}" alt="{{ product.title }}" width="40" height="40" class="sticky-atc__img">
+      {%- endif -%}
+      <div>
+        <p class="sticky-atc__title" data-sticky-atc-title>{{ product.title | truncate: 40 }}</p>
+        <p class="sticky-atc__price" data-sticky-atc-price>{{ current_variant.price | money }}</p>
+      </div>
+    </div>
+    <button class="btn btn--primary btn--small sticky-atc__btn" data-sticky-atc-btn>
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<div class="product-layout section-spacing">
   <div class="container">
+
+    {%- comment -%} Breadcrumbs {%- endcomment -%}
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span aria-hidden="true">/</span>
@@ -9,170 +46,351 @@
         <a href="{{ collection.url }}">{{ collection.title }}</a>
         <span aria-hidden="true">/</span>
       {%- endif -%}
-      <span aria-current="page">{{ product.title }}</span>
+      <span aria-current="page">{{ product.title | truncate: 50 }}</span>
     </nav>
 
     <div class="product-page">
-      <!-- Product gallery -->
+
+      {%- comment -%} ═══════════════════════════════════════════
+          GALLERY
+      ═══════════════════════════════════════════ {%- endcomment -%}
       <div class="product-page__gallery">
-        <div class="product-page__main-image" data-product-gallery>
-          {%- for image in product.images -%}
-            <div class="product-page__image-slide{% if forloop.first %} is-active{% endif %}" data-image-slide="{{ forloop.index0 }}">
-              <img
-                src="{{ image | image_url: width: 900 }}"
-                srcset="
-                  {{ image | image_url: width: 500 }} 500w,
-                  {{ image | image_url: width: 700 }} 700w,
-                  {{ image | image_url: width: 900 }} 900w
-                "
-                alt="{{ image.alt | default: product.title }}"
-                width="900"
-                height="{{ 900 | divided_by: image.aspect_ratio | round }}"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                class="product-page__img"
-              >
-            </div>
-          {%- endfor -%}
+        {%- comment -%} Badges over main image {%- endcomment -%}
+        <div class="product-page__gallery-badges">
+          {%- if on_sale -%}
+            <span class="product-badge product-badge--sale">-{{ savings_pct }}%</span>
+          {%- endif -%}
+          {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+            <span class="product-badge product-badge--new">NEW</span>
+          {%- endif -%}
+          {%- if track_inventory == 'shopify' and inventory <= low_stock_threshold and inventory > 0 -%}
+            <span class="product-badge product-badge--low">🔥 Low Stock</span>
+          {%- endif -%}
         </div>
+
+        {%- comment -%} Main image slider {%- endcomment -%}
+        <div class="product-page__main-image" data-product-gallery>
+          {%- if product.images.size > 0 -%}
+            {%- for image in product.images -%}
+              <div class="product-page__image-slide{% if forloop.first %} is-active{% endif %}" data-image-slide="{{ forloop.index0 }}">
+                <a href="{{ image | image_url: width: 1200 }}" class="product-page__zoom-link" aria-label="Zoom image">
+                  <img
+                    src="{{ image | image_url: width: 800 }}"
+                    srcset="{{ image | image_url: width: 500 }} 500w, {{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1100 }} 1100w"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    alt="{{ image.alt | default: product.title }}"
+                    width="800"
+                    height="{{ 800 | divided_by: image.aspect_ratio | round }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    class="product-page__img"
+                    data-zoom-src="{{ image | image_url: width: 1400 }}"
+                  >
+                </a>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <div class="product-page__image-slide is-active">
+              {% render 'placeholder-pack-art', color_from: '#7C3AED', color_to: '#06B6D4', index: 1 %}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Thumbnail strip {%- endcomment -%}
         {%- if product.images.size > 1 -%}
           <div class="product-page__thumbs">
             {%- for image in product.images -%}
-              <button class="product-page__thumb{% if forloop.first %} is-active{% endif %}" data-thumb-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}">
-                <img src="{{ image | image_url: width: 120 }}" alt="" width="100" height="100" loading="lazy">
+              <button
+                class="product-page__thumb{% if forloop.first %} is-active{% endif %}"
+                data-thumb-index="{{ forloop.index0 }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img src="{{ image | image_url: width: 160 }}" alt="" width="80" height="80" loading="lazy">
               </button>
             {%- endfor -%}
           </div>
         {%- endif -%}
+
+        {%- comment -%} Image counter {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div class="product-page__image-counter" aria-hidden="true">
+            <span data-image-current>1</span> / {{ product.images.size }}
+          </div>
+        {%- endif -%}
       </div>
 
-      <!-- Product info -->
+      {%- comment -%} ═══════════════════════════════════════════
+          PRODUCT INFO
+      ═══════════════════════════════════════════ {%- endcomment -%}
       <div class="product-page__info">
-        {%- if product.vendor != blank -%}
-          <a href="{{ product.vendor | url_for_vendor }}" class="product-page__vendor">{{ product.vendor }}</a>
-        {%- endif -%}
 
-        <h1 class="product-page__title">{{ product.title }}</h1>
-
-        <div class="product-page__price-wrap">
-          {%- if product.compare_at_price > product.price -%}
-            <span class="product-page__price product-page__price--sale">{{ product.price | money }}</span>
-            <span class="product-page__price-compare">{{ product.compare_at_price | money }}</span>
-            {%- assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
-            <span class="product-page__price-badge">-{{ savings }}%</span>
-          {%- else -%}
-            <span class="product-page__price">{{ product.price | money }}</span>
+        {%- comment -%} Game / vendor badge {%- endcomment -%}
+        <div class="product-page__meta-row">
+          {%- if product.vendor != blank -%}
+            <a href="{{ product.vendor | url_for_vendor }}" class="product-page__vendor-badge">{{ product.vendor }}</a>
+          {%- endif -%}
+          {%- if product.type != blank -%}
+            <span class="product-page__type-badge">{{ product.type }}</span>
           {%- endif -%}
         </div>
 
-        {%- if product.available -%}
-          <span class="product-page__availability product-page__availability--in-stock">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            In Stock
-          </span>
-        {%- else -%}
-          <span class="product-page__availability product-page__availability--sold-out">Sold Out</span>
+        {%- comment -%} Title {%- endcomment -%}
+        <h1 class="product-page__title">{{ product.title }}</h1>
+
+        {%- comment -%} Star rating (static — replace with your reviews app metafield) {%- endcomment -%}
+        {%- if section.settings.show_rating -%}
+          <div class="product-page__rating">
+            <div class="product-page__stars" aria-label="4.8 out of 5 stars">
+              {%- for i in (1..5) -%}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="star{% if i == 5 %} star--half{% endif %}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- endfor -%}
+            </div>
+            <span class="product-page__rating-text">4.8 · <a href="#product-reviews" class="product-page__rating-link">{{ section.settings.review_count | default: 42 }} reviews</a></span>
+          </div>
         {%- endif -%}
 
-        <div class="product-page__description rte">
-          {{ product.description }}
+        {%- comment -%} Price block {%- endcomment -%}
+        <div class="product-page__price-block">
+          {%- if on_sale -%}
+            <div class="product-page__price-row">
+              <span class="product-page__price product-page__price--sale">{{ sale_price | money }}</span>
+              <span class="product-page__price-compare">{{ compare_price | money }}</span>
+              <span class="product-page__price-save">Save {{ savings_amount | money }}</span>
+            </div>
+          {%- else -%}
+            <span class="product-page__price">{{ sale_price | money }}</span>
+          {%- endif -%}
+
+          {%- comment -%} Tax + shipping note {%- endcomment -%}
+          <p class="product-page__price-note">
+            {%- if cart.taxes_included -%}Tax included.{%- endif -%}
+            {%- if shop.shipping_policy.body != blank -%}
+              <a href="{{ shop.shipping_policy.url }}">Shipping</a> calculated at checkout.
+            {%- endif -%}
+          </p>
         </div>
 
-        {%- if product.available -%}
-          {%- form 'product', product, data-product-form: '', data-product-id: product.id -%}
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {%- comment -%} Urgency row {%- endcomment -%}
+        <div class="product-page__urgency-row">
+          {%- comment -%} Stock status {%- endcomment -%}
+          {%- if product.available -%}
+            {%- if track_inventory == 'shopify' and inventory <= low_stock_threshold and inventory > 0 -%}
+              <div class="product-page__stock product-page__stock--low">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Only {{ inventory }} left — order soon!
+              </div>
+              <div class="product-page__stock-bar-wrap" aria-hidden="true">
+                {%- assign bar_pct = inventory | times: 100 | divided_by: low_stock_threshold -%}
+                <div class="product-page__stock-bar">
+                  <div class="product-page__stock-bar-fill" style="width:{{ bar_pct }}%"></div>
+                </div>
+                <span class="product-page__stock-label">Selling fast</span>
+              </div>
+            {%- else -%}
+              <div class="product-page__stock product-page__stock--in">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                In Stock &amp; Ready to Ship
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="product-page__stock product-page__stock--out">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+              Sold Out
+            </div>
+          {%- endif -%}
 
-            {%- unless product.has_only_default_variant -%}
+          {%- comment -%} "Viewing now" social proof {%- endcomment -%}
+          {%- if section.settings.show_viewing_now -%}
+            <div class="product-page__viewing">
+              <span class="product-page__viewing-dot"></span>
+              <span class="product-page__viewing-text" data-viewing-count>{{ section.settings.viewing_count | default: 8 }} people viewing this</span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Variant selectors {%- endcomment -%}
+        {%- form 'product', product, data-product-form: '', data-product-id: product.id -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+          {%- unless product.has_only_default_variant -%}
+            <div class="product-page__variants">
               {%- for option in product.options_with_values -%}
                 <div class="product-page__option">
                   <label class="product-page__option-label" for="option-{{ section.id }}-{{ forloop.index0 }}">
-                    {{ option.name }}
+                    {{ option.name }}: <strong>{{ option.selected_value }}</strong>
                   </label>
-                  <select id="option-{{ section.id }}-{{ forloop.index0 }}" class="product-page__option-select" data-option-index="{{ forloop.index0 }}">
+                  <div class="product-page__option-values">
                     {%- for value in option.values -%}
-                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>
+                      <label class="product-page__option-swatch{% if option.selected_value == value %} is-selected{% endif %}">
+                        <input
+                          type="radio"
+                          name="option{{ forloop.index0 }}"
+                          value="{{ value | escape }}"
+                          class="visually-hidden"
+                          data-option-index="{{ forloop.index0 }}"
+                          {% if option.selected_value == value %}checked{% endif %}
+                        >
                         {{ value }}
-                      </option>
+                      </label>
                     {%- endfor -%}
-                  </select>
+                  </div>
                 </div>
               {%- endfor -%}
-
               <select name="id" class="visually-hidden" data-variant-select>
                 {%- for variant in product.variants -%}
                   <option
                     value="{{ variant.id }}"
-                    {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                    {% if variant == current_variant %}selected{% endif %}
                     {% unless variant.available %}disabled{% endunless %}
                     data-price="{{ variant.price }}"
-                  >
-                    {{ variant.title }} — {{ variant.price | money }}
-                  </option>
+                    data-compare-price="{{ variant.compare_at_price }}"
+                  >{{ variant.title }} — {{ variant.price | money }}</option>
                 {%- endfor -%}
               </select>
-            {%- endunless -%}
+            </div>
+          {%- endunless -%}
 
-            <div class="product-page__actions">
+          {%- comment -%} Quantity + ATC {%- endcomment -%}
+          {%- if product.available -%}
+            <div class="product-page__buy-box">
               <div class="product-page__quantity">
                 <button type="button" class="qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
-                <input type="number" name="quantity" value="1" min="1" class="qty-input" data-qty-input aria-label="Quantity">
+                <input type="number" name="quantity" value="1" min="1" max="99" class="qty-input" data-qty-input aria-label="Quantity">
                 <button type="button" class="qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
               </div>
               <button type="submit" class="btn btn--primary btn--large product-page__add-btn" data-add-to-cart>
-                <span data-add-to-cart-text>Add to Cart — {{ product.selected_or_first_available_variant.price | money }}</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                <span data-add-to-cart-text>Add to Cart</span>
                 <span class="btn__spinner" aria-hidden="true">
                   <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="30 60"/></svg>
                 </span>
               </button>
             </div>
-          {%- endform -%}
-        {%- else -%}
-          <button class="btn btn--outline btn--large" disabled>Sold Out</button>
-          {%- if section.settings.show_notify -%}
-            <div class="product-page__notify">
-              <p>Want to know when this is back in stock?</p>
-              <button class="btn btn--small btn--outline" data-notify-btn>Notify Me</button>
-            </div>
-          {%- endif -%}
-        {%- endif -%}
 
-        <!-- Trust badges -->
-        {%- if section.settings.show_trust_badges -%}
-          <div class="product-page__trust">
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'trust_badge' -%}
-                <div class="trust-badge" {{ block.shopify_attributes }}>
-                  {%- if block.settings.icon == 'shield' -%}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  {%- elsif block.settings.icon == 'truck' -%}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                  {%- elsif block.settings.icon == 'check' -%}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                  {%- elsif block.settings.icon == 'refresh' -%}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                  {%- endif -%}
-                  <span>{{ block.settings.text }}</span>
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
+            {%- comment -%} Dynamic checkout (Shop Pay, PayPal etc) {%- endcomment -%}
+            {%- if section.settings.show_dynamic_checkout -%}
+              <div class="product-page__dynamic-checkout">
+                {{ form | payment_button }}
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="product-page__buy-box">
+              <button class="btn btn--outline btn--large" disabled style="flex:1">Sold Out</button>
+            </div>
+            {%- if section.settings.show_notify -%}
+              <div class="product-page__notify">
+                <p>Want to know when this is back?</p>
+                <button class="btn btn--outline btn--small" data-notify-btn>Notify Me When Available</button>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- comment -%} Trust bar {%- endcomment -%}
+        <div class="product-page__trust-row">
+          <div class="product-page__trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <span>Free Shipping<br><small>Orders over $75</small></span>
+          </div>
+          <div class="product-page__trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            <span>100% Authentic<br><small>Authorised seller</small></span>
+          </div>
+          <div class="product-page__trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <span>Factory Sealed<br><small>Guaranteed unopened</small></span>
+          </div>
+          <div class="product-page__trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary)" stroke-width="1.8"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <span>Easy Returns<br><small>14-day policy</small></span>
+          </div>
+        </div>
+
+        {%- comment -%} Payment icons {%- endcomment -%}
+        {%- if section.settings.show_payment_icons -%}
+          <div class="product-page__payment-row">
+            <span class="product-page__payment-label">Safe checkout:</span>
+            <div class="product-page__payment-icons">
+              {%- for type in shop.enabled_payment_types -%}
+                {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+              {%- endfor -%}
+            </div>
           </div>
         {%- endif -%}
 
-        <!-- Accordion tabs -->
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'tab' -%}
-            <details class="product-page__tab" {{ block.shopify_attributes }}>
-              <summary class="product-page__tab-title">
-                {{ block.settings.title }}
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        {%- comment -%} Info accordion {%- endcomment -%}
+        <div class="product-page__accordions">
+          {%- comment -%} Description always-open or as first accordion {%- endcomment -%}
+          {%- if product.description != blank -%}
+            <details class="product-accordion" open>
+              <summary class="product-accordion__title">
+                <span>Description</span>
+                <svg class="product-accordion__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </summary>
-              <div class="product-page__tab-content rte">
-                {{ block.settings.content }}
-              </div>
+              <div class="product-accordion__body rte">{{ product.description }}</div>
             </details>
           {%- endif -%}
+
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion' -%}
+              <details class="product-accordion" {{ block.shopify_attributes }}>
+                <summary class="product-accordion__title">
+                  <span>{{ block.settings.title }}</span>
+                  <svg class="product-accordion__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+                <div class="product-accordion__body rte">{{ block.settings.content }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Share row {%- endcomment -%}
+        <div class="product-page__share">
+          <span>Share:</span>
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}" target="_blank" rel="noopener" class="product-page__share-btn" aria-label="Share on Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}" target="_blank" rel="noopener" class="product-page__share-btn" aria-label="Share on Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </a>
+          <a href="mailto:?subject={{ product.title | url_encode }}&body={{ shop.url }}{{ product.url }}" class="product-page__share-btn" aria-label="Share by Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+
+      </div>{%- comment -%}/.product-page__info{%- endcomment -%}
+    </div>{%- comment -%}/.product-page{%- endcomment -%}
+
+    {%- comment -%} ═══════════════════════════════════════════
+        YOU MAY ALSO LIKE
+    ═══════════════════════════════════════════ {%- endcomment -%}
+    {%- if section.settings.show_related and collection != blank -%}
+      {%- assign related = collection.products | where: 'available', true -%}
+      {%- assign related_count = 0 -%}
+      {%- assign related_limit = section.settings.related_count | default: 4 -%}
+
+      {%- capture related_html -%}
+        {%- for p in related -%}
+          {%- unless p.id == product.id -%}
+            {%- assign related_count = related_count | plus: 1 -%}
+            {%- if related_count <= related_limit -%}
+              {% render 'product-card', product: p, show_vendor: false, show_quick_view: true %}
+            {%- endif -%}
+          {%- endunless -%}
         {%- endfor -%}
-      </div>
-    </div>
+      {%- endcapture -%}
+
+      {%- if related_count > 0 -%}
+        <div class="product-page__related">
+          <div class="section-header">
+            <h2 class="section-heading">You May Also Like</h2>
+          </div>
+          <div class="product-grid product-grid--4">
+            {{ related_html }}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
   </div>
 </div>
 
@@ -183,16 +401,15 @@
   "name": {{ product.title | json }},
   "description": {{ product.description | strip_html | json }},
   "image": {{ product.featured_image | image_url: width: 800 | json }},
-  "brand": {
-    "@type": "Brand",
-    "name": {{ product.vendor | json }}
-  },
+  "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+  "sku": {{ current_variant.sku | json }},
   "offers": {
     "@type": "Offer",
     "url": "{{ shop.url }}{{ product.url }}",
     "priceCurrency": {{ cart.currency.iso_code | json }},
     "price": {{ product.price | money_without_currency | json }},
-    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "seller": { "@type": "Organization", "name": {{ shop.name | json }} }
   }
 }
 </script>
@@ -203,62 +420,31 @@
   "tag": "section",
   "class": "product-page-section",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_trust_badges",
-      "label": "Show trust badges",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_notify",
-      "label": "Show 'Notify Me' for sold out products",
-      "default": true
-    }
+    { "type": "header", "content": "Pricing & urgency" },
+    { "type": "range", "id": "low_stock_threshold", "label": "Low stock warning threshold", "min": 1, "max": 20, "step": 1, "default": 5, "info": "Show 'low stock' warning when inventory is at or below this number" },
+    { "type": "checkbox", "id": "show_viewing_now", "label": "Show 'X people viewing' social proof", "default": true },
+    { "type": "range", "id": "viewing_count", "label": "Default 'viewing now' count", "min": 2, "max": 50, "step": 1, "default": 8 },
+    { "type": "header", "content": "Reviews" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show star rating", "default": true, "info": "Displays a static rating — connect your reviews app metafields for live data" },
+    { "type": "range", "id": "review_count", "label": "Review count (static)", "min": 1, "max": 999, "step": 1, "default": 42 },
+    { "type": "header", "content": "Purchase options" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons (Shop Pay, PayPal…)", "default": true },
+    { "type": "checkbox", "id": "show_notify", "label": "Show 'Notify Me' for sold out products", "default": true },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment method icons", "default": true },
+    { "type": "header", "content": "Related products" },
+    { "type": "checkbox", "id": "show_related", "label": "Show 'You May Also Like'", "default": true },
+    { "type": "range", "id": "related_count", "label": "Number of related products", "min": 2, "max": 8, "step": 2, "default": 4 }
   ],
   "blocks": [
     {
-      "type": "trust_badge",
-      "name": "Trust badge",
+      "type": "accordion",
+      "name": "Info accordion",
       "settings": [
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icon",
-          "default": "shield",
-          "options": [
-            { "value": "shield", "label": "Shield" },
-            { "value": "truck", "label": "Truck" },
-            { "value": "check", "label": "Checkmark" },
-            { "value": "refresh", "label": "Refresh" }
-          ]
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "Authentic Product"
-        }
-      ]
-    },
-    {
-      "type": "tab",
-      "name": "Info tab",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Tab title",
-          "default": "Shipping Info"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Tab content",
-          "default": "<p>Orders ship within 1-2 business days. Free shipping on orders over $75.</p>"
-        }
+        { "type": "text",     "id": "title",   "label": "Title",   "default": "Shipping & Returns" },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Orders ship within 1–2 business days. Free shipping on orders over $75. Easy 14-day returns on unopened product.</p>" }
       ]
     }
-  ]
+  ],
+  "presets": [{ "name": "Product page" }]
 }
 {% endschema %}
