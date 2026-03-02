@@ -1,72 +1,102 @@
 {%- style -%}
-  #section-{{ section.id }} .hero-banner {
-    min-height: {{ section.settings.height }}vh;
-  }
-  #section-{{ section.id }} .hero-banner__overlay {
-    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
-  }
+  #section-{{ section.id }} .hero { min-height: {{ section.settings.height }}vh; }
+  #section-{{ section.id }} .hero__overlay { opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}; }
 {%- endstyle -%}
 
 <div id="section-{{ section.id }}">
-  <div class="hero-banner">
+  <div class="hero">
+
     {%- if section.settings.image != blank -%}
-      <img
-        class="hero-banner__image"
+      <img class="hero__bg-image"
         src="{{ section.settings.image | image_url: width: 1920 }}"
-        srcset="
-          {{ section.settings.image | image_url: width: 800 }} 800w,
-          {{ section.settings.image | image_url: width: 1200 }} 1200w,
-          {{ section.settings.image | image_url: width: 1920 }} 1920w
-        "
-        sizes="100vw"
-        alt="{{ section.settings.image.alt | default: section.settings.heading }}"
-        loading="eager"
-        fetchpriority="high"
-        width="1920"
-        height="{{ 1920 | divided_by: section.settings.image.aspect_ratio | round }}"
-      >
+        srcset="{{ section.settings.image | image_url: width: 900 }} 900w, {{ section.settings.image | image_url: width: 1400 }} 1400w, {{ section.settings.image | image_url: width: 1920 }} 1920w"
+        sizes="100vw" alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+        loading="eager" fetchpriority="high" width="1920">
     {%- else -%}
-      <div class="hero-banner__placeholder">
-        {{ 'collection-1' | placeholder_svg_tag: 'hero-banner__placeholder-svg' }}
+      <div class="hero__bg-sample">
+        <div class="hero__bg-grid"></div>
+        <div class="hero__floating-cards" aria-hidden="true">
+          {%- assign fc = '#F5C400,#EF4444,#7C3AED,#06B6D4,#10B981,#F97316' | split: ',' -%}
+          {%- assign fc2 = '#EF4444,#7C3AED,#06B6D4,#F5C400,#F97316,#10B981' | split: ',' -%}
+          {%- for i in (1..6) -%}
+            {%- assign ci = forloop.index0 | modulo: 6 -%}
+            <div class="hero__float-card hero__float-card--{{ i }}">
+              {%- render 'placeholder-pack-art', color_from: fc[ci], color_to: fc2[ci], index: i -%}
+            </div>
+          {%- endfor -%}
+        </div>
       </div>
     {%- endif -%}
 
-    <div class="hero-banner__overlay"></div>
+    <div class="hero__overlay"></div>
 
-    <div class="hero-banner__content hero-banner__content--{{ section.settings.text_align }}">
+    <div class="hero__content hero__content--{{ section.settings.text_align }}">
       <div class="container">
-        {%- if section.settings.tag != blank -%}
-          <span class="hero-banner__tag">{{ section.settings.tag }}</span>
-        {%- endif -%}
+        <div class="hero__inner">
+          <div class="hero__text">
+            {%- if section.settings.eyebrow != blank -%}
+              <span class="hero__eyebrow">{{ section.settings.eyebrow }}</span>
+            {%- endif -%}
+            <h1 class="hero__heading">{{ section.settings.heading }}</h1>
+            {%- if section.settings.subheading != blank -%}
+              <p class="hero__subheading">{{ section.settings.subheading }}</p>
+            {%- endif -%}
+            <div class="hero__actions">
+              {%- if section.settings.btn1_label != blank -%}
+                <a href="{{ section.settings.btn1_link }}" class="btn btn--primary btn--large btn--glow">{{ section.settings.btn1_label }}</a>
+              {%- endif -%}
+              {%- if section.settings.btn2_label != blank -%}
+                <a href="{{ section.settings.btn2_link }}" class="btn btn--ghost btn--large">{{ section.settings.btn2_label }}</a>
+              {%- endif -%}
+            </div>
+            {%- if section.settings.show_social_proof -%}
+              <div class="hero__social-proof">
+                <div class="hero__proof-avatars" aria-hidden="true">
+                  {%- for i in (1..4) -%}<div class="hero__proof-avatar hero__proof-avatar--{{ i }}"></div>{%- endfor -%}
+                </div>
+                <p>{{ section.settings.social_proof_text }}</p>
+              </div>
+            {%- endif -%}
+          </div>
 
-        {%- if section.settings.heading != blank -%}
-          <h1 class="hero-banner__heading">{{ section.settings.heading }}</h1>
-        {%- endif -%}
-
-        {%- if section.settings.subheading != blank -%}
-          <p class="hero-banner__subheading">{{ section.settings.subheading }}</p>
-        {%- endif -%}
-
-        <div class="hero-banner__actions">
-          {%- if section.settings.button_label != blank -%}
-            <a href="{{ section.settings.button_link }}" class="btn btn--primary btn--large">
-              {{ section.settings.button_label }}
-            </a>
-          {%- endif -%}
-
-          {%- if section.settings.button_2_label != blank -%}
-            <a href="{{ section.settings.button_2_link }}" class="btn btn--outline btn--large">
-              {{ section.settings.button_2_label }}
-            </a>
+          {%- if section.settings.show_featured_pack -%}
+            <div class="hero__pack-preview" aria-hidden="true">
+              <div class="hero__pack-card">
+                {%- if section.settings.featured_product != blank -%}
+                  {%- assign fp = section.settings.featured_product -%}
+                  {%- if fp.featured_image -%}
+                    <img src="{{ fp.featured_image | image_url: width: 400 }}" alt="{{ fp.title }}" width="260" loading="eager">
+                  {%- else -%}
+                    {%- render 'placeholder-pack-art', color_from: "#7C3AED", color_to: "#06B6D4", index: 99 -%}
+                  {%- endif -%}
+                  <div class="hero__pack-info">
+                    <p class="hero__pack-title">{{ fp.title }}</p>
+                    <p class="hero__pack-price">{{ fp.price | money }}</p>
+                    <form method="post" action="/cart/add" data-add-to-cart-form>
+                      <input type="hidden" name="id" value="{{ fp.selected_or_first_available_variant.id }}">
+                      <input type="hidden" name="quantity" value="1">
+                      <button type="submit" class="btn btn--primary btn--small" data-add-to-cart><span data-add-to-cart-text>Quick Add</span></button>
+                    </form>
+                  </div>
+                {%- else -%}
+                  {%- render 'placeholder-pack-art', color_from: "#F5C400", color_to: "#EF4444", index: 99 -%}
+                  <div class="hero__pack-info">
+                    <p class="hero__pack-title">Sample Booster Box</p>
+                    <p class="hero__pack-price">$149.99</p>
+                    <a href="/collections/all" class="btn btn--primary btn--small">Shop Now</a>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
           {%- endif -%}
         </div>
       </div>
     </div>
 
-    {%- if section.settings.show_scroll_indicator -%}
-      <div class="hero-banner__scroll-indicator" aria-hidden="true">
+    {%- if section.settings.show_scroll_cue -%}
+      <a href="#main-content" class="hero__scroll-cue" aria-label="Scroll down">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
-      </div>
+      </a>
     {%- endif -%}
   </div>
 </div>
@@ -77,94 +107,25 @@
   "tag": "section",
   "class": "hero-section",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Background image",
-      "info": "Recommended: 1920x900px or larger"
-    },
-    {
-      "type": "range",
-      "id": "height",
-      "label": "Section height",
-      "min": 40,
-      "max": 100,
-      "step": 5,
-      "default": 80,
-      "unit": "vh"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "label": "Overlay darkness",
-      "min": 0,
-      "max": 80,
-      "step": 5,
-      "default": 40,
-      "unit": "%"
-    },
-    {
-      "type": "text",
-      "id": "tag",
-      "label": "Tag line",
-      "default": "🔥 NEW DROP"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Rip. Collect. Dominate."
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "Premium sealed TCG products. Booster boxes, ETBs, and packs from all your favorite games."
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Primary button label",
-      "default": "Shop Now"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Primary button link"
-    },
-    {
-      "type": "text",
-      "id": "button_2_label",
-      "label": "Secondary button label",
-      "default": "View Latest Drops"
-    },
-    {
-      "type": "url",
-      "id": "button_2_link",
-      "label": "Secondary button link"
-    },
-    {
-      "type": "select",
-      "id": "text_align",
-      "label": "Text alignment",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "show_scroll_indicator",
-      "label": "Show scroll indicator",
-      "default": true
-    }
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Leave blank to show animated card preview" },
+    { "type": "range", "id": "height", "label": "Height", "min": 50, "max": 100, "step": 5, "default": 85, "unit": "vh" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay darkness", "min": 0, "max": 80, "step": 5, "default": 55, "unit": "%" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow tag", "default": "🔥 LIMITED STOCK" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Rip. Pull. Dominate." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Sealed TCG product from every major game — shipped fast, packed safe." },
+    { "type": "text", "id": "btn1_label", "label": "Primary button", "default": "Shop All Products" },
+    { "type": "url", "id": "btn1_link", "label": "Primary button link" },
+    { "type": "text", "id": "btn2_label", "label": "Secondary button", "default": "New Drops ↓" },
+    { "type": "url", "id": "btn2_link", "label": "Secondary button link" },
+    { "type": "select", "id": "text_align", "label": "Layout", "default": "left", "options": [{ "value": "left", "label": "Left — text + pack card" }, { "value": "center", "label": "Center — full width" }] },
+    { "type": "header", "content": "Featured pack card" },
+    { "type": "checkbox", "id": "show_featured_pack", "label": "Show pack preview card", "default": true },
+    { "type": "product", "id": "featured_product", "label": "Featured product (optional)" },
+    { "type": "header", "content": "Social proof" },
+    { "type": "checkbox", "id": "show_social_proof", "label": "Show social proof", "default": true },
+    { "type": "text", "id": "social_proof_text", "label": "Social proof text", "default": "4,200+ collectors trust us for sealed product" },
+    { "type": "checkbox", "id": "show_scroll_cue", "label": "Show scroll cue", "default": true }
   ],
-  "presets": [
-    {
-      "name": "Hero banner"
-    }
-  ]
+  "presets": [{ "name": "Hero banner" }]
 }
 {% endschema %}
