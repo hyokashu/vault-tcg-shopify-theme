@@ -1,10 +1,15 @@
+{%- assign main_menu = linklists[section.settings.menu] -%}
+
 <header class="site-header{% if section.settings.sticky %} site-header--sticky{% endif %}" data-section-id="{{ section.id }}" data-header>
   <div class="container">
     <div class="site-header__inner">
+
       <!-- Mobile menu toggle -->
       <button class="site-header__menu-toggle" aria-label="Open menu" data-mobile-menu-toggle>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
 
@@ -26,42 +31,52 @@
         </a>
       </div>
 
-      <!-- Desktop Navigation -->
+      <!-- Desktop Navigation (from Shopify nav menu) -->
       <nav class="site-header__nav" aria-label="Main navigation">
         <ul class="site-header__nav-list" role="list">
-          {%- for block in section.blocks -%}
-            {%- case block.type -%}
-              {%- when 'nav_link' -%}
-                <li class="site-header__nav-item" {{ block.shopify_attributes }}>
-                  <a href="{{ block.settings.link }}" class="site-header__nav-link">
-                    {{ block.settings.label }}
-                  </a>
-                </li>
-              {%- when 'nav_dropdown' -%}
-                <li class="site-header__nav-item site-header__nav-item--dropdown" {{ block.shopify_attributes }}>
-                  <button class="site-header__nav-link site-header__nav-link--dropdown" aria-expanded="false" aria-controls="dropdown-{{ block.id }}">
-                    {{ block.settings.label }}
+          {%- if main_menu != blank -%}
+            {%- for link in main_menu.links -%}
+              {%- if link.links != blank -%}
+                <!-- Dropdown -->
+                <li class="site-header__nav-item site-header__nav-item--dropdown">
+                  <button
+                    class="site-header__nav-link site-header__nav-link--dropdown"
+                    aria-expanded="false"
+                    aria-controls="dropdown-{{ forloop.index }}"
+                  >
+                    {{ link.title }}
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                   </button>
-                  <div class="site-header__dropdown" id="dropdown-{{ block.id }}">
+                  <div class="site-header__dropdown" id="dropdown-{{ forloop.index }}">
                     <ul class="site-header__dropdown-list" role="list">
-                      {%- if block.settings.link_1 != blank -%}
-                        <li><a href="{{ block.settings.link_1 }}" class="site-header__dropdown-link">{{ block.settings.link_1_label }}</a></li>
-                      {%- endif -%}
-                      {%- if block.settings.link_2 != blank -%}
-                        <li><a href="{{ block.settings.link_2 }}" class="site-header__dropdown-link">{{ block.settings.link_2_label }}</a></li>
-                      {%- endif -%}
-                      {%- if block.settings.link_3 != blank -%}
-                        <li><a href="{{ block.settings.link_3 }}" class="site-header__dropdown-link">{{ block.settings.link_3_label }}</a></li>
-                      {%- endif -%}
-                      {%- if block.settings.link_4 != blank -%}
-                        <li><a href="{{ block.settings.link_4 }}" class="site-header__dropdown-link">{{ block.settings.link_4_label }}</a></li>
-                      {%- endif -%}
+                      {%- for child in link.links -%}
+                        <li>
+                          <a href="{{ child.url }}" class="site-header__dropdown-link"
+                            {% if child.current %}aria-current="page"{% endif %}>
+                            {{ child.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
                     </ul>
                   </div>
                 </li>
-            {%- endcase -%}
-          {%- endfor -%}
+              {%- else -%}
+                <!-- Simple link -->
+                <li class="site-header__nav-item">
+                  <a href="{{ link.url }}" class="site-header__nav-link"
+                    {% if link.current %}aria-current="page"{% endif %}>
+                    {{ link.title }}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Fallback if no menu is configured -->
+            <li class="site-header__nav-item"><a href="/collections/all" class="site-header__nav-link">Shop</a></li>
+            <li class="site-header__nav-item"><a href="/blogs/news" class="site-header__nav-link">Blog</a></li>
+            <li class="site-header__nav-item"><a href="/pages/about" class="site-header__nav-link">About</a></li>
+            <li class="site-header__nav-item"><a href="/pages/faq" class="site-header__nav-link">FAQ</a></li>
+          {%- endif -%}
         </ul>
       </nav>
 
@@ -69,22 +84,33 @@
       <div class="site-header__actions">
         <!-- Search -->
         <button class="site-header__action-btn" aria-label="Search" data-search-toggle>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
         </button>
 
         <!-- Account -->
         {%- if shop.customer_accounts_enabled -%}
-          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="site-header__action-btn" aria-label="Account">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="site-header__action-btn" aria-label="Account">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
           </a>
         {%- endif -%}
 
         <!-- Cart -->
         <button class="site-header__action-btn site-header__cart-btn" aria-label="Cart" data-cart-toggle>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
           <span class="site-header__cart-count" data-cart-count>{{ cart.item_count }}</span>
         </button>
       </div>
+
     </div>
   </div>
 
@@ -93,42 +119,68 @@
     <div class="container">
       <form action="{{ routes.search_url }}" method="get" role="search" class="search-overlay__form">
         <input type="hidden" name="type" value="product">
-        <input type="search" name="q" class="search-overlay__input" placeholder="Search products..." autocomplete="off" aria-label="Search">
+        <input type="search" name="q" class="search-overlay__input"
+          placeholder="Search for cards, boxes, packs…" autocomplete="off" aria-label="Search">
         <button type="submit" class="search-overlay__submit" aria-label="Submit search">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
         </button>
         <button type="button" class="search-overlay__close" data-search-close aria-label="Close search">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Mobile nav -->
+  <!-- Mobile nav (mirrors the same linklist) -->
   <div class="mobile-nav" data-mobile-nav aria-hidden="true">
     <div class="mobile-nav__header">
       <span class="mobile-nav__title">Menu</span>
       <button class="mobile-nav__close" data-mobile-menu-close aria-label="Close menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
       </button>
     </div>
     <nav class="mobile-nav__links" aria-label="Mobile navigation">
       <ul role="list">
-        {%- for block in section.blocks -%}
-          <li>
-            <a href="{{ block.settings.link | default: '#' }}" class="mobile-nav__link">{{ block.settings.label }}</a>
-          </li>
-        {%- endfor -%}
+        {%- if main_menu != blank -%}
+          {%- for link in main_menu.links -%}
+            <li>
+              <a href="{{ link.url }}" class="mobile-nav__link"
+                {% if link.current %}aria-current="page"{% endif %}>
+                {{ link.title }}
+              </a>
+              {%- if link.links != blank -%}
+                <ul class="mobile-nav__sub" role="list">
+                  {%- for child in link.links -%}
+                    <li><a href="{{ child.url }}" class="mobile-nav__sub-link">{{ child.title }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/collections/all" class="mobile-nav__link">Shop</a></li>
+          <li><a href="/blogs/news" class="mobile-nav__link">Blog</a></li>
+          <li><a href="/pages/about" class="mobile-nav__link">About</a></li>
+          <li><a href="/pages/faq" class="mobile-nav__link">FAQ</a></li>
+        {%- endif -%}
       </ul>
     </nav>
     {%- if shop.customer_accounts_enabled -%}
       <div class="mobile-nav__footer">
-        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="mobile-nav__link">
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+          class="mobile-nav__link">
           {%- if customer -%}My Account{%- else -%}Sign In{%- endif -%}
         </a>
       </div>
     {%- endif -%}
   </div>
+
 </header>
 
 {% schema %}
@@ -137,6 +189,13 @@
   "tag": "div",
   "class": "header-section",
   "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu",
+      "info": "Edit links in Online Store → Navigation → Main menu"
+    },
     {
       "type": "image_picker",
       "id": "logo",
@@ -155,85 +214,10 @@
     {
       "type": "checkbox",
       "id": "sticky",
-      "label": "Enable sticky header",
+      "label": "Sticky header",
       "default": true
     }
   ],
-  "blocks": [
-    {
-      "type": "nav_link",
-      "name": "Navigation link",
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Shop"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
-      ]
-    },
-    {
-      "type": "nav_dropdown",
-      "name": "Dropdown menu",
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Menu label",
-          "default": "Collections"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Main link (optional)"
-        },
-        {
-          "type": "text",
-          "id": "link_1_label",
-          "label": "Link 1 label"
-        },
-        {
-          "type": "url",
-          "id": "link_1",
-          "label": "Link 1"
-        },
-        {
-          "type": "text",
-          "id": "link_2_label",
-          "label": "Link 2 label"
-        },
-        {
-          "type": "url",
-          "id": "link_2",
-          "label": "Link 2"
-        },
-        {
-          "type": "text",
-          "id": "link_3_label",
-          "label": "Link 3 label"
-        },
-        {
-          "type": "url",
-          "id": "link_3",
-          "label": "Link 3"
-        },
-        {
-          "type": "text",
-          "id": "link_4_label",
-          "label": "Link 4 label"
-        },
-        {
-          "type": "url",
-          "id": "link_4",
-          "label": "Link 4"
-        }
-      ]
-    }
-  ]
+  "blocks": []
 }
 {% endschema %}
