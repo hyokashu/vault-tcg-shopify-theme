@@ -665,7 +665,7 @@
     { "type": "header", "content": "Reviews" },
     { "type": "checkbox", "id": "show_rating", "label": "Show star rating", "default": true },
     { "type": "text", "id": "review_score", "label": "Average score (e.g. 4.9)", "default": "4.9" },
-    { "type": "range", "id": "review_count", "label": "Review count", "min": 1, "max": 9999, "step": 1, "default": 42 },
+    { "type": "range", "id": "review_count", "label": "Review count", "min": 1, "max": 500, "step": 1, "default": 42 },
     { "type": "header", "content": "Box contents tab" },
     { "type": "checkbox", "id": "show_pull_rates", "label": "Show pull rates section", "default": false },
     { "type": "textarea", "id": "pull_rates_note", "label": "Pull rates note", "default": "While pull rates vary, a typical booster box from this set can yield the following on average:" },
@@ -725,6 +725,7 @@
       ]
     }
   ],
+  "max_blocks": 50,
   "presets": [{ "name": "Product page" }]
 }
 {% endschema %}
