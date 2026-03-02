@@ -1,0 +1,90 @@
+<div class="section-spacing">
+  <div class="container">
+    <div class="promo-banners promo-banners--{{ section.blocks.size }}">
+      {%- for block in section.blocks -%}
+        <div class="promo-banner promo-banner--{{ block.settings.style }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 900 }}"
+              alt="{{ block.settings.heading }}"
+              class="promo-banner__bg"
+              loading="lazy"
+              width="900"
+            >
+          {%- else -%}
+            <div class="promo-banner__bg-placeholder" style="background: linear-gradient(135deg, {{ block.settings.bg_from }}, {{ block.settings.bg_to }});">
+              {%- render 'placeholder-pack-art', color_from: block.settings.bg_from, color_to: block.settings.bg_to -%}
+            </div>
+          {%- endif -%}
+          <div class="promo-banner__overlay" style="opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }}"></div>
+          <div class="promo-banner__content promo-banner__content--{{ block.settings.align }}">
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="promo-banner__eyebrow">{{ block.settings.eyebrow }}</span>
+            {%- endif -%}
+            <h3 class="promo-banner__heading">{{ block.settings.heading }}</h3>
+            {%- if block.settings.subtext != blank -%}
+              <p class="promo-banner__sub">{{ block.settings.subtext }}</p>
+            {%- endif -%}
+            {%- if block.settings.cta_label != blank -%}
+              <a href="{{ block.settings.cta_link }}" class="btn btn--promo">
+                {{ block.settings.cta_label }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Promo banners",
+  "tag": "section",
+  "class": "promo-banners-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Promo banner",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        { "type": "color", "id": "bg_from", "label": "Gradient start (if no image)", "default": "#7C3AED" },
+        { "type": "color", "id": "bg_to", "label": "Gradient end (if no image)", "default": "#06B6D4" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay darkness", "min": 0, "max": 70, "step": 5, "default": 30 },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "🔥 HOT DROP" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Pokémon Scarlet & Violet" },
+        { "type": "text", "id": "subtext", "label": "Subtext", "default": "Booster boxes & ETBs in stock now" },
+        { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop Now" },
+        { "type": "url", "id": "cta_link", "label": "Button link" },
+        {
+          "type": "select", "id": "align", "label": "Content position",
+          "default": "left",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ]
+        },
+        {
+          "type": "select", "id": "style", "label": "Banner style",
+          "default": "tall",
+          "options": [
+            { "value": "tall", "label": "Tall (hero)" },
+            { "value": "short", "label": "Short (compact)" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo banners",
+      "blocks": [
+        { "type": "banner", "settings": { "eyebrow": "⚡ NEW DROP", "heading": "Pokémon Scarlet & Violet", "subtext": "Booster boxes in stock", "cta_label": "Shop Pokémon", "bg_from": "#F5C400", "bg_to": "#EF4444", "align": "left" } },
+        { "type": "banner", "settings": { "eyebrow": "✨ BESTSELLER", "heading": "Magic: The Gathering", "subtext": "Latest set — Duskmourn", "cta_label": "Shop MTG", "bg_from": "#7C3AED", "bg_to": "#06B6D4", "align": "right" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

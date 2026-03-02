@@ -3,53 +3,170 @@
     "hero": {
       "type": "hero-banner",
       "settings": {
-        "heading": "Rip. Collect. Dominate.",
-        "subheading": "Premium sealed TCG products. Booster boxes, ETBs, and packs from all your favorite games.",
-        "tag": "🔥 NEW DROP",
-        "button_label": "Shop Now",
-        "button_2_label": "View Latest Drops",
-        "height": 80,
-        "overlay_opacity": 40,
-        "text_align": "center",
-        "show_scroll_indicator": true
+        "eyebrow": "🔥 LIMITED STOCK",
+        "heading": "Rip. Pull. Dominate.",
+        "subheading": "Sealed TCG product from every major game — shipped fast, packed safe.",
+        "btn1_label": "Shop All Products",
+        "btn2_label": "New Drops ↓",
+        "height": 85,
+        "overlay_opacity": 55,
+        "text_align": "left",
+        "show_featured_pack": true,
+        "show_social_proof": true,
+        "social_proof_text": "4,200+ collectors trust us for sealed product",
+        "show_scroll_cue": true
       }
+    },
+    "trust-bar": {
+      "type": "trust-bar",
+      "settings": {}
+    },
+    "brand-ticker": {
+      "type": "brand-ticker",
+      "settings": {
+        "heading": "We Stock Every Major Game"
+      },
+      "blocks": {
+        "brand-poke": {
+          "type": "brand",
+          "settings": { "name": "Pokémon TCG", "color": "yellow" }
+        },
+        "brand-mtg": {
+          "type": "brand",
+          "settings": { "name": "Magic: The Gathering", "color": "purple" }
+        },
+        "brand-op": {
+          "type": "brand",
+          "settings": { "name": "One Piece TCG", "color": "orange" }
+        },
+        "brand-yugi": {
+          "type": "brand",
+          "settings": { "name": "Yu-Gi-Oh!", "color": "blue" }
+        },
+        "brand-lorcana": {
+          "type": "brand",
+          "settings": { "name": "Disney Lorcana", "color": "white" }
+        },
+        "brand-fab": {
+          "type": "brand",
+          "settings": { "name": "Flesh & Blood", "color": "red" }
+        },
+        "brand-dbs": {
+          "type": "brand",
+          "settings": { "name": "Dragon Ball Super", "color": "red" }
+        },
+        "brand-sw": {
+          "type": "brand",
+          "settings": { "name": "Star Wars: Unlimited", "color": "blue" }
+        }
+      },
+      "block_order": ["brand-poke", "brand-mtg", "brand-op", "brand-yugi", "brand-lorcana", "brand-fab", "brand-dbs", "brand-sw"]
+    },
+    "tabbed-collections": {
+      "type": "tabbed-collections",
+      "settings": {
+        "eyebrow": "🃏 BROWSE BY GAME",
+        "heading": "Shop Your Game",
+        "subheading": "Find sealed booster boxes, ETBs, and packs from all the major TCGs."
+      },
+      "blocks": {
+        "tab-pokemon": {
+          "type": "tab",
+          "settings": {
+            "label": "Pokémon",
+            "badge_color": "#F5C400",
+            "game_badge": "Pokemon"
+          }
+        },
+        "tab-mtg": {
+          "type": "tab",
+          "settings": {
+            "label": "Magic",
+            "badge_color": "#7C3AED",
+            "game_badge": "MTG"
+          }
+        },
+        "tab-op": {
+          "type": "tab",
+          "settings": {
+            "label": "One Piece",
+            "badge_color": "#06B6D4",
+            "game_badge": "One Piece"
+          }
+        },
+        "tab-yugi": {
+          "type": "tab",
+          "settings": {
+            "label": "Yu-Gi-Oh!",
+            "badge_color": "#EF4444",
+            "game_badge": "YGO"
+          }
+        },
+        "tab-lorcana": {
+          "type": "tab",
+          "settings": {
+            "label": "Lorcana",
+            "badge_color": "#F97316",
+            "game_badge": "Lorcana"
+          }
+        }
+      },
+      "block_order": ["tab-pokemon", "tab-mtg", "tab-op", "tab-yugi", "tab-lorcana"]
+    },
+    "promo-banners": {
+      "type": "promo-banners",
+      "settings": {},
+      "blocks": {
+        "promo-1": {
+          "type": "banner",
+          "settings": {
+            "eyebrow": "🔥 THIS WEEK ONLY",
+            "heading": "Booster Box Blowout",
+            "subtext": "Save big on select Pokémon and Magic booster boxes. While stocks last.",
+            "btn_label": "Shop Deals",
+            "gradient_from": "#7C3AED",
+            "gradient_to": "#F5C400",
+            "tall": true
+          }
+        },
+        "promo-2": {
+          "type": "banner",
+          "settings": {
+            "eyebrow": "📦 NEW ARRIVAL",
+            "heading": "Fresh Drops Just Landed",
+            "subtext": "The latest sealed product from One Piece, Lorcana, and more — in stock now.",
+            "btn_label": "See New Drops",
+            "gradient_from": "#06B6D4",
+            "gradient_to": "#10B981",
+            "tall": true
+          }
+        }
+      },
+      "block_order": ["promo-1", "promo-2"]
     },
     "featured-product": {
       "type": "featured-product",
       "settings": {
-        "tag": "⚡ HERO PRODUCT",
-        "heading": "This Week's Featured Drop",
+        "tag": "⚡ FEATURED DROP",
+        "heading": "This Week's Must-Have",
         "text_align": "center",
         "show_trust_badges": true
-      }
-    },
-    "collection": {
-      "type": "featured-collection",
-      "settings": {
-        "tag": "🃏 BROWSE",
-        "heading": "All Products",
-        "products_to_show": 8,
-        "columns": "4",
-        "text_align": "center",
-        "show_vendor": true,
-        "show_quick_view": true,
-        "show_view_all": true
       }
     },
     "testimonials": {
       "type": "testimonials",
       "settings": {
-        "tag": "⭐ REVIEWS",
-        "heading": "What Collectors Are Saying"
+        "tag": "⭐ COLLECTOR REVIEWS",
+        "heading": "Trusted by 4,200+ Collectors"
       },
       "blocks": {
         "review-1": {
           "type": "testimonial",
           "settings": {
             "rating": 5,
-            "quote": "Best place to get sealed product. Fast shipping and everything arrives in perfect condition!",
+            "quote": "Best place to get sealed product. Fast shipping and everything arrives in perfect condition. Won't go anywhere else!",
             "name": "Alex R.",
-            "detail": "Verified Buyer"
+            "detail": "Verified Buyer · Pokémon"
           }
         },
         "review-2": {
@@ -58,7 +175,7 @@
             "rating": 5,
             "quote": "Amazing selection and prices. My go-to store for booster boxes. The packaging is always top-notch.",
             "name": "Jordan M.",
-            "detail": "Repeat Customer"
+            "detail": "Repeat Customer · MTG"
           }
         },
         "review-3": {
@@ -67,22 +184,36 @@
             "rating": 5,
             "quote": "Ordered a case and it arrived next day. Can't beat the service. Will definitely be back for more!",
             "name": "Sam K.",
-            "detail": "Verified Buyer"
+            "detail": "Verified Buyer · One Piece"
           }
         }
       },
       "block_order": ["review-1", "review-2", "review-3"]
     },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {}
+    },
     "newsletter": {
       "type": "newsletter",
       "settings": {
         "heading": "Join the Drop List",
-        "subheading": "Be the first to know about new product drops, restocks, and exclusive deals.",
+        "subheading": "Get first dibs on new product drops, restocks, and exclusive deals straight to your inbox.",
         "placeholder": "Enter your email",
         "button_label": "Subscribe",
         "full_width": true
       }
     }
   },
-  "order": ["hero", "featured-product", "collection", "testimonials", "newsletter"]
+  "order": [
+    "hero",
+    "trust-bar",
+    "brand-ticker",
+    "tabbed-collections",
+    "promo-banners",
+    "featured-product",
+    "testimonials",
+    "recently-viewed",
+    "newsletter"
+  ]
 }

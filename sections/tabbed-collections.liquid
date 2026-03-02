@@ -1,0 +1,146 @@
+{%- style -%}
+  #section-{{ section.id }} .tab-btn.is-active {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+{%- endstyle -%}
+
+<div class="section-spacing" id="section-{{ section.id }}" data-tabs>
+  <div class="container">
+    <div class="section-header section-header--between">
+      <div>
+        {%- if section.settings.tag != blank -%}
+          <span class="section-tag">{{ section.settings.tag }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="section-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="section-subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-nav" role="tablist" aria-label="Game categories" data-tabs-nav>
+      {%- for block in section.blocks -%}
+        <button
+          class="tab-btn{% if forloop.first %} is-active{% endif %}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="tab-panel-{{ block.id }}"
+          id="tab-{{ block.id }}"
+          data-tab-btn="{{ block.id }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.icon != blank -%}
+            <span class="tab-btn__icon">{{ block.settings.icon }}</span>
+          {%- endif -%}
+          {{ block.settings.label }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <!-- Tab panels -->
+    {%- for block in section.blocks -%}
+      {%- assign tab_collection = collections[block.settings.collection] -%}
+      <div
+        class="tab-panel{% if forloop.first %} is-active{% endif %}"
+        id="tab-panel-{{ block.id }}"
+        role="tabpanel"
+        aria-labelledby="tab-{{ block.id }}"
+        data-tab-panel="{{ block.id }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- if tab_collection != blank and tab_collection.products.size > 0 -%}
+          <div class="product-grid product-grid--{{ section.settings.columns }}">
+            {%- for product in tab_collection.products limit: section.settings.products_per_tab -%}
+              {% render 'product-card',
+                product: product,
+                show_vendor: false,
+                show_quick_view: section.settings.show_quick_view,
+                game_badge: block.settings.label,
+                game_color: block.settings.badge_color
+              %}
+            {%- endfor -%}
+          </div>
+          {%- if section.settings.show_view_all -%}
+            <div class="tab-panel__footer">
+              <a href="{{ tab_collection.url }}" class="btn btn--outline">
+                View All {{ block.settings.label }} →
+              </a>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <div class="product-grid product-grid--{{ section.settings.columns }}">
+            {%- for i in (1..section.settings.products_per_tab) -%}
+              <div class="product-card product-card--placeholder">
+                <div class="product-card__image-wrap">
+                  {% render 'placeholder-card', game: block.settings.label, color: block.settings.badge_color, index: i %}
+                  <div class="product-card__badges">
+                    <span class="product-card__badge product-card__badge--game" style="background:{{ block.settings.badge_color }}">{{ block.settings.label }}</span>
+                  </div>
+                </div>
+                <div class="product-card__info">
+                  <p class="product-card__title">Sample {{ block.settings.label }} Product {{ i }}</p>
+                  <div class="product-card__price">
+                    <span class="product-card__price-sale">${{ i | times: 12 | plus: 29 }}.99</span>
+                    <span class="product-card__price-compare">${{ i | times: 12 | plus: 44 }}.99</span>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tabbed collections",
+  "tag": "section",
+  "class": "tabbed-collections-section",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Eyebrow tag", "default": "🃏 SHOP BY GAME" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Browse by Game" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Find sealed booster boxes, ETBs, and packs from all the major TCGs." },
+    {
+      "type": "select", "id": "columns", "label": "Columns",
+      "default": "4",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ]
+    },
+    { "type": "range", "id": "products_per_tab", "label": "Products per tab", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "checkbox", "id": "show_quick_view", "label": "Show quick view", "default": true },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show view all button", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Game tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label", "default": "Pokémon" },
+        { "type": "text", "id": "icon", "label": "Emoji icon (optional)", "default": "⚡" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "color", "id": "badge_color", "label": "Badge colour", "default": "#F5C400" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabbed collections",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Pokémon", "icon": "⚡", "badge_color": "#F5C400" } },
+        { "type": "tab", "settings": { "label": "Magic: TG", "icon": "✨", "badge_color": "#8B5CF6" } },
+        { "type": "tab", "settings": { "label": "Yu-Gi-Oh!", "icon": "👁", "badge_color": "#3B82F6" } },
+        { "type": "tab", "settings": { "label": "One Piece", "icon": "⚓", "badge_color": "#EF4444" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

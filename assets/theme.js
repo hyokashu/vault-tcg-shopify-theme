@@ -1001,6 +1001,265 @@ class NotifyMe {
 
 
 /* ========================================================================
+   TAB SWITCHER — tabbed collections section
+   ======================================================================== */
+
+class TabSwitcher {
+  constructor() {
+    document.querySelectorAll('[data-tabs]').forEach(container => {
+      this.initContainer(container);
+    });
+  }
+
+  initContainer(container) {
+    const buttons = container.querySelectorAll('[data-tab-btn]');
+    const panels = container.querySelectorAll('[data-tab-panel]');
+
+    if (!buttons.length || !panels.length) return;
+
+    const activate = (targetTab) => {
+      buttons.forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.tabBtn === targetTab);
+        btn.setAttribute('aria-selected', btn.dataset.tabBtn === targetTab ? 'true' : 'false');
+      });
+      panels.forEach(panel => {
+        const isActive = panel.dataset.tabPanel === targetTab;
+        panel.classList.toggle('is-active', isActive);
+        panel.hidden = !isActive;
+      });
+    };
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => activate(btn.dataset.tabBtn));
+    });
+
+    // Keyboard: left/right arrows within tabs
+    const nav = container.querySelector('[data-tabs-nav]');
+    nav?.addEventListener('keydown', (e) => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+      const btns = [...buttons];
+      const idx = btns.indexOf(document.activeElement);
+      if (idx === -1) return;
+      const next = e.key === 'ArrowRight' ? (idx + 1) % btns.length : (idx - 1 + btns.length) % btns.length;
+      btns[next].focus();
+      activate(btns[next].dataset.tabBtn);
+    });
+
+    // Activate first tab on load
+    const firstBtn = buttons[0];
+    if (firstBtn) activate(firstBtn.dataset.tabBtn);
+  }
+}
+
+
+/* ========================================================================
+   STICKY MOBILE ATC — product page sticky buy bar (mobile)
+   ======================================================================== */
+
+class StickyMobileATC {
+  constructor() {
+    this.bar = document.querySelector('[data-sticky-atc]');
+    if (!this.bar) return;
+
+    // Use the main product form's ATC button as trigger
+    const mainForm = document.querySelector('[data-product-form]');
+    const mainATC = mainForm?.querySelector('[data-add-to-cart]');
+    if (!mainATC) return;
+
+    // Sync product title + price into sticky bar
+    const titleEl = document.querySelector('.product-page__title, .featured-product__title');
+    const priceEl = document.querySelector('.product-page__price, .featured-product__price-sale');
+    const stickyTitle = this.bar.querySelector('[data-sticky-atc-title]');
+    const stickyPrice = this.bar.querySelector('[data-sticky-atc-price]');
+
+    if (stickyTitle && titleEl) stickyTitle.textContent = titleEl.textContent;
+    if (stickyPrice && priceEl) stickyPrice.textContent = priceEl.textContent;
+
+    // Observe main ATC button; show bar when button is scrolled out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        this.bar.classList.toggle('is-visible', !entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '-80px 0px 0px 0px' }
+    );
+    observer.observe(mainATC);
+
+    // Wire up sticky bar's own ATC button to submit the main form
+    const stickyBtn = this.bar.querySelector('[data-sticky-atc-btn]');
+    stickyBtn?.addEventListener('click', () => {
+      mainForm?.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
+  }
+}
+
+
+/* ========================================================================
+   RECENTLY VIEWED — localStorage tracking + on-page rendering
+   ======================================================================== */
+
+class RecentlyViewed {
+  constructor() {
+    this.key = 'vault_tcg_recently_viewed';
+    this.maxItems = 8;
+    this.grid = document.querySelector('[data-recently-viewed-grid]');
+    this.section = document.querySelector('[data-recently-viewed-section]');
+
+    // Track current product page
+    const productHandle = document.querySelector('[data-product-handle]')?.dataset.productHandle;
+    if (productHandle) this.track(productHandle);
+
+    // Render grid on any page that has the recently-viewed section
+    if (this.grid) this.render();
+  }
+
+  getViewed() {
+    try {
+      return JSON.parse(localStorage.getItem(this.key) || '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  track(handle) {
+    const viewed = this.getViewed().filter(h => h !== handle);
+    viewed.unshift(handle);
+    localStorage.setItem(this.key, JSON.stringify(viewed.slice(0, this.maxItems)));
+  }
+
+  async render() {
+    const viewed = this.getViewed();
+    if (!viewed.length) {
+      if (this.section) this.section.hidden = true;
+      return;
+    }
+
+    const results = await Promise.allSettled(
+      viewed.map(handle => fetch(`/products/${handle}.js`).then(r => r.json()))
+    );
+
+    const products = results
+      .filter(r => r.status === 'fulfilled')
+      .map(r => r.value);
+
+    if (!products.length) {
+      if (this.section) this.section.hidden = true;
+      return;
+    }
+
+    if (this.section) this.section.hidden = false;
+    this.grid.innerHTML = products.map(p => this.renderCard(p)).join('');
+    // Trigger scroll animations for the new cards
+    document.querySelectorAll('[data-recently-viewed-grid] .product-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  renderCard(product) {
+    const price = utils.formatMoney(product.price);
+    const comparePrice = product.compare_at_price > product.price
+      ? utils.formatMoney(product.compare_at_price) : null;
+
+    const imgSrc = product.featured_image
+      ? product.featured_image.replace('http:', 'https:').replace(/(\.\w+)(\?.*)?$/, '_400x440$1')
+      : null;
+
+    const imgHtml = imgSrc
+      ? `<img src="${imgSrc}" alt="${product.title}" loading="lazy" width="200" height="220">`
+      : `<div class="product-card__img-placeholder"><svg viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><defs><linearGradient id="rv-grad-${product.id}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#7C3AED"/><stop offset="100%" style="stop-color:#06B6D4"/></linearGradient></defs><rect width="240" height="340" fill="url(#rv-grad-${product.id})"/><rect x="8" y="8" width="224" height="324" rx="10" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/><text x="120" y="185" text-anchor="middle" font-family="sans-serif" font-size="12" fill="rgba(255,255,255,0.7)">SEALED PACK</text></svg></div>`;
+
+    const variant = product.variants?.[0];
+    const variantId = variant?.id;
+    const availableForSale = variant?.available !== false;
+
+    return `
+      <div class="product-card">
+        <a href="${product.url}" class="product-card__img-wrap" tabindex="-1">
+          ${imgHtml}
+        </a>
+        <div class="product-card__info">
+          <a href="${product.url}" class="product-card__title">${product.title}</a>
+          <div class="product-card__price-row">
+            <span class="product-card__price${comparePrice ? ' product-card__price--sale' : ''}">${price}</span>
+            ${comparePrice ? `<span class="product-card__compare">${comparePrice}</span>` : ''}
+          </div>
+          ${variantId && availableForSale ? `
+          <form method="post" action="/cart/add" data-add-to-cart-form class="product-card__quick-add">
+            <input type="hidden" name="id" value="${variantId}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn btn--primary btn--small product-card__atc" data-add-to-cart>
+              <span data-add-to-cart-text>Quick Add</span>
+            </button>
+          </form>` : `<p class="product-card__sold-out">Sold Out</p>`}
+        </div>
+      </div>`;
+  }
+}
+
+
+/* ========================================================================
+   BRAND TICKER — pause on hover
+   ======================================================================== */
+
+class BrandTicker {
+  constructor() {
+    document.querySelectorAll('[data-brand-ticker]').forEach(ticker => {
+      const track = ticker.querySelector('[data-ticker-track]');
+      if (!track) return;
+
+      ticker.addEventListener('mouseenter', () => {
+        track.style.animationPlayState = 'paused';
+      });
+      ticker.addEventListener('mouseleave', () => {
+        track.style.animationPlayState = 'running';
+      });
+
+      // Pause on focus for keyboard users
+      ticker.addEventListener('focusin', () => {
+        track.style.animationPlayState = 'paused';
+      });
+      ticker.addEventListener('focusout', () => {
+        track.style.animationPlayState = 'running';
+      });
+    });
+  }
+}
+
+
+/* ========================================================================
+   PROMO COUNTDOWN — optional countdown timers on promo banners
+   ======================================================================== */
+
+class PromoCountdown {
+  constructor() {
+    document.querySelectorAll('[data-countdown]').forEach(el => {
+      const end = new Date(el.dataset.countdown);
+      if (isNaN(end)) return;
+
+      const update = () => {
+        const now = new Date();
+        const diff = end - now;
+        if (diff <= 0) { el.textContent = 'Deal ended'; return; }
+
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        el.textContent = `${h}h ${m}m ${s}s`;
+      };
+
+      update();
+      setInterval(update, 1000);
+    });
+  }
+}
+
+
+/* ========================================================================
    INIT — Run everything on DOMContentLoaded
    ======================================================================== */
 
@@ -1021,6 +1280,13 @@ document.addEventListener('DOMContentLoaded', () => {
   new FAQ();
   new NotifyMe();
 
+  // v2 CRO components
+  new TabSwitcher();
+  new StickyMobileATC();
+  new RecentlyViewed();
+  new BrandTicker();
+  new PromoCountdown();
+
   // Animations & polish
   new ScrollAnimations();
   new AnnouncementBar();
@@ -1039,10 +1305,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const thresholdMeta = document.querySelector('meta[name="free-shipping-threshold"]');
   if (thresholdMeta) {
     window.cartFreeShippingThreshold = parseFloat(thresholdMeta.content);
-  }
-
-  // Pass Shopify routes to CartState
-  if (window.routes) {
-    // Available globally via theme.liquid inline script
   }
 });

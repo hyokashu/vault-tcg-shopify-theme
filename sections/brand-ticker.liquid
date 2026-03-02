@@ -1,0 +1,74 @@
+<div class="brand-ticker" data-section-id="{{ section.id }}" data-brand-ticker>
+  <div class="brand-ticker__track" aria-hidden="true" data-ticker-track>
+    <ul class="brand-ticker__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="brand-ticker__item brand-ticker__item--{{ block.settings.color }}" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{%- endif -%}
+          {%- if block.settings.logo != blank -%}
+            <img src="{{ block.settings.logo | image_url: width: 120 }}" alt="{{ block.settings.name }}" width="80" height="32" loading="lazy">
+          {%- else -%}
+            <span class="brand-ticker__name">{{ block.settings.name }}</span>
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}</a>{%- endif -%}
+        </li>
+      {%- endfor -%}
+      {%- comment -%} Duplicate for seamless loop {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        <li class="brand-ticker__item brand-ticker__item--{{ block.settings.color }}" aria-hidden="true">
+          {%- if block.settings.logo != blank -%}
+            <img src="{{ block.settings.logo | image_url: width: 120 }}" alt="" width="80" height="32" loading="lazy">
+          {%- else -%}
+            <span class="brand-ticker__name">{{ block.settings.name }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand ticker",
+  "tag": "section",
+  "class": "brand-ticker-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "Pokémon" },
+        { "type": "url", "id": "link", "label": "Link (optional)" },
+        { "type": "image_picker", "id": "logo", "label": "Logo (optional — uses name text if blank)" },
+        {
+          "type": "select", "id": "color", "label": "Accent colour",
+          "default": "yellow",
+          "options": [
+            { "value": "yellow", "label": "Pokémon Yellow" },
+            { "value": "purple", "label": "MTG Purple" },
+            { "value": "blue", "label": "Yu-Gi-Oh Blue" },
+            { "value": "red", "label": "Dragon Ball Red" },
+            { "value": "orange", "label": "One Piece Orange" },
+            { "value": "green", "label": "Digimon Green" },
+            { "value": "white", "label": "Neutral White" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand ticker",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "Pokémon", "color": "yellow" } },
+        { "type": "brand", "settings": { "name": "Magic: The Gathering", "color": "purple" } },
+        { "type": "brand", "settings": { "name": "Yu-Gi-Oh!", "color": "blue" } },
+        { "type": "brand", "settings": { "name": "One Piece", "color": "orange" } },
+        { "type": "brand", "settings": { "name": "Dragon Ball Super", "color": "red" } },
+        { "type": "brand", "settings": { "name": "Digimon", "color": "green" } },
+        { "type": "brand", "settings": { "name": "Lorcana", "color": "white" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

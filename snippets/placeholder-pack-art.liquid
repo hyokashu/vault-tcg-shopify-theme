@@ -1,0 +1,70 @@
+{%- comment -%}
+  Renders a CSS/SVG placeholder card pack image.
+  Accepts: color_from, color_to, game, index
+{%- endcomment -%}
+
+{%- assign gid = color_from | default: '#7C3AED' | replace: '#', '' -%}
+<svg class="placeholder-pack" viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Product image placeholder">
+  <defs>
+    <linearGradient id="pg-{{ gid }}-{{ index }}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:{{ color_from | default: '#7C3AED' }};stop-opacity:1" />
+      <stop offset="100%" style="stop-color:{{ color_to | default: '#06B6D4' }};stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="shine-{{ gid }}-{{ index }}" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.18" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.04" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.12" />
+    </linearGradient>
+    <clipPath id="clip-{{ gid }}-{{ index }}">
+      <rect x="0" y="0" width="240" height="340" rx="14"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#clip-{{ gid }}-{{ index }})">
+    <!-- Base card background -->
+    <rect width="240" height="340" fill="url(#pg-{{ gid }}-{{ index }})"/>
+
+    <!-- Holo shimmer overlay -->
+    <rect width="240" height="340" fill="url(#shine-{{ gid }}-{{ index }})"/>
+
+    <!-- Dark border inner -->
+    <rect x="8" y="8" width="224" height="324" rx="10" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+
+    <!-- Pack art shape — abstract card pack illustration -->
+    <!-- Pack body -->
+    <rect x="60" y="60" width="120" height="160" rx="8" fill="rgba(0,0,0,0.25)"/>
+    <rect x="68" y="68" width="104" height="144" rx="6" fill="rgba(255,255,255,0.08)"/>
+
+    <!-- Pack seal/star at top -->
+    <circle cx="120" cy="95" r="22" fill="rgba(255,255,255,0.15)"/>
+    <polygon points="120,76 124,90 139,90 127,99 131,113 120,104 109,113 113,99 101,90 116,90" fill="rgba(255,255,255,0.5)"/>
+
+    <!-- Pack lines -->
+    <rect x="80" y="128" width="80" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+    <rect x="86" y="138" width="68" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+    <rect x="80" y="147" width="80" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+    <rect x="90" y="156" width="60" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+    <rect x="80" y="165" width="80" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
+    <rect x="86" y="172" width="68" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
+    <rect x="80" y="180" width="80" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
+    <rect x="80" y="188" width="80" height="2" rx="1" fill="rgba(255,255,255,0.05)"/>
+
+    <!-- Booster pack shadow -->
+    <ellipse cx="120" cy="235" rx="52" ry="8" fill="rgba(0,0,0,0.3)"/>
+
+    <!-- Quantity pills (simulates "x10 cards") -->
+    <rect x="85" y="252" width="70" height="24" rx="12" fill="rgba(0,0,0,0.3)"/>
+    <text x="120" y="269" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.8)">SEALED PACK</text>
+
+    <!-- Corner sparkles -->
+    <circle cx="30" cy="30" r="3" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="210" cy="30" r="2" fill="rgba(255,255,255,0.3)"/>
+    <circle cx="30" cy="310" r="2" fill="rgba(255,255,255,0.3)"/>
+    <circle cx="210" cy="310" r="3" fill="rgba(255,255,255,0.4)"/>
+
+    <!-- Holographic diagonal lines -->
+    <line x1="0" y1="0" x2="240" y2="340" stroke="rgba(255,255,255,0.04)" stroke-width="8"/>
+    <line x1="0" y1="80" x2="160" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="6"/>
+    <line x1="80" y1="0" x2="240" y2="240" stroke="rgba(255,255,255,0.03)" stroke-width="6"/>
+  </g>
+</svg>
