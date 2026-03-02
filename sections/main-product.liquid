@@ -23,7 +23,7 @@
 {%- comment -%} Recently viewed tracking {%- endcomment -%}
 <span data-product-handle="{{ product.handle }}" style="display:none" aria-hidden="true"></span>
 
-{%- comment -%} ─── STICKY MOBILE ATC ─── {%- endcomment -%}
+{%- comment -%} --- STICKY MOBILE ATC --- {%- endcomment -%}
 <div class="sticky-atc" data-sticky-atc aria-hidden="true">
   <div class="sticky-atc__inner container">
     <div class="sticky-atc__info">
@@ -44,7 +44,7 @@
 <div class="product-layout section-spacing">
   <div class="container">
 
-    {%- comment -%} ─── BREADCRUMBS ─── {%- endcomment -%}
+    {%- comment -%} --- BREADCRUMBS --- {%- endcomment -%}
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span aria-hidden="true">/</span>
@@ -57,9 +57,9 @@
 
     <div class="product-page">
 
-      {%- comment -%} ═══════════════════════════════════════════
+      {%- comment -%} ---
           GALLERY
-      ═══════════════════════════════════════════ {%- endcomment -%}
+      --- {%- endcomment -%}
       <div class="product-page__gallery">
 
         <div class="product-page__gallery-wrap">
@@ -129,9 +129,9 @@
         </div>
       </div>
 
-      {%- comment -%} ═══════════════════════════════════════════
+      {%- comment -%} ---
           PRODUCT INFO
-      ═══════════════════════════════════════════ {%- endcomment -%}
+      --- {%- endcomment -%}
       <div class="product-page__info">
 
         {%- comment -%} Status badges {%- endcomment -%}
@@ -178,7 +178,7 @@
             <a href="#pp-reviews-tab" class="pp-rating-link" data-tab-jump="reviews">
               {{ section.settings.review_count | default: 42 }} reviews
             </a>
-            <span class="pp-rating-sep">·</span>
+            <span class="pp-rating-sep">&middot;</span>
             {%- if section.settings.show_viewing_now -%}
               <span class="pp-viewing">
                 <span class="pp-viewing-dot"></span>
@@ -238,7 +238,7 @@
             {%- if track_inventory == 'shopify' and inventory <= low_stock_threshold and inventory > 0 -%}
               <div class="pp-stock pp-stock--low">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-                Only {{ inventory }} left — order soon!
+                Only {{ inventory }} left -- order soon!
               </div>
               <div class="pp-stock-bar-wrap">
                 {%- assign bar_pct = inventory | times: 100 | divided_by: low_stock_threshold -%}
@@ -295,7 +295,7 @@
                     {% unless variant.available %}disabled{% endunless %}
                     data-price="{{ variant.price }}"
                     data-compare-price="{{ variant.compare_at_price }}"
-                  >{{ variant.title }} — {{ variant.price | money }}</option>
+                  >{{ variant.title }} -- {{ variant.price | money }}</option>
                 {%- endfor -%}
               </select>
             </div>
@@ -305,7 +305,7 @@
           {%- if product.available -%}
             <div class="pp-buy-box">
               <div class="pp-qty">
-                <button type="button" class="pp-qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
+                <button type="button" class="pp-qty-btn" data-qty-minus aria-label="Decrease quantity">&minus;</button>
                 <input type="number" name="quantity" value="1" min="1" max="99" class="pp-qty-input" data-qty-input aria-label="Quantity">
                 <button type="button" class="pp-qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
               </div>
@@ -336,7 +336,7 @@
           {%- endif -%}
         {%- endform -%}
 
-        {%- comment -%} Trust row — individual bordered cards {%- endcomment -%}
+        {%- comment -%} Trust row -- individual bordered cards {%- endcomment -%}
         <div class="pp-trust-row">
           <div class="pp-trust-card">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
@@ -413,9 +413,9 @@
       </div>{%- comment -%}/.product-page__info{%- endcomment -%}
     </div>{%- comment -%}/.product-page{%- endcomment -%}
 
-    {%- comment -%} ═══════════════════════════════════════════
+    {%- comment -%} ---
         PRODUCT TABS
-    ═══════════════════════════════════════════ {%- endcomment -%}
+    --- {%- endcomment -%}
     <div class="pp-section-divider"></div>
 
     <div class="pp-tabs" data-product-tabs id="pp-reviews-tab">
@@ -477,7 +477,7 @@
                   <h4 class="pp-pull-rates__heading">Pull Rate Expectations</h4>
                   <p class="pp-pull-rates__note">{{ section.settings.pull_rates_note }}</p>
                   <div class="pp-pull-grid">
-                    {%- assign pull_data = "Pokemon ex:6–8 cards,Full Art:2–4 cards,Illustration Rare:1–2 cards,Special Art Rare:0–1 cards,Gold / Hyper Rare:0–1 cards,Reverse Holo:36 cards" | split: "," -%}
+                    {%- assign pull_data = "Pokemon ex:6-8 cards,Full Art:2-4 cards,Illustration Rare:1-2 cards,Special Art Rare:0-1 cards,Gold / Hyper Rare:0-1 cards,Reverse Holo:36 cards" | split: "," -%}
                     {%- for item in pull_data -%}
                       {%- assign parts = item | split: ":" -%}
                       <div class="pp-pull-item">
@@ -568,9 +568,9 @@
       </div>
     </div>
 
-    {%- comment -%} ═══════════════════════════════════════════
+    {%- comment -%} ---
         RECENT SALES TICKER
-    ═══════════════════════════════════════════ {%- endcomment -%}
+    --- {%- endcomment -%}
     {%- if sale_blocks.size > 0 -%}
       <div class="pp-section-divider"></div>
       <div class="pp-recent-sales">
@@ -592,9 +592,9 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} ═══════════════════════════════════════════
+    {%- comment -%} ---
         YOU MAY ALSO LIKE
-    ═══════════════════════════════════════════ {%- endcomment -%}
+    --- {%- endcomment -%}
     {%- if section.settings.show_related and collection != blank -%}
       {%- assign related = collection.products | where: 'available', true -%}
       {%- assign related_count = 0 -%}
