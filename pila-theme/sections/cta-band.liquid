@@ -1,0 +1,39 @@
+<div class="cta-band" role="complementary">
+  <div class="container">
+    <div class="cta-band__inner">
+      <div class="cta-band__content">
+        <p class="eyebrow eyebrow--light">{{ section.settings.eyebrow | default: 'Start Your Project' }}</p>
+        <h2 class="cta-band__title">{{ section.settings.heading | default: 'Ready to Spec Your Next Project?' }}</h2>
+        <p class="cta-band__sub">{{ section.settings.subheading | default: 'Talk to our team about your venue requirements. We handle everything from initial specification to installation across Australia.' }}</p>
+      </div>
+      <div class="cta-band__actions">
+        <a href="{{ section.settings.primary_url | default: settings.quote_page | default: '/pages/contact' }}" class="btn btn--white btn--lg">
+          {{ section.settings.primary_label | default: 'Get a Free Quote' }}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+        {%- if section.settings.secondary_label != blank -%}
+          <a href="{{ section.settings.secondary_url | default: '/pages/contact' }}" class="btn btn--ghost">
+            {{ section.settings.secondary_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "CTA band",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Start Your Project" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ready to Spec Your Next Project?" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Talk to our team about your venue requirements. We handle everything from initial specification to installation across Australia." },
+    { "type": "text", "id": "primary_label", "label": "Primary button", "default": "Get a Free Quote" },
+    { "type": "url", "id": "primary_url", "label": "Primary button URL" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary button (optional)" },
+    { "type": "url", "id": "secondary_url", "label": "Secondary button URL" }
+  ],
+  "presets": [{ "name": "CTA band" }]
+}
+{% endschema %}

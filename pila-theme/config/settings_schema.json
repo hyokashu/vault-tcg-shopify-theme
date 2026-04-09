@@ -1,0 +1,55 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "PILA Industrial",
+    "theme_version": "1.0.0",
+    "theme_author": "PILA Sports Infrastructure",
+    "theme_documentation_url": "https://pila.com.au",
+    "theme_support_url": "https://pila.com.au/pages/contact"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo image" },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "text", "id": "logo_text", "label": "Logo text (if no image)", "default": "PILA" },
+      { "type": "header", "content": "Contact Details" },
+      { "type": "text", "id": "phone_number", "label": "Phone number", "default": "1300 000 000" },
+      { "type": "text", "id": "phone_label", "label": "Phone micro-copy", "default": "Talk to a real person" },
+      { "type": "text", "id": "email_address", "label": "Email address", "default": "info@pila.com.au" },
+      { "type": "textarea", "id": "address", "label": "Address" },
+      { "type": "text", "id": "abn", "label": "ABN" },
+      { "type": "url", "id": "quote_page", "label": "Quote page URL", "default": "/pages/contact" }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      { "type": "url", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "url", "id": "social_instagram", "label": "Instagram URL" },
+      { "type": "url", "id": "social_linkedin", "label": "LinkedIn URL" },
+      { "type": "url", "id": "social_youtube", "label": "YouTube URL" }
+    ]
+  },
+  {
+    "name": "Navigation",
+    "settings": [
+      { "type": "link_list", "id": "main_menu", "label": "Main navigation menu", "default": "main-menu" },
+      { "type": "header", "content": "Header dropdowns" },
+      { "type": "link_list", "id": "products_menu", "label": "Products dropdown menu" }
+    ]
+  },
+  {
+    "name": "Footer",
+    "settings": [
+      { "type": "link_list", "id": "footer_products", "label": "Products column links" },
+      { "type": "link_list", "id": "footer_company", "label": "Company column links" },
+      { "type": "text", "id": "footer_tagline", "label": "Footer brand tagline", "default": "Australia's most trusted sports infrastructure manufacturer. Goals, goalposts, flagpoles, and coaching boxes built for Australia's premier venues." },
+      { "type": "header", "content": "Certifications & Badges" },
+      { "type": "text", "id": "cert_1", "label": "Certification 1", "default": "AS Certified" },
+      { "type": "text", "id": "cert_2", "label": "Certification 2", "default": "ISO 9001" },
+      { "type": "text", "id": "cert_3", "label": "Certification 3", "default": "Australian Made" },
+      { "type": "text", "id": "cert_4", "label": "Certification 4", "default": "5-Yr Guarantee" }
+    ]
+  }
+]

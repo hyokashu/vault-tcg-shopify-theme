@@ -1,0 +1,82 @@
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <p class="eyebrow">{{ section.settings.eyebrow | default: 'Our Projects' }}</p>
+      <h2 class="section__title">{{ section.settings.heading | default: 'Installed at Premier Australian Venues' }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="section__subtitle">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_filters -%}
+      <div class="product-grid__filters" style="margin-bottom:2rem;" role="group" aria-label="Filter projects">
+        <button class="filter-pill active" data-filter="all">All States</button>
+        {%- for state in section.settings.states | split: ',' -%}
+          <button class="filter-pill" data-filter="{{ state | strip | handle }}">{{ state | strip }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="projects-grid__items">
+      {%- for block in section.blocks -%}
+        <article class="project-card" data-state="{{ block.settings.state | handle }}" {{ block.shopify_attributes }}
+          {%- if block.settings.url != blank %} onclick="location.href='{{ block.settings.url }}'" role="link" tabindex="0"{%- endif %}>
+          {%- if block.settings.image != blank -%}
+            <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.venue | escape }}" class="project-card__img" width="800" height="500" loading="lazy">
+          {%- else -%}
+            <div class="placeholder-img project-card__img" style="position:relative;aspect-ratio:unset;">Upload venue photo</div>
+          {%- endif -%}
+          <div class="project-card__overlay"></div>
+          <div class="project-card__body">
+            <div class="project-card__state">{{ block.settings.state }}</div>
+            <h3 class="project-card__venue">{{ block.settings.venue }}</h3>
+            <p class="project-card__products">{{ block.settings.products_installed }}</p>
+          </div>
+          <div class="project-card__view" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Projects grid",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Projects" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Installed at Premier Australian Venues" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "checkbox", "id": "show_filters", "label": "Show state filters", "default": true },
+    { "type": "text", "id": "states", "label": "States to filter by (comma separated)", "default": "VIC, NSW, QLD, WA, SA" }
+  ],
+  "blocks": [
+    {
+      "type": "project",
+      "name": "Project",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Venue photo" },
+        { "type": "text", "id": "venue", "label": "Venue name", "default": "Melbourne Cricket Ground" },
+        { "type": "text", "id": "state", "label": "State (e.g. VIC)", "default": "VIC" },
+        { "type": "textarea", "id": "products_installed", "label": "Products installed", "default": "4× AFL Competition Goal Posts, 2× Coaches Boxes" },
+        { "type": "url", "id": "url", "label": "Project detail page URL (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Projects grid",
+      "blocks": [
+        { "type": "project", "settings": { "venue": "Melbourne Cricket Ground", "state": "VIC", "products_installed": "4× AFL Competition Goal Posts" } },
+        { "type": "project", "settings": { "venue": "ANZ Stadium", "state": "NSW", "products_installed": "6× Rugby League Goal Posts, Flagpoles" } },
+        { "type": "project", "settings": { "venue": "Suncorp Stadium", "state": "QLD", "products_installed": "Rugby Union Goal Posts, LED Flagpoles" } },
+        { "type": "project", "settings": { "venue": "GMHBA Stadium", "state": "VIC", "products_installed": "AFL Goal Posts, Coaches Boxes" } },
+        { "type": "project", "settings": { "venue": "Optus Stadium", "state": "WA", "products_installed": "Commercial Flagpoles (22m)" } },
+        { "type": "project", "settings": { "venue": "Central Coast Stadium", "state": "NSW", "products_installed": "Soccer Goals — Professional Grade" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

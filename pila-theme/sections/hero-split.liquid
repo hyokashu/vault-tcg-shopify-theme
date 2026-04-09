@@ -1,0 +1,104 @@
+<section class="hero-split">
+  <!-- Left: content panel -->
+  <div class="hero-split__content">
+    <p class="eyebrow eyebrow--light">
+      {%- if section.settings.eyebrow != blank -%}{{ section.settings.eyebrow }}{%- else -%}Australian Made &amp; Owned{%- endif -%}
+    </p>
+
+    <h1 class="hero__heading">
+      {%- if section.settings.heading_line1 != blank -%}
+        {{ section.settings.heading_line1 }}<br>
+      {%- endif -%}
+      {%- if section.settings.heading_highlight != blank -%}
+        <em>{{ section.settings.heading_highlight }}</em><br>
+      {%- endif -%}
+      {%- if section.settings.heading_line2 != blank -%}
+        {{ section.settings.heading_line2 }}
+      {%- endif -%}
+    </h1>
+
+    <p class="hero__sub">{{ section.settings.subheading | default: "Goals, goalposts, flagpoles, and coaching boxes built for Australia's premier venues. Trusted by the AFL, Football Australia, and 500+ sporting facilities nationwide." }}</p>
+
+    <div class="hero__actions">
+      <a href="{{ section.settings.cta_primary_url | default: settings.quote_page | default: '/pages/contact' }}" class="btn btn--primary btn--lg">
+        {{ section.settings.cta_primary_label | default: 'Get a Quote for Your Project' }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      </a>
+      {%- if section.settings.cta_secondary_label != blank -%}
+        <a href="{{ section.settings.cta_secondary_url | default: '/collections/all' }}" class="btn btn--ghost">
+          {{ section.settings.cta_secondary_label }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_stats -%}
+      <div class="hero__stats" aria-label="Key statistics">
+        {%- for i in (1..3) -%}
+          {%- assign stat_num = 'stat_' | append: i | append: '_number' -%}
+          {%- assign stat_lbl = 'stat_' | append: i | append: '_label' -%}
+          {%- if section.settings[stat_num] != blank -%}
+            <div>
+              <div class="hero__stat-num">{{ section.settings[stat_num] }}</div>
+              <div class="hero__stat-label">{{ section.settings[stat_lbl] }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Right: media panel -->
+  <div class="hero-split__media">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1200 }}"
+        srcset="{{ section.settings.image | image_url: width: 600 }} 600w,
+                {{ section.settings.image | image_url: width: 900 }} 900w,
+                {{ section.settings.image | image_url: width: 1200 }} 1200w"
+        sizes="50vw"
+        alt="{{ section.settings.image.alt | default: 'PILA sports infrastructure installation at a premier Australian venue' }}"
+        width="1200" height="900"
+        loading="eager"
+        fetchpriority="high">
+    {%- else -%}
+      <div class="placeholder-img" aria-label="Hero image placeholder — upload via Theme Customizer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M4.5 4.5h15A2.25 2.25 0 0121.75 6.75v10.5A2.25 2.25 0 0119.5 19.5h-15a2.25 2.25 0 01-2.25-2.25V6.75A2.25 2.25 0 014.5 4.5z"/></svg>
+        Upload hero image in Theme Customizer
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero — Split screen",
+  "tag": "section",
+  "class": "section-hero",
+  "limit": 1,
+  "settings": [
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Australian Made & Owned" },
+    { "type": "text", "id": "heading_line1", "label": "Heading line 1", "default": "Australia's Most" },
+    { "type": "text", "id": "heading_highlight", "label": "Heading highlight (red)", "default": "Trusted" },
+    { "type": "text", "id": "heading_line2", "label": "Heading line 2", "default": "Sports Infrastructure" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Goals, goalposts, flagpoles, and coaching boxes built for Australia's premier venues. Trusted by the AFL, Football Australia, and 500+ sporting facilities nationwide." },
+    { "type": "header", "content": "Primary CTA" },
+    { "type": "text", "id": "cta_primary_label", "label": "Primary button label", "default": "Get a Quote for Your Project" },
+    { "type": "url", "id": "cta_primary_url", "label": "Primary button URL" },
+    { "type": "header", "content": "Secondary CTA" },
+    { "type": "text", "id": "cta_secondary_label", "label": "Secondary button label", "default": "Browse Products by Sport" },
+    { "type": "url", "id": "cta_secondary_url", "label": "Secondary button URL" },
+    { "type": "header", "content": "Hero Image" },
+    { "type": "image_picker", "id": "image", "label": "Hero image (right panel)" },
+    { "type": "header", "content": "Trust Stats" },
+    { "type": "checkbox", "id": "show_stats", "label": "Show statistics", "default": true },
+    { "type": "text", "id": "stat_1_number", "label": "Stat 1 number", "default": "30+" },
+    { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "Years Manufacturing" },
+    { "type": "text", "id": "stat_2_number", "label": "Stat 2 number", "default": "500+" },
+    { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "Venues Installed" },
+    { "type": "text", "id": "stat_3_number", "label": "Stat 3 number", "default": "5yr" },
+    { "type": "text", "id": "stat_3_label", "label": "Stat 3 label", "default": "Structural Guarantee" }
+  ],
+  "presets": [{ "name": "Hero — Split screen" }]
+}
+{% endschema %}

@@ -1,0 +1,8 @@
+{ "en": {
+  "general": { "password_page": { "login_form": { "heading": "Password", "password_placeholder": "Password", "submit": "Enter" } } },
+  "sections": {
+    "header": { "menu": "Menu" },
+    "footer": { "copyright": "Copyright" }
+  },
+  "products": { "product": { "add_to_cart": "Enquire", "sold_out": "Sold Out", "unavailable": "Unavailable" } }
+}}

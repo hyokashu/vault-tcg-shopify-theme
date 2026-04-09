@@ -1,0 +1,125 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+
+      <!-- Brand column -->
+      <div class="footer-brand">
+        <div class="footer-brand__logo">
+          {%- if settings.logo != blank -%}
+            <img src="{{ settings.logo | image_url: width: 180 }}" alt="{{ shop.name }}" width="120" height="40" loading="lazy">
+          {%- else -%}
+            PIL<span>A</span>
+          {%- endif -%}
+        </div>
+        <p class="footer-brand__desc">{{ settings.footer_tagline | default: "Australia's most trusted sports infrastructure manufacturer. Goals, goalposts, flagpoles, and coaching boxes built for Australia's premier venues." }}</p>
+        <div class="footer-brand__badges">
+          {%- if settings.cert_1 != blank -%}<span class="badge badge--neutral">{{ settings.cert_1 }}</span>{%- endif -%}
+          {%- if settings.cert_2 != blank -%}<span class="badge badge--neutral">{{ settings.cert_2 }}</span>{%- endif -%}
+          {%- if settings.cert_3 != blank -%}<span class="badge badge--neutral">{{ settings.cert_3 }}</span>{%- endif -%}
+          {%- if settings.cert_4 != blank -%}<span class="badge badge--neutral">{{ settings.cert_4 }}</span>{%- endif -%}
+        </div>
+        <div class="footer-socials">
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_linkedin != blank -%}
+            <a href="{{ settings.social_linkedin }}" class="social-btn" aria-label="LinkedIn" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Products column -->
+      <div class="footer-col">
+        <p class="footer-col__heading">Products</p>
+        <ul class="footer-col__links" role="list">
+          {%- if linklists[settings.footer_products] != blank -%}
+            {%- for link in linklists[settings.footer_products].links -%}
+              <li><a href="{{ link.url }}" class="footer-col__link">{{ link.title }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="#" class="footer-col__link">AFL Goal Posts</a></li>
+            <li><a href="#" class="footer-col__link">Soccer Goals</a></li>
+            <li><a href="#" class="footer-col__link">Rugby Goal Posts</a></li>
+            <li><a href="#" class="footer-col__link">Flagpoles</a></li>
+            <li><a href="#" class="footer-col__link">Coaches Boxes</a></li>
+            <li><a href="#" class="footer-col__link">Goal Storage</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+
+      <!-- Company column -->
+      <div class="footer-col">
+        <p class="footer-col__heading">Company</p>
+        <ul class="footer-col__links" role="list">
+          {%- if linklists[settings.footer_company] != blank -%}
+            {%- for link in linklists[settings.footer_company].links -%}
+              <li><a href="{{ link.url }}" class="footer-col__link">{{ link.title }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="/pages/about" class="footer-col__link">About Us</a></li>
+            <li><a href="/pages/our-projects" class="footer-col__link">Our Projects</a></li>
+            <li><a href="/pages/resources" class="footer-col__link">Technical Resources</a></li>
+            <li><a href="/blogs/news" class="footer-col__link">News</a></li>
+            <li><a href="/pages/contact" class="footer-col__link">Contact Us</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+
+      <!-- Contact column -->
+      <div class="footer-col">
+        <p class="footer-col__heading">Get In Touch</p>
+        {%- if settings.phone_number != blank -%}
+          <div class="footer-contact__row">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75A2.25 2.25 0 014.5 4.5h.75c.621 0 1.125.504 1.125 1.125v.75c0 .414-.189.808-.508 1.07l-1.5 1.232a11.956 11.956 0 005.885 5.885l1.232-1.5a1.125 1.125 0 011.07-.508h.75c.621 0 1.125.504 1.125 1.125V19.5a2.25 2.25 0 01-2.25 2.25C7.716 21.75 2.25 15.527 2.25 6.75z"/></svg>
+            <a href="tel:{{ settings.phone_number | replace: ' ', '' }}" style="transition:color 180ms">{{ settings.phone_number }}</a>
+          </div>
+        {%- endif -%}
+        {%- if settings.email_address != blank -%}
+          <div class="footer-contact__row">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+            <a href="mailto:{{ settings.email_address }}" style="transition:color 180ms">{{ settings.email_address }}</a>
+          </div>
+        {%- endif -%}
+        {%- if settings.address != blank -%}
+          <div class="footer-contact__row">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+            <address style="font-style:normal">{{ settings.address }}</address>
+          </div>
+        {%- endif -%}
+        <div class="footer-certs">
+          {%- if settings.cert_1 != blank -%}<span class="cert">{{ settings.cert_1 }}</span>{%- endif -%}
+          {%- if settings.cert_2 != blank -%}<span class="cert">{{ settings.cert_2 }}</span>{%- endif -%}
+          {%- if settings.abn != blank -%}<span class="cert">ABN {{ settings.abn }}</span>{%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</span>
+      <div class="footer-bottom__links">
+        <a href="/policies/privacy-policy">Privacy Policy</a>
+        <a href="/policies/terms-of-service">Terms of Service</a>
+        <a href="/pages/contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "limit": 1,
+  "settings": [],
+  "presets": [{ "name": "Footer" }]
+}
+{% endschema %}

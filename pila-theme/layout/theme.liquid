@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1C1C1E">
+  <title>
+    {{ page_title }}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  {{ content_for_header }}
+  {{ 'pila.css' | asset_url | stylesheet_tag }}
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {%- endif -%}
+</head>
+
+<body class="template-{{ template.name | handle }}">
+
+  {%- section 'announcement-bar' -%}
+  {%- section 'header' -%}
+
+  <main id="main-content" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {%- section 'footer' -%}
+
+  <!-- Mobile Sticky CTA Bar -->
+  <div class="mobile-cta-bar" id="mobileCta" role="complementary" aria-label="Quick contact">
+    <a href="tel:{{ settings.phone_number | replace: ' ', '' | replace: '-', '' }}" class="mobile-cta-bar__call">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75A2.25 2.25 0 014.5 4.5h.75c.621 0 1.125.504 1.125 1.125v.75c0 .414-.189.808-.508 1.07l-1.5 1.232a11.956 11.956 0 005.885 5.885l1.232-1.5a1.125 1.125 0 011.07-.508h.75c.621 0 1.125.504 1.125 1.125V19.5a2.25 2.25 0 01-2.25 2.25C7.716 21.75 2.25 15.527 2.25 6.75z"/></svg>
+      {%- if settings.phone_number != blank -%}{{ settings.phone_number }}{%- else -%}Call Us{%- endif -%}
+    </a>
+    <a href="{{ settings.quote_page | default: '/pages/contact' }}" class="btn btn--primary">
+      Get a Quote
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+    </a>
+  </div>
+
+  <!-- Mobile Nav Drawer -->
+  <nav class="mobile-drawer" aria-label="Mobile navigation">
+    <div class="mobile-drawer__overlay" aria-hidden="true"></div>
+    <div class="mobile-drawer__panel" role="dialog" aria-modal="true">
+      <div class="drawer-header">
+        <span class="drawer-logo">PIL<span>A</span></span>
+        <button class="drawer-close" aria-label="Close navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="drawer-links">
+        {%- for link in settings.main_menu.links -%}
+          <a href="{{ link.url }}" class="drawer-link">{{ link.title }}</a>
+        {%- else -%}
+          <a href="/collections/all" class="drawer-link">Products</a>
+          <a href="/pages/our-projects" class="drawer-link">Our Projects</a>
+          <a href="/pages/resources" class="drawer-link">Resources</a>
+          <a href="/pages/about" class="drawer-link">About Us</a>
+          <a href="/pages/contact" class="drawer-link">Contact</a>
+        {%- endfor -%}
+      </div>
+      <div class="drawer-cta">
+        <a href="{{ settings.quote_page | default: '/pages/contact' }}" class="btn btn--primary btn--lg">
+          Get a Free Quote
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <script src="{{ 'pila.js' | asset_url }}" defer></script>
+</body>
+</html>

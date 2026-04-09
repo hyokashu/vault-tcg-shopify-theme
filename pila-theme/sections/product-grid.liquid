@@ -1,0 +1,128 @@
+<section class="section section--{{ section.settings.color_scheme }}" data-product-section>
+  <div class="container">
+    <div class="section__header">
+      <p class="eyebrow {%- if section.settings.color_scheme == 'dark' or section.settings.color_scheme == 'surface' %} eyebrow--light{%- endif %}">{{ section.settings.eyebrow | default: 'Our Products' }}</p>
+      <h2 class="section__title">{{ section.settings.heading | default: 'Built for Every Sport' }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="section__subtitle{%- if section.settings.color_scheme == 'dark' or section.settings.color_scheme == 'surface' %} section__subtitle--light{%- endif %}">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Filter pills -->
+    {%- if section.settings.show_filters -%}
+      <div class="product-grid__filters" role="group" aria-label="Filter products by sport">
+        <button class="filter-pill active" data-filter="all">All Products</button>
+        {%- for cat in section.settings.filter_categories | split: ',' -%}
+          <button class="filter-pill" data-filter="{{ cat | strip | handle }}">{{ cat | strip }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Product cards -->
+    <div class="product-grid__items">
+      {%- for block in section.blocks -%}
+        <article class="product-card" data-sports="{{ block.settings.sports }}" {{ block.shopify_attributes }}>
+          <div class="product-card__img">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 600 }} 600w"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                alt="{{ block.settings.image.alt | default: block.settings.name | escape }}"
+                width="600" height="450" loading="lazy">
+            {%- else -%}
+              <div class="placeholder-img">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M4.5 4.5h15A2.25 2.25 0 0121.75 6.75v10.5A2.25 2.25 0 0119.5 19.5h-15a2.25 2.25 0 01-2.25-2.25V6.75A2.25 2.25 0 014.5 4.5z"/></svg>
+                Upload product image
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="product-card__body">
+            <div class="product-card__tags">
+              {%- if block.settings.badge_compliance != blank -%}
+                <span class="badge badge--green">✓ {{ block.settings.badge_compliance }}</span>
+              {%- endif -%}
+              {%- if block.settings.badge_approved != blank -%}
+                <span class="badge badge--red">{{ block.settings.badge_approved }}</span>
+              {%- endif -%}
+            </div>
+            <h3 class="product-card__name">{{ block.settings.name }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="product-card__desc">{{ block.settings.description }}</p>
+            {%- endif -%}
+            <div class="product-card__foot">
+              <div class="sport-chips">
+                {%- for sport in block.settings.sports | split: ',' -%}
+                  <span class="sport-chip">{{ sport | strip }}</span>
+                {%- endfor -%}
+              </div>
+              <a href="{{ block.settings.url | default: '#' }}" class="product-card__cta" aria-label="Enquire about {{ block.settings.name }}">
+                Enquire
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.view_all_url != blank -%}
+      <div style="text-align:center; margin-top:3rem;">
+        <a href="{{ section.settings.view_all_url }}" class="btn btn--ghost-dark">
+          View All Products
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product grid",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Products" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Built for Every Sport" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading (optional)" },
+    { "type": "select", "id": "color_scheme", "label": "Section background", "options": [
+        { "value": "", "label": "White" },
+        { "value": "tint", "label": "Light grey" },
+        { "value": "dark", "label": "Charcoal dark" }
+      ], "default": "" },
+    { "type": "header", "content": "Filters" },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filter pills", "default": true },
+    { "type": "text", "id": "filter_categories", "label": "Filter categories (comma separated)", "default": "AFL, Soccer, Rugby, Flagpoles, Coaches Boxes" },
+    { "type": "header", "content": "View All" },
+    { "type": "url", "id": "view_all_url", "label": "View all products URL" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Product image" },
+        { "type": "text", "id": "name", "label": "Product name", "default": "AFL Competition Goal Posts" },
+        { "type": "textarea", "id": "description", "label": "Short description", "default": "Professional-grade aluminium goal posts engineered to AFL specifications. Suitable for elite and community level competition." },
+        { "type": "text", "id": "sports", "label": "Sports tags (comma separated)", "default": "AFL" },
+        { "type": "text", "id": "badge_compliance", "label": "Compliance badge text", "default": "AS 2316 Compliant" },
+        { "type": "text", "id": "badge_approved", "label": "Approved badge text", "default": "AFL Approved" },
+        { "type": "url", "id": "url", "label": "Product page URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product grid",
+      "blocks": [
+        { "type": "product", "settings": { "name": "AFL Competition Goal Posts", "sports": "AFL", "badge_compliance": "AS 2316", "badge_approved": "AFL Approved" } },
+        { "type": "product", "settings": { "name": "Soccer Goals — Professional", "sports": "Soccer", "badge_compliance": "AS 4284", "badge_approved": "Football AU Approved" } },
+        { "type": "product", "settings": { "name": "Rugby Union Goal Posts", "sports": "Rugby", "badge_compliance": "World Rugby Certified" } },
+        { "type": "product", "settings": { "name": "Commercial Flagpoles", "sports": "Flagpoles", "badge_compliance": "AS 1170 Compliant" } },
+        { "type": "product", "settings": { "name": "Coaches Boxes", "sports": "AFL, Rugby, Soccer" } },
+        { "type": "product", "settings": { "name": "Goal Storage Systems", "sports": "Soccer, AFL, Rugby" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

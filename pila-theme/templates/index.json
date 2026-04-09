@@ -1,0 +1,95 @@
+{
+  "sections": {
+    "announcement-bar": { "type": "announcement-bar", "settings": { "text": "🇦🇺 Australian Made & Owned — Trusted by AFL, Football Australia & 500+ venues nationwide.", "color_scheme": "", "dismissable": true } },
+    "header": { "type": "header", "settings": { "show_au_badge": true, "show_search": true } },
+    "hero": { "type": "hero-split", "settings": {
+      "eyebrow": "Australian Made & Owned",
+      "heading_line1": "Australia's Most",
+      "heading_highlight": "Trusted",
+      "heading_line2": "Sports Infrastructure",
+      "subheading": "Goals, goalposts, flagpoles, and coaching boxes built for Australia's premier venues. Trusted by the AFL, Football Australia, and 500+ sporting facilities nationwide.",
+      "cta_primary_label": "Get a Quote for Your Project",
+      "cta_secondary_label": "Browse Products by Sport",
+      "cta_secondary_url": "/collections/all",
+      "show_stats": true,
+      "stat_1_number": "30+", "stat_1_label": "Years Manufacturing",
+      "stat_2_number": "500+", "stat_2_label": "Venues Installed",
+      "stat_3_number": "5yr", "stat_3_label": "Structural Guarantee"
+    }},
+    "value-props": { "type": "value-props", "block_order": ["vp1","vp2","vp3","vp4","vp5"],
+      "blocks": {
+        "vp1": { "type": "prop", "settings": { "icon": "factory", "stat": "30+", "name": "Years Manufacturing", "description": "Australian made since 1992" } },
+        "vp2": { "type": "prop", "settings": { "icon": "shield", "stat": "AS", "name": "Certified", "description": "All Australian Standards met" } },
+        "vp3": { "type": "prop", "settings": { "icon": "stadium", "stat": "500+", "name": "Venues Installed", "description": "Premier venues nationwide" } },
+        "vp4": { "type": "prop", "settings": { "icon": "wrench", "stat": "5yr", "name": "Guarantee", "description": "Structural warranty on all goals" } },
+        "vp5": { "type": "prop", "settings": { "icon": "truck", "stat": "AU", "name": "Nationwide", "description": "Delivery & install across Australia" } }
+      }
+    },
+    "authority-strip": { "type": "authority-strip", "block_order": ["al1","al2","al3","al4","al5","al6"],
+      "blocks": {
+        "al1": { "type": "logo", "settings": { "name": "AFL" } },
+        "al2": { "type": "logo", "settings": { "name": "Football Australia" } },
+        "al3": { "type": "logo", "settings": { "name": "NRL" } },
+        "al4": { "type": "logo", "settings": { "name": "Rugby Australia" } },
+        "al5": { "type": "logo", "settings": { "name": "Venues NSW" } },
+        "al6": { "type": "logo", "settings": { "name": "Sport Australia" } }
+      }
+    },
+    "product-grid": { "type": "product-grid", "settings": {
+      "eyebrow": "Our Products", "heading": "Built for Every Sport",
+      "show_filters": true, "filter_categories": "AFL, Soccer, Rugby, Flagpoles, Coaches Boxes"
+    }, "block_order": ["pg1","pg2","pg3","pg4","pg5","pg6"],
+      "blocks": {
+        "pg1": { "type": "product", "settings": { "name": "AFL Competition Goal Posts", "sports": "AFL", "badge_compliance": "AS 2316", "badge_approved": "AFL Approved", "description": "Professional-grade aluminium goal posts engineered to AFL specifications." } },
+        "pg2": { "type": "product", "settings": { "name": "Soccer Goals — Professional", "sports": "Soccer", "badge_compliance": "AS 4284", "badge_approved": "Football AU Approved", "description": "Competition-grade steel frame soccer goals for elite venues." } },
+        "pg3": { "type": "product", "settings": { "name": "Rugby Union Goal Posts", "sports": "Rugby", "badge_compliance": "World Rugby Certified", "description": "High-tensile steel rugby goal posts meeting all World Rugby specifications." } },
+        "pg4": { "type": "product", "settings": { "name": "Commercial Flagpoles", "sports": "Flagpoles", "badge_compliance": "AS 1170 Compliant", "description": "Anodised aluminium flagpoles from 3m to 20m. Wind-rated to 180 km/h." } },
+        "pg5": { "type": "product", "settings": { "name": "Coaches Boxes", "sports": "AFL, Rugby, Soccer", "description": "Custom-engineered coaches boxes and dugouts for all football codes." } },
+        "pg6": { "type": "product", "settings": { "name": "Goal Storage Systems", "sports": "Soccer, AFL, Rugby", "description": "Purpose-built goal storage that integrates with your existing infrastructure." } }
+      }
+    },
+    "testimonials": { "type": "testimonials", "settings": { "eyebrow": "What Our Clients Say", "heading": "Trusted by Australia's Best" },
+      "block_order": ["t1","t2","t3","t4"],
+      "blocks": {
+        "t1": { "type": "testimonial", "settings": { "quote": "PILA's AFL goal posts are second to none. The installation team was professional, quality exceptional, and they've stood up perfectly through multiple AFL seasons.", "name": "David Morgan", "role": "Facilities Manager", "venue": "Melbourne Football Club" } },
+        "t2": { "type": "testimonial", "settings": { "quote": "We've used PILA for every project across our council's sporting precinct upgrades. Their technical support during the tender process is unmatched.", "name": "Sarah Chen", "role": "Sport Infrastructure Coordinator", "venue": "City of Melbourne Council" } },
+        "t3": { "type": "testimonial", "settings": { "quote": "The flagpoles have been in place for 8 years without any issues. The wind certification gave our engineers exactly what they needed for sign-off.", "name": "Mark Sullivan", "role": "Director of Operations", "venue": "Adelaide Oval" } },
+        "t4": { "type": "testimonial", "settings": { "quote": "PILA handled our full stadium specification from concept to installation. Everything arrived on time and within budget — that's rare in this industry.", "name": "Jane Williams", "role": "Club Secretary", "venue": "Western United FC" } }
+      }
+    },
+    "cta-band": { "type": "cta-band", "settings": {
+      "eyebrow": "Start Your Project",
+      "heading": "Ready to Spec Your Next Project?",
+      "subheading": "Talk to our team about your venue requirements. We handle everything from initial specification to installation across Australia.",
+      "primary_label": "Get a Free Quote",
+      "secondary_label": "Download Spec Sheets"
+    }},
+    "projects-grid": { "type": "projects-grid", "settings": {
+      "eyebrow": "Our Projects", "heading": "Installed at Premier Australian Venues",
+      "show_filters": true, "states": "VIC, NSW, QLD, WA, SA"
+    }, "block_order": ["pr1","pr2","pr3","pr4","pr5","pr6"],
+      "blocks": {
+        "pr1": { "type": "project", "settings": { "venue": "Melbourne Cricket Ground", "state": "VIC", "products_installed": "4× AFL Competition Goal Posts, 2× Coaches Boxes" } },
+        "pr2": { "type": "project", "settings": { "venue": "ANZ Stadium", "state": "NSW", "products_installed": "6× Rugby League Goal Posts, Commercial Flagpoles" } },
+        "pr3": { "type": "project", "settings": { "venue": "Suncorp Stadium", "state": "QLD", "products_installed": "Rugby Union Goal Posts, LED Flagpoles (18m)" } },
+        "pr4": { "type": "project", "settings": { "venue": "GMHBA Stadium", "state": "VIC", "products_installed": "AFL Goal Posts, 4× Coaches Boxes" } },
+        "pr5": { "type": "project", "settings": { "venue": "Optus Stadium", "state": "WA", "products_installed": "Commercial Flagpoles — 22m" } },
+        "pr6": { "type": "project", "settings": { "venue": "Central Coast Stadium", "state": "NSW", "products_installed": "Soccer Goals — Professional Grade" } }
+      }
+    },
+    "resources": { "type": "resources", "settings": {
+      "eyebrow": "Technical Resources", "heading": "Specifications & Downloads",
+      "subheading": "Download spec sheets, installation guides, and AS compliance documentation for your tender submissions.",
+      "show_filters": true
+    }, "block_order": ["rs1","rs2","rs3","rs4"],
+      "blocks": {
+        "rs1": { "type": "resource", "settings": { "category": "AFL", "title": "AFL Competition Goal Post Spec Sheet", "standard": "AS 2316", "file_size": "PDF · 0.8MB" } },
+        "rs2": { "type": "resource", "settings": { "category": "Soccer", "title": "Soccer Goal Technical Specification", "standard": "AS 4284", "file_size": "PDF · 1.1MB" } },
+        "rs3": { "type": "resource", "settings": { "category": "Flagpoles", "title": "Commercial Flagpole Engineering Certificate", "standard": "AS 1170", "file_size": "PDF · 0.5MB" } },
+        "rs4": { "type": "resource", "settings": { "resource_type": "cad", "category": "AFL", "title": "AFL Goal Post — CAD Drawing", "file_size": "DWG · 2.3MB" } }
+      }
+    },
+    "footer": { "type": "footer", "settings": {} }
+  },
+  "order": ["announcement-bar","header","hero","value-props","authority-strip","product-grid","testimonials","cta-band","projects-grid","resources","footer"]
+}

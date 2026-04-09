@@ -1,0 +1,31 @@
+<div class="announcement-bar {{ section.settings.color_scheme }}" role="banner">
+  <div class="announcement-bar__text">
+    {%- if section.settings.link != blank -%}
+      <a href="{{ section.settings.link }}">{{ section.settings.text }}</a>
+    {%- else -%}
+      {{ section.settings.text }}
+    {%- endif -%}
+  </div>
+  {%- if section.settings.dismissable -%}
+    <button class="announcement-bar__close" aria-label="Dismiss announcement">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "limit": 1,
+  "settings": [
+    { "type": "text", "id": "text", "label": "Announcement text", "default": "🇦🇺 Australian Made & Owned — Trusted by AFL, Football Australia & 500+ venues nationwide. Free shipping on orders over $500." },
+    { "type": "url", "id": "link", "label": "Link URL (optional)" },
+    { "type": "select", "id": "color_scheme", "label": "Colour scheme", "options": [
+        { "value": "", "label": "Charcoal (default)" },
+        { "value": "ann-red", "label": "PILA Red" }
+      ], "default": "" },
+    { "type": "checkbox", "id": "dismissable", "label": "Allow visitors to dismiss", "default": true }
+  ],
+  "presets": [{ "name": "Announcement bar" }]
+}
+{% endschema %}
