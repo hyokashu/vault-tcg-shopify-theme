@@ -68,7 +68,7 @@
                   src="{{ item.image | image_url: width: 144 }}"
                   alt="{{ item.image.alt | escape }}"
                   width="72"
-                  height="{{ is_graded | if: 96, 72 }}"
+                  height="{% if is_graded %}96{% else %}72{% endif %}"
                   loading="lazy"
                   class="qc-cart-item__img"
                 >
