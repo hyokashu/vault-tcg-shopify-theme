@@ -46,13 +46,13 @@
 
 <body>
 
-  {% render 'header' %}
+  {% section 'header' %}
 
   <main id="main-content" tabindex="-1">
     {{ content_for_layout }}
   </main>
 
-  {% render 'footer' %}
+  {% section 'footer' %}
 
   <!-- Cart drawer (global, all pages) -->
   {% render 'cart-drawer' %}
