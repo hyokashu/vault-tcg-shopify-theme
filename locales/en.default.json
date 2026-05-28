@@ -1,0 +1,35 @@
+{
+  "general": {
+    "search": {
+      "placeholder": "Search products…"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "products": {
+    "product": {
+      "sold_out": "Sold out",
+      "add_to_cart": "Add to cart",
+      "quantity": {
+        "label": "Quantity"
+      }
+    },
+    "general": {
+      "sale_badge_html": "Sale",
+      "sold_out_badge": "Sold out"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products found."
+    }
+  },
+  "cart": {
+    "general": {
+      "added": "Added to cart",
+      "title": "Your cart"
+    }
+  }
+}

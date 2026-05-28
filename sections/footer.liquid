@@ -1,0 +1,203 @@
+{% comment %} Qilin Cards — Footer {% endcomment %}
+
+<footer class="qc-footer" role="contentinfo">
+  <div class="container">
+
+    <!-- Top: brand + columns -->
+    <div class="qc-footer__top">
+
+      <!-- Brand column -->
+      <div class="qc-footer__brand">
+        <a href="{{ routes.root_url }}" class="qc-logo" aria-label="{{ shop.name }} home" style="margin-bottom: var(--space-4); display:inline-flex;">
+          <div class="qc-logo__mark" aria-hidden="true">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2C6.13 2 3 5.13 3 9c0 2.39 1.19 4.5 3 5.74V15a1 1 0 001 1h6a1 1 0 001-1v-.26C15.81 13.5 17 11.39 17 9c0-3.87-3.13-7-7-7zm-1 12v-1h2v1H9zm4.73-3.56A5 5 0 0115 9a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 013-4.58V5a1 1 0 012 0v1h2V5a1 1 0 012 0v.44z"/>
+            </svg>
+          </div>
+          <span class="qc-logo__text">{{ shop.name }}</span>
+        </a>
+        <p class="qc-footer__tagline">Rarity is a virtue.</p>
+        <p class="qc-footer__body">Authentic Chinese TCG imports — Pokémon &amp; One Piece. Shipped from Australia.</p>
+      </div>
+
+      <!-- Nav columns -->
+      <div class="qc-footer__cols">
+
+        <div class="qc-footer__col">
+          <h3 class="qc-footer__col-heading">Shop</h3>
+          <ul>
+            <li><a href="/collections/pokemon" class="qc-footer__link">Pokémon CN</a></li>
+            <li><a href="/collections/one-piece" class="qc-footer__link">One Piece CN</a></li>
+            <li><a href="/collections/sealed" class="qc-footer__link">Sealed Products</a></li>
+            <li><a href="/collections/graded" class="qc-footer__link">Graded Cards</a></li>
+            <li><a href="/collections/new-arrivals" class="qc-footer__link">New Arrivals</a></li>
+          </ul>
+        </div>
+
+        <div class="qc-footer__col">
+          <h3 class="qc-footer__col-heading">Help</h3>
+          <ul>
+            {% if pages['about'] %}<li><a href="/pages/about" class="qc-footer__link">About</a></li>{% endif %}
+            {% if pages['faq'] %}<li><a href="/pages/faq" class="qc-footer__link">FAQ</a></li>{% endif %}
+            {% if pages['shipping'] %}<li><a href="/pages/shipping" class="qc-footer__link">Shipping</a></li>{% endif %}
+            {% if pages['returns'] %}<li><a href="/pages/returns" class="qc-footer__link">Returns</a></li>{% endif %}
+            <li><a href="{{ routes.account_url }}" class="qc-footer__link">Account</a></li>
+            <li><a href="{{ routes.search_url }}" class="qc-footer__link">Search</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Bottom bar -->
+    <div class="qc-footer__bottom">
+      <p class="qc-footer__copy">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+      </p>
+      <div class="qc-footer__legal">
+        {% if pages['privacy-policy'] %}
+          <a href="/pages/privacy-policy" class="qc-footer__legal-link">Privacy</a>
+        {% endif %}
+        {% if pages['terms-of-service'] %}
+          <a href="/pages/terms-of-service" class="qc-footer__legal-link">Terms</a>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+.qc-footer {
+  background: var(--fg);
+  color: oklch(85% 0.004 270);
+  padding-top: var(--space-12);
+  padding-bottom: calc(var(--space-8) + var(--safe-bottom));
+}
+
+.qc-footer .qc-logo__text { color: var(--bg); }
+.qc-footer .qc-logo__mark { background: oklch(20% 0.010 270); }
+
+.qc-footer__top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 640px) {
+  .qc-footer__top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .qc-footer__top {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+.qc-footer__tagline {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--bg);
+  margin-bottom: var(--space-2);
+}
+
+.qc-footer__body {
+  font-size: 0.875rem;
+  color: oklch(65% 0.005 270);
+  max-width: 34ch;
+  line-height: 1.6;
+}
+
+.qc-footer__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .qc-footer__cols { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1024px) {
+  .qc-footer__cols { grid-column: auto; display: contents; }
+}
+
+.qc-footer__col-heading {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg);
+  margin-bottom: var(--space-3);
+}
+
+.qc-footer__col ul { display: flex; flex-direction: column; gap: 0; }
+
+.qc-footer__link {
+  display: block;
+  padding-block: 0.5rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 0.9375rem;
+  color: oklch(70% 0.005 270);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.qc-footer__link:hover { color: var(--bg); }
+
+.qc-footer .divider {
+  border-color: oklch(22% 0.008 270);
+  margin-bottom: var(--space-6);
+}
+
+.qc-footer__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .qc-footer__bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.qc-footer__copy {
+  font-size: 0.875rem;
+  color: oklch(55% 0.005 270);
+}
+
+.qc-footer__legal {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.qc-footer__legal-link {
+  font-size: 0.875rem;
+  color: oklch(55% 0.005 270);
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.qc-footer__legal-link:hover { color: oklch(80% 0.005 270); }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": []
+}
+{% endschema %}

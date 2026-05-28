@@ -1,0 +1,51 @@
+{% comment %}
+  Renders a grading company badge.
+  Usage: {% render 'grading-badge', company: 'PSA', grade: '10', size: 'sm' %}
+  size: 'sm' | 'md' | 'lg'
+{% endcomment %}
+
+{%- liquid
+  assign badge_class = 'badge'
+  assign company_upper = company | upcase
+
+  case company_upper
+    when 'PSA'
+      assign badge_class = badge_class | append: ' badge--psa'
+    when 'BGS'
+      assign badge_class = badge_class | append: ' badge--bgs'
+    when 'CGC'
+      assign badge_class = badge_class | append: ' badge--cgc'
+  endcase
+
+  if size == 'lg'
+    assign font_size_company = '0.6875rem'
+    assign font_size_grade = '2rem'
+  elsif size == 'md'
+    assign font_size_company = '0.625rem'
+    assign font_size_grade = '1.25rem'
+  else
+    assign font_size_company = '0.5625rem'
+    assign font_size_grade = '1rem'
+  endif
+-%}
+
+<div
+  class="{{ badge_class }}"
+  aria-label="{{ company_upper }} grade {{ grade }}"
+  style="
+    flex-direction: column;
+    gap: 0;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    line-height: 1;
+  "
+>
+  <span style="font-size:{{ font_size_company }};letter-spacing:0.08em;font-weight:700;opacity:0.85;">
+    {{ company_upper }}
+  </span>
+  {% if grade %}
+    <span style="font-size:{{ font_size_grade }};font-weight:800;font-family:var(--font-display);letter-spacing:-0.01em;">
+      {{ grade }}
+    </span>
+  {% endif %}
+</div>

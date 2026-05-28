@@ -1,0 +1,261 @@
+{% comment %} Qilin Cards — Collection Page {% endcomment %}
+
+{%- liquid
+  assign game = collection.metafields.custom.game.value
+  assign zone_class = ''
+  if game == 'pokemon'
+    assign zone_class = 'zone-pokemon'
+  elsif game == 'one-piece'
+    assign zone_class = 'zone-one-piece'
+  endif
+
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_filter_count = 0
+  for filter in collection.filters
+    assign active_filter_count = active_filter_count | plus: filter.active_values.size
+  endfor
+-%}
+
+<div class="{{ zone_class }}">
+
+  <!-- ── Collection banner ─────────────────────────────────── -->
+  {% if game == 'pokemon' or game == 'one-piece' %}
+  <div class="qc-collection-banner">
+    <div class="container">
+      <div class="qc-collection-banner__inner">
+        <p class="qc-collection-banner__eyebrow">
+          {%- if game == 'pokemon' -%}Chinese Releases · All Sets
+          {%- elsif game == 'one-piece' -%}China Exclusives Only
+          {%- endif -%}
+        </p>
+        <h1 class="qc-collection-banner__title">{{ collection.title }}</h1>
+        <p class="qc-collection-banner__count">{{ collection.all_products_count }} products</p>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="section" style="padding-bottom:0;">
+    <div class="container">
+      <h1 class="text-h1">{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <p class="text-body text-muted" style="margin-top:0.75rem;max-width:65ch;">{{ collection.description }}</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ── Mobile filter bar ──────────────────────────────────── -->
+  <div class="qc-filter-bar" id="qc-filter-bar">
+    <div class="qc-filter-bar__inner">
+      <button
+        class="qc-filter-toggle"
+        id="qc-filter-toggle"
+        aria-label="Open filters{% if active_filter_count > 0 %} ({{ active_filter_count }} active){% endif %}"
+        aria-expanded="false"
+        aria-controls="qc-filter-drawer"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+        </svg>
+        Filters{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}
+      </button>
+
+      <div class="qc-sort-select-wrap">
+        <label for="qc-sort-mobile" class="visually-hidden">Sort by</label>
+        <select id="qc-sort-mobile" class="qc-sort-select" aria-label="Sort products">
+          {% for option in collection.sort_options %}
+            <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
+              {{ option.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    {% if active_filter_count > 0 %}
+    <div class="qc-filter-chips" aria-label="Active filters">
+      {% for filter in collection.filters %}
+        {% for value in filter.active_values %}
+          <a href="{{ value.url_to_remove }}" class="qc-filter-chip">
+            {{ value.label }}
+            <span class="qc-filter-chip__remove" aria-hidden="true">✕</span>
+          </a>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ── Main content ───────────────────────────────────────── -->
+  <section class="section" style="padding-top: var(--space-8);">
+    <div class="container">
+      <div class="qc-collection-body">
+
+        <!-- Desktop sidebar -->
+        <aside class="qc-sidebar" aria-label="Filter products">
+          <div class="qc-sidebar__header">
+            <span class="qc-sidebar__title">Filter</span>
+            {% if active_filter_count > 0 %}
+              <a href="{{ collection.url }}" class="qc-sidebar__clear">Clear all</a>
+            {% endif %}
+          </div>
+
+          {% render 'collection-filters', collection: collection, game: game %}
+        </aside>
+
+        <!-- Grid -->
+        <div class="qc-collection-main" id="product-grid">
+
+          <div class="qc-collection-toolbar">
+            <p class="qc-collection-count">
+              {{ collection.products_count }}
+              {{ collection.products_count | pluralize: 'product', 'products' }}
+            </p>
+            <div class="qc-sort-desktop">
+              <label for="qc-sort-desktop">Sort:</label>
+              <select id="qc-sort-desktop" aria-label="Sort products">
+                {% for option in collection.sort_options %}
+                  <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
+                    {{ option.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          {% paginate collection.products by section.settings.products_per_page %}
+            {% if collection.products.size > 0 %}
+              <div class="product-grid">
+                {% for product in collection.products %}
+                  {% render 'product-card', product: product %}
+                {% endfor %}
+              </div>
+            {% else %}
+              <div style="text-align:center;padding:var(--space-16) 0;">
+                <p class="text-h3" style="margin-bottom:var(--space-3);">No products found</p>
+                <p class="text-muted text-body" style="margin-bottom:var(--space-6);">Try clearing some filters to see more results.</p>
+                {% if active_filter_count > 0 %}
+                  <a href="{{ collection.url }}" class="btn btn--outline">Clear all filters</a>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if paginate.pages > 1 %}
+              <nav class="qc-pagination" aria-label="Pagination">
+                {% if paginate.previous %}
+                  <a href="{{ paginate.previous.url }}" class="qc-pagination__item" aria-label="Previous page">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                  </a>
+                {% endif %}
+
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <a href="{{ part.url }}" class="qc-pagination__item">{{ part.title }}</a>
+                  {% elsif part.title == paginate.current_page %}
+                    <span class="qc-pagination__item qc-pagination__item--active" aria-current="page">{{ part.title }}</span>
+                  {% else %}
+                    <span class="qc-pagination__item" style="border-color:transparent;color:var(--fg-muted);">{{ part.title }}</span>
+                  {% endif %}
+                {% endfor %}
+
+                {% if paginate.next %}
+                  <a href="{{ paginate.next.url }}" class="qc-pagination__item" aria-label="Next page">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+                  </a>
+                {% endif %}
+              </nav>
+            {% endif %}
+
+          {% endpaginate %}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── Mobile filter drawer ───────────────────────────────── -->
+<div class="qc-filter-drawer {{ zone_class }}" id="qc-filter-drawer" aria-hidden="true">
+  <div class="qc-filter-drawer__backdrop" id="qc-filter-drawer-backdrop"></div>
+  <div class="qc-filter-drawer__panel" role="dialog" aria-modal="true" aria-label="Filters">
+    <div class="qc-filter-drawer__header">
+      <span class="qc-filter-drawer__title">Filters</span>
+      <button class="qc-icon-btn" id="qc-filter-drawer-close" aria-label="Close filters">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="qc-filter-drawer__body">
+      {% render 'collection-filters', collection: collection, game: game %}
+    </div>
+    <div class="qc-filter-drawer__footer">
+      <button class="btn btn--primary btn--full btn--large" id="qc-filter-apply">
+        View {{ collection.products_count }} results
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Filter drawer
+  const toggle   = document.getElementById('qc-filter-toggle');
+  const drawer   = document.getElementById('qc-filter-drawer');
+  const backdrop = document.getElementById('qc-filter-drawer-backdrop');
+  const closeBtn = document.getElementById('qc-filter-drawer-close');
+  const applyBtn = document.getElementById('qc-filter-apply');
+
+  function openFilterDrawer() {
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFilterDrawer() {
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  if (toggle) toggle.addEventListener('click', openFilterDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeFilterDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeFilterDrawer);
+  if (applyBtn) applyBtn.addEventListener('click', closeFilterDrawer);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeFilterDrawer();
+  });
+
+  // Sort select wires up to URL
+  document.querySelectorAll('[id*="sort"]').forEach(function (sel) {
+    sel.addEventListener('change', function () {
+      const url = new URL(window.location.href);
+      url.searchParams.set('sort_by', sel.value);
+      window.location.href = url.toString();
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Collection",
+  "tag": "main",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 12,
+      "max": 48,
+      "step": 12,
+      "default": 24,
+      "label": "Products per page"
+    }
+  ]
+}
+{% endschema %}

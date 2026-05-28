@@ -1,0 +1,84 @@
+{% comment %}
+  Renders a product card.
+  Usage: {% render 'product-card', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign game = product.metafields.custom.game.value
+  assign product_type_tcg = product.metafields.custom.product_type_tcg.value
+  assign set_name = product.metafields.custom.set_name.value
+  assign grading_company = product.metafields.custom.grading_company.value
+  assign grade_value = product.metafields.custom.grade_value.value
+
+  assign is_graded = false
+  if product_type_tcg == 'graded'
+    assign is_graded = true
+  endif
+
+  assign image_ratio = 'square'
+  if is_graded
+    assign image_ratio = 'portrait'
+  endif
+
+  assign zone_class = ''
+  if game == 'pokemon'
+    assign zone_class = 'zone-pokemon'
+  elsif game == 'one-piece'
+    assign zone_class = 'zone-one-piece'
+  endif
+-%}
+
+<a
+  href="{{ product.url }}"
+  class="product-card {{ zone_class }}"
+  aria-label="{{ product.title | escape }}"
+>
+  <div class="product-card__image-wrap product-card__image-wrap--{{ image_ratio }}">
+    {% if product.featured_image %}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.featured_image.alt | escape | default: product.title | escape }}"
+        width="600"
+        height="{{ 600 | divided_by: product.featured_image.aspect_ratio | round }}"
+        loading="lazy"
+        class="product-card__image"
+      >
+    {% else %}
+      <div class="product-card__placeholder" style="
+        width:100%;height:100%;
+        background:var(--bg-subtle);
+        display:flex;align-items:center;justify-content:center;
+      " aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="m8 21 4-4 4 4M12 17v4"/>
+        </svg>
+      </div>
+    {% endif %}
+
+    {% if grading_company %}
+      <div class="product-card__grade-badge">
+        {% render 'grading-badge', company: grading_company, grade: grade_value, size: 'sm' %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="product-card__body">
+    <div class="product-card__meta" style="display:flex;align-items:center;gap:0.375rem;flex-wrap:wrap;">
+      {% if set_name %}
+        <span class="badge badge--subtle product-card__set">{{ set_name }}</span>
+      {% endif %}
+      {% if game == 'pokemon' or game == 'one-piece' %}
+        <span class="badge badge--cn">CN</span>
+      {% endif %}
+    </div>
+
+    <h3 class="product-card__title">{{ product.title }}</h3>
+
+    <div class="product-card__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="product-card__price-cmp">{{ product.compare_at_price | money }}</span>
+      {% endif %}
+      {{ product.price | money }}
+    </div>
+  </div>
+</a>

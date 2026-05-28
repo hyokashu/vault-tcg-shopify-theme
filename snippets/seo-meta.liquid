@@ -1,0 +1,24 @@
+{% comment %} SEO meta tags {% endcomment %}
+
+{% if template.name == 'product' %}
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="{{ product.title | escape }}">
+  {% if product.featured_image %}
+    <meta property="og:image" content="{{ product.featured_image | image_url: width: 1200 }}">
+  {% endif %}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+{% elsif template.name == 'collection' %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ collection.title | escape }}">
+{% else %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title | escape }}">
+{% endif %}
+
+<meta property="og:site_name" content="{{ shop.name | escape }}">
+{% if page_description %}
+  <meta property="og:description" content="{{ page_description | escape }}">
+{% endif %}
+
+<link rel="canonical" href="{{ canonical_url }}">

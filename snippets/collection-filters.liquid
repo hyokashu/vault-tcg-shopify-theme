@@ -1,0 +1,64 @@
+{% comment %}
+  Renders filter groups for desktop sidebar + mobile drawer.
+  Usage: {% render 'collection-filters', collection: collection, game: game %}
+{% endcomment %}
+
+{% for filter in collection.filters %}
+  <details class="qc-filter-group" {% if filter.active_values.size > 0 %}open{% endif %}>
+    <summary class="qc-filter-group__toggle">
+      <span>{{ filter.label }}</span>
+      <svg class="qc-filter-group__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </summary>
+
+    <div class="qc-filter-group__body">
+      {% if filter.type == 'price_range' %}
+        <div class="qc-price-range">
+          <div class="qc-price-inputs">
+            <div class="qc-price-input">
+              <label for="filter-price-min-{{ filter.label | handleize }}">Min</label>
+              <input
+                type="number"
+                id="filter-price-min-{{ filter.label | handleize }}"
+                name="{{ filter.min_value.param_name }}"
+                value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                placeholder="{{ filter.range_min | money_without_currency }}"
+                min="{{ filter.range_min | money_without_currency }}"
+                max="{{ filter.range_max | money_without_currency }}"
+              >
+            </div>
+            <div class="qc-price-input">
+              <label for="filter-price-max-{{ filter.label | handleize }}">Max</label>
+              <input
+                type="number"
+                id="filter-price-max-{{ filter.label | handleize }}"
+                name="{{ filter.max_value.param_name }}"
+                value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                placeholder="{{ filter.range_max | money_without_currency }}"
+                min="{{ filter.range_min | money_without_currency }}"
+                max="{{ filter.range_max | money_without_currency }}"
+              >
+            </div>
+          </div>
+        </div>
+
+      {% else %}
+        {% for value in filter.values %}
+          <label class="qc-filter-option">
+            <input
+              type="checkbox"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}
+              {% if value.count == 0 and value.active == false %}disabled{% endif %}
+              onchange="this.form.submit()"
+            >
+            <span class="qc-filter-option__label">{{ value.label }}</span>
+            <span class="qc-filter-option__count">({{ value.count }})</span>
+          </label>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </details>
+{% endfor %}

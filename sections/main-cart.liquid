@@ -1,0 +1,328 @@
+{% comment %} Qilin Cards — Dedicated cart page (/cart) {% endcomment %}
+
+<div class="qc-cart-page" id="qc-cart-page">
+  <div class="qc-cart-page__inner">
+
+    <h1 class="qc-cart-page__heading">Your Cart</h1>
+
+    {% if cart.item_count > 0 %}
+
+      <p class="qc-cart-page__subhead" id="qc-cart-subhead">
+        {{ cart.item_count }} item{{ cart.item_count | pluralize: '', 's' }}
+      </p>
+
+      <div class="qc-cart-page__layout">
+
+        <!-- ── Items column ──────────────────────────────────── -->
+        <div class="qc-cart-page__items">
+
+          <!-- Table column headers (desktop 640px+ only) -->
+          <div class="qc-cart-table-head" aria-hidden="true">
+            <div class="qc-cart-table-head__product">Product</div>
+            <div class="qc-cart-table-head__qty">Quantity</div>
+            <div class="qc-cart-table-head__total">Total</div>
+          </div>
+
+          <!-- Line items -->
+          <div id="qc-cart-rows">
+            {% for item in cart.items %}
+              {%- liquid
+                assign product_type  = item.properties._product_type
+                assign grading_co    = item.properties._grading_company
+                assign grade         = item.properties._grade
+                assign game          = item.properties._game
+                assign set_name_prop = item.properties._set_name
+
+                assign is_graded = false
+                if product_type == 'graded'
+                  assign is_graded = true
+                endif
+
+                assign company_upper = grading_co | upcase
+
+                assign slab_mod = 'psa'
+                if company_upper == 'BGS'
+                  assign slab_mod = 'bgs'
+                elsif company_upper == 'CGC'
+                  assign slab_mod = 'cgc'
+                endif
+              -%}
+
+              <div
+                class="qc-cart-row"
+                id="qc-row-{{ forloop.index }}"
+                data-line="{{ forloop.index }}"
+                data-unit-price="{{ item.price }}"
+                data-is-graded="{{ is_graded }}"
+              >
+
+                <!-- Thumbnail -->
+                <div class="qc-cart-row__thumb{% if is_graded %} qc-cart-row__thumb--portrait{% endif %}">
+                  {% if item.image %}
+                    <img
+                      src="{{ item.image | image_url: width: 160 }}"
+                      alt="{{ item.image.alt | escape | default: item.product_title | escape }}"
+                      width="80"
+                      loading="lazy"
+                      class="qc-cart-row__img"
+                    >
+                  {% elsif is_graded %}
+                    <div class="qc-thumb-graded">
+                      <div class="qc-thumb-graded__slab qc-thumb-graded__slab--{{ slab_mod }}">
+                        <div class="qc-thumb-graded__header">{{ company_upper }}</div>
+                        <div class="qc-thumb-graded__card">
+                          <svg width="24" height="34" viewBox="0 0 24 34" fill="none" aria-hidden="true">
+                            <rect x="1" y="1" width="22" height="32" rx="2" fill="oklch(25% 0.008 270)" stroke="oklch(35% 0.008 270)" stroke-width="1"/>
+                          </svg>
+                        </div>
+                        {% if grade %}
+                          <div class="qc-thumb-graded__grade">
+                            <span class="qc-thumb-graded__num">{{ grade }}</span>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="qc-thumb-sealed">
+                      <div class="qc-thumb-sealed__box">
+                        <div class="qc-thumb-sealed__face"></div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Info -->
+                <div class="qc-cart-row__info">
+                  <div class="qc-cart-row__meta">
+                    {% if set_name_prop and set_name_prop != '' %}
+                      <span class="badge badge--subtle">{{ set_name_prop }}</span>
+                    {% endif %}
+                    {% if game == 'pokemon' or game == 'one-piece' %}
+                      <span class="badge badge--cn">CN</span>
+                    {% endif %}
+                    {% if is_graded and company_upper != '' %}
+                      <span class="badge badge--{{ slab_mod }}">{{ company_upper }}{% if grade %} {{ grade }}{% endif %}</span>
+                    {% endif %}
+                  </div>
+                  <a href="{{ item.url }}" class="qc-cart-row__name">{{ item.product_title }}</a>
+                  {% unless item.variant_title == 'Default Title' or item.variant_title == blank %}
+                    <div class="qc-cart-row__variant">{{ item.variant_title }}</div>
+                  {% endunless %}
+                  <div class="qc-cart-row__unit-price">{{ item.price | money }} each</div>
+                </div>
+
+                <!-- Quantity stepper -->
+                <div class="qc-cart-row__qty-wrap">
+                  <div class="qc-qty" role="group" aria-label="Quantity for {{ item.product_title | escape }}">
+                    <button
+                      type="button"
+                      class="qc-qty__btn"
+                      data-line="{{ forloop.index }}"
+                      data-direction="-1"
+                      aria-label="Decrease quantity"
+                      {% if item.quantity <= 1 %}disabled{% endif %}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                    <span
+                      class="qc-qty__display"
+                      data-qty="{{ forloop.index }}"
+                      aria-live="polite"
+                    >{{ item.quantity }}</span>
+                    <button
+                      type="button"
+                      class="qc-qty__btn"
+                      data-line="{{ forloop.index }}"
+                      data-direction="1"
+                      aria-label="Increase quantity"
+                      {% if is_graded %}disabled title="Graded cards are unique — qty is 1"{% endif %}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Line total + remove -->
+                <div class="qc-cart-row__actions">
+                  <span class="qc-cart-row__total" data-line-total="{{ forloop.index }}">
+                    {{ item.line_price | money }}
+                  </span>
+                  <button
+                    type="button"
+                    class="qc-cart-row__remove"
+                    data-line="{{ forloop.index }}"
+                    data-action="remove"
+                    aria-label="Remove {{ item.product_title | escape }} from cart"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                      <path d="M10 11v6M14 11v6"/>
+                      <path d="M9 6V4h6v2"/>
+                    </svg>
+                    Remove
+                  </button>
+                </div>
+
+              </div>
+            {% endfor %}
+          </div><!-- /#qc-cart-rows -->
+
+        </div><!-- /.qc-cart-page__items -->
+
+        <!-- ── Order summary ─────────────────────────────────── -->
+        <div class="qc-cart-page__summary">
+          <div class="qc-cart-summary">
+            <h2 class="qc-cart-summary__title">Order Summary</h2>
+
+            <!-- Discount code toggle -->
+            <div>
+              <button
+                class="qc-cart-summary__discount-toggle"
+                id="qc-cp-discount-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="qc-cp-discount-body"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                  <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                Have a discount code?
+                <svg class="qc-discount-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+
+              <div class="qc-cart-summary__discount-body" id="qc-cp-discount-body" aria-hidden="true">
+                <div class="qc-discount-row">
+                  <input
+                    type="text"
+                    class="qc-discount-input"
+                    id="qc-cp-discount-input"
+                    placeholder="Enter code"
+                    autocapitalize="characters"
+                    autocomplete="off"
+                    aria-label="Discount code"
+                  >
+                  <button class="qc-discount-apply" id="qc-cp-discount-apply" type="button">Apply</button>
+                </div>
+              </div>
+
+              <div class="qc-discount-chip" id="qc-cp-discount-chip">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span class="qc-discount-chip__code" id="qc-cp-chip-code"></span>
+                <span class="qc-discount-chip__saving">Applied</span>
+                <button class="qc-discount-chip__remove" id="qc-cp-chip-remove" type="button" aria-label="Remove discount code">✕</button>
+              </div>
+            </div>
+
+            <!-- Subtotal -->
+            <div>
+              <div class="qc-cart-summary__line">
+                <span class="qc-cart-summary__label">Subtotal</span>
+                <span class="qc-cart-summary__value" id="qc-cart-subtotal">{{ cart.total_price | money }}</span>
+              </div>
+              <div class="qc-cart-summary__line" style="margin-top:0.25rem;">
+                <span style="font-size:0.8125rem;color:var(--fg-muted);">Shipping</span>
+                <span style="font-size:0.8125rem;color:var(--fg-muted);">Calculated at checkout</span>
+              </div>
+            </div>
+
+            <!-- Total -->
+            <div class="qc-cart-summary__line qc-cart-summary__line--total">
+              <span class="qc-cart-summary__label" style="font-weight:700;">Total</span>
+              <span class="qc-cart-summary__value qc-cart-summary__value--large" id="qc-cart-total">{{ cart.total_price | money }}</span>
+            </div>
+
+            <p class="qc-cart-summary__shipping-note">
+              Taxes and shipping calculated at checkout. International customs may apply.
+            </p>
+
+            <!-- Checkout CTA -->
+            <a
+              href="/checkout"
+              class="qc-checkout-btn"
+              id="qc-checkout-btn"
+            >
+              <span>Checkout</span>
+              <span class="qc-checkout-btn__amount" id="qc-cp-checkout-amount">{{ cart.total_price | money }}</span>
+            </a>
+
+            <!-- Continue shopping -->
+            <a href="/collections/all" class="qc-cart-summary__continue">← Continue shopping</a>
+
+            <!-- Trust items -->
+            <div class="qc-cart-summary__trust">
+              <div class="qc-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span>Authentic Chinese market releases</span>
+              </div>
+              <div class="qc-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="1" y="3" width="15" height="13"/>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                  <circle cx="5.5" cy="18.5" r="2.5"/>
+                  <circle cx="18.5" cy="18.5" r="2.5"/>
+                </svg>
+                <span>Ships from Australia</span>
+              </div>
+              <div class="qc-trust-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>Graded by PSA / BGS / CGC</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.qc-cart-page__summary -->
+
+      </div><!-- /.qc-cart-page__layout -->
+
+    {% else %}
+
+      <!-- Empty state -->
+      <div class="qc-cart-page__empty">
+        <svg class="qc-cart-empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <h2 class="qc-cart-empty__heading">Your cart is empty.</h2>
+        <p class="qc-cart-empty__body">Browse our selection of authentic Chinese TCG products.</p>
+        <div class="qc-cart-empty__actions">
+          <a href="/collections/pokemon" class="qc-cart-empty__link qc-cart-empty__link--pokemon">
+            Browse Pokémon CN
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+          <a href="/collections/one-piece" class="qc-cart-empty__link qc-cart-empty__link--onepiece">
+            Browse One Piece CN
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    {% endif %}
+
+  </div>
+</div>
+
+<script src="{{ 'section-cart-page.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Cart",
+  "tag": "main",
+  "class": "section-main-cart"
+}
+{% endschema %}

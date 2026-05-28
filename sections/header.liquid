@@ -1,0 +1,240 @@
+{% comment %} Qilin Cards — Header Section {% endcomment %}
+
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+{% if section.settings.announcement_text != blank %}
+<div class="qc-announce" role="region" aria-label="Announcement">
+  <div class="qc-announce__inner">
+    {% if section.settings.announcement_link != blank %}
+      <a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement_text }}</a>
+    {% else %}
+      {{ section.settings.announcement_text }}
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<header class="qc-header" id="qc-header">
+  <div class="qc-header__inner">
+
+    {%- comment -%} Logo {%- endcomment -%}
+    <a href="{{ routes.root_url }}" class="qc-logo" aria-label="{{ shop.name }} home">
+      {% if section.settings.logo != blank %}
+        <img
+          src="{{ section.settings.logo | image_url: width: 200 }}"
+          alt="{{ shop.name }}"
+          width="{{ section.settings.logo.width }}"
+          height="{{ section.settings.logo.height }}"
+          loading="eager"
+          class="qc-logo__img"
+          style="height: {{ section.settings.logo_height }}px; width: auto;"
+        >
+      {% else %}
+        <div class="qc-logo__mark" aria-hidden="true">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2C6.13 2 3 5.13 3 9c0 2.39 1.19 4.5 3 5.74V15a1 1 0 001 1h6a1 1 0 001-1v-.26C15.81 13.5 17 11.39 17 9c0-3.87-3.13-7-7-7zm-1 12v-1h2v1H9zm4.73-3.56A5 5 0 0115 9a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 013-4.58V5a1 1 0 012 0v1h2V5a1 1 0 012 0v.44z"/>
+          </svg>
+        </div>
+        <span class="qc-logo__text">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+
+    {%- comment -%} Desktop navigation {%- endcomment -%}
+    <nav class="qc-nav" aria-label="Main navigation">
+      <a href="/collections/pokemon" class="qc-nav__link {% if request.path contains '/collections/pokemon' %}is-active{% endif %}">
+        <span class="qc-nav__dot qc-nav__dot--pokemon" aria-hidden="true"></span>
+        Pokémon CN
+      </a>
+      <a href="/collections/one-piece" class="qc-nav__link {% if request.path contains '/collections/one-piece' %}is-active{% endif %}">
+        <span class="qc-nav__dot qc-nav__dot--onepiece" aria-hidden="true"></span>
+        One Piece CN
+      </a>
+      <a href="/collections/sealed" class="qc-nav__link {% if request.path contains '/collections/sealed' %}is-active{% endif %}">
+        Sealed
+      </a>
+      <a href="/collections/graded" class="qc-nav__link {% if request.path contains '/collections/graded' %}is-active{% endif %}">
+        Graded Cards
+      </a>
+      <a href="/collections/new-arrivals" class="qc-nav__link {% if request.path contains '/collections/new-arrivals' %}is-active{% endif %}">
+        New Arrivals
+      </a>
+    </nav>
+
+    {%- comment -%} Icon actions {%- endcomment -%}
+    <div class="qc-header__actions">
+
+      {%- comment -%} Search {%- endcomment -%}
+      <a href="{{ routes.search_url }}" class="qc-icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </a>
+
+      {%- comment -%} Account {%- endcomment -%}
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="qc-icon-btn" aria-label="{% if customer %}Account{% else %}Log in{% endif %}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+          </svg>
+        </a>
+      {% endif %}
+
+      {%- comment -%} Cart {%- endcomment -%}
+      <a href="{{ routes.cart_url }}" class="qc-icon-btn" aria-label="Cart ({{ cart.item_count }} items)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        {% if cart.item_count > 0 %}
+          <span class="qc-cart-badge" aria-hidden="true">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+
+      {%- comment -%} Hamburger (mobile only) {%- endcomment -%}
+      <button
+        class="qc-icon-btn qc-hamburger"
+        id="qc-hamburger"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="qc-drawer"
+      >
+        <span class="qc-hamburger__bars" aria-hidden="true">
+          <span class="qc-hamburger__bar"></span>
+          <span class="qc-hamburger__bar"></span>
+          <span class="qc-hamburger__bar"></span>
+        </span>
+      </button>
+
+    </div>
+  </div>
+</header>
+
+{%- comment -%} Mobile nav drawer {%- endcomment -%}
+<div class="qc-drawer" id="qc-drawer" aria-hidden="true">
+  <div class="qc-drawer__backdrop" id="qc-drawer-backdrop" aria-hidden="true"></div>
+  <div class="qc-drawer__panel" role="dialog" aria-modal="true" aria-label="Navigation menu">
+
+    <div class="qc-drawer__header">
+      <a href="{{ routes.root_url }}" class="qc-logo" aria-label="{{ shop.name }} home">
+        <div class="qc-logo__mark" aria-hidden="true">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2C6.13 2 3 5.13 3 9c0 2.39 1.19 4.5 3 5.74V15a1 1 0 001 1h6a1 1 0 001-1v-.26C15.81 13.5 17 11.39 17 9c0-3.87-3.13-7-7-7zm-1 12v-1h2v1H9zm4.73-3.56A5 5 0 0115 9a5 5 0 01-5 5 5 5 0 01-5-5 5 5 0 013-4.58V5a1 1 0 012 0v1h2V5a1 1 0 012 0v.44z"/>
+          </svg>
+        </div>
+        <span class="qc-logo__text">{{ shop.name }}</span>
+      </a>
+      <button class="qc-icon-btn qc-drawer__close" id="qc-drawer-close" aria-label="Close navigation menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="qc-drawer__nav" aria-label="Mobile navigation">
+      <div class="qc-drawer__section-label">Collections</div>
+      <a href="/collections/pokemon" class="qc-drawer__link">
+        <span class="qc-nav__dot qc-nav__dot--pokemon" aria-hidden="true"></span>
+        Pokémon CN
+      </a>
+      <a href="/collections/one-piece" class="qc-drawer__link">
+        <span class="qc-nav__dot qc-nav__dot--onepiece" aria-hidden="true"></span>
+        One Piece CN
+      </a>
+
+      <div class="qc-drawer__section-label">Browse by type</div>
+      <a href="/collections/sealed" class="qc-drawer__link">Sealed Products</a>
+      <a href="/collections/graded" class="qc-drawer__link">Graded Cards</a>
+      <a href="/collections/new-arrivals" class="qc-drawer__link">New Arrivals</a>
+    </nav>
+
+    <div class="qc-drawer__footer">
+      <a href="{{ routes.search_url }}" class="qc-drawer__footer-link">Search</a>
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="qc-drawer__footer-link">
+          {% if customer %}My Account{% else %}Log in{% endif %}
+        </a>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  const hamburger = document.getElementById('qc-hamburger');
+  const drawer    = document.getElementById('qc-drawer');
+  const backdrop  = document.getElementById('qc-drawer-backdrop');
+  const closeBtn  = document.getElementById('qc-drawer-close');
+  const header    = document.getElementById('qc-header');
+
+  function openDrawer() {
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close navigation menu');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open navigation menu');
+    document.body.style.overflow = '';
+    hamburger.focus();
+  }
+
+  hamburger.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  backdrop.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
+  });
+
+  // Scroll shadow
+  const observer = new IntersectionObserver(
+    ([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting),
+    { threshold: 0 }
+  );
+  const sentinel = document.createElement('div');
+  sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:100%;pointer-events:none';
+  document.body.prepend(sentinel);
+  observer.observe(sentinel);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px",
+      "label": "Logo height"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "🇨🇳 Authentic Chinese imports — shipped from Australia 🇦🇺"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement link"
+    }
+  ]
+}
+{% endschema %}

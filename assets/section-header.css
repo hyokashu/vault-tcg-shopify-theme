@@ -1,0 +1,331 @@
+/* =============================================================
+   Qilin Cards — Header + Announcement Bar
+   Mobile-first. Default = 375px.
+   ============================================================= */
+
+/* ── Announcement bar ──────────────────────────────────────── */
+.qc-announce {
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding-block: 0.5625rem;
+  padding-top: calc(0.5625rem + var(--safe-top));
+  padding-inline: var(--gutter);
+}
+
+.qc-announce__inner {
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+.qc-announce a {
+  color: var(--poke-yellow);
+  text-decoration: none;
+}
+
+.qc-announce a:hover { text-decoration: underline; }
+
+/* ── Header ────────────────────────────────────────────────── */
+.qc-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow var(--duration) var(--ease-out-quart);
+}
+
+.qc-header.is-scrolled {
+  box-shadow: var(--shadow);
+}
+
+.qc-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  height: 3.5rem;
+}
+
+/* ── Logo ──────────────────────────────────────────────────── */
+.qc-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.qc-logo__mark {
+  width: 2rem;
+  height: 2rem;
+  background: var(--fg);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.qc-logo__mark svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--poke-yellow);
+}
+
+.qc-logo__text {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  color: var(--fg);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+/* ── Mobile controls (right side) ─────────────────────────── */
+.qc-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.qc-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: 44px;
+  min-width: 44px;
+  border: none;
+  background: none;
+  border-radius: var(--radius);
+  color: var(--fg);
+  text-decoration: none;
+  transition: background var(--duration-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qc-icon-btn:hover { background: var(--bg-subtle); }
+
+.qc-icon-btn svg {
+  width: 1.375rem;
+  height: 1.375rem;
+  pointer-events: none;
+}
+
+/* Cart badge */
+.qc-cart-badge {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding-inline: 0.2rem;
+  background: var(--poke-red);
+  color: oklch(98% 0.003 90);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1.1rem;
+  text-align: center;
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+}
+
+/* Desktop nav — hidden on mobile */
+.qc-nav {
+  display: none;
+}
+
+/* ── Desktop header ────────────────────────────────────────── */
+@media (min-width: 1024px) {
+  .qc-header__inner {
+    height: 4.5rem;
+    gap: var(--space-8);
+  }
+
+  .qc-logo__text { font-size: 1.5rem; }
+
+  /* Show desktop nav */
+  .qc-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  .qc-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--fg-muted);
+    transition: color var(--duration-fast), background var(--duration-fast);
+    white-space: nowrap;
+  }
+
+  .qc-nav__link:hover {
+    color: var(--fg);
+    background: var(--bg-subtle);
+  }
+
+  .qc-nav__link.is-active { color: var(--fg); }
+
+  /* Zone dot indicators */
+  .qc-nav__dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .qc-nav__dot--pokemon { background: var(--poke-red); }
+  .qc-nav__dot--onepiece { background: var(--op-red); }
+
+  /* Hide hamburger on desktop */
+  .qc-hamburger { display: none; }
+}
+
+/* ── Hamburger button ──────────────────────────────────────── */
+.qc-hamburger {
+  /* inherits .qc-icon-btn */
+}
+
+.qc-hamburger__bar {
+  display: block;
+  width: 1.25rem;
+  height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: transform var(--duration) var(--ease-out-quart),
+              opacity var(--duration) var(--ease-out-quart);
+}
+
+.qc-hamburger__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.qc-hamburger[aria-expanded="true"] .qc-hamburger__bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.qc-hamburger[aria-expanded="true"] .qc-hamburger__bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.qc-hamburger[aria-expanded="true"] .qc-hamburger__bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ── Mobile nav drawer ─────────────────────────────────────── */
+.qc-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drawer);
+  pointer-events: none;
+}
+
+.qc-drawer.is-open { pointer-events: auto; }
+
+.qc-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: oklch(0% 0 0 / 50%);
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease-out-quart);
+}
+
+.qc-drawer.is-open .qc-drawer__backdrop { opacity: 1; }
+
+.qc-drawer__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(85vw, 320px);
+  background: var(--surface);
+  transform: translateX(-100%);
+  transition: transform var(--duration) var(--ease-out-quart);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-top: var(--safe-top);
+  padding-bottom: calc(var(--space-8) + var(--safe-bottom));
+}
+
+.qc-drawer.is-open .qc-drawer__panel {
+  transform: translateX(0);
+}
+
+.qc-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border);
+}
+
+.qc-drawer__close {
+  /* inherits .qc-icon-btn */
+}
+
+.qc-drawer__nav {
+  padding: var(--space-4) var(--space-4);
+  flex: 1;
+}
+
+.qc-drawer__section-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  padding: var(--space-4) var(--space-2) var(--space-2);
+}
+
+.qc-drawer__link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem var(--space-2);
+  min-height: 44px;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--fg);
+  transition: background var(--duration-fast);
+}
+
+.qc-drawer__link:hover { background: var(--bg-subtle); }
+
+.qc-drawer__footer {
+  padding: var(--space-6);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.qc-drawer__footer-link {
+  font-size: 0.875rem;
+  color: var(--fg-muted);
+  text-decoration: none;
+}
+
+.qc-drawer__footer-link:hover { color: var(--fg); }

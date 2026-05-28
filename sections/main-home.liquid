@@ -1,0 +1,295 @@
+{% comment %} Qilin Cards — Homepage {% endcomment %}
+
+{%- assign poke_collection = collections['pokemon'] -%}
+{%- assign op_collection   = collections['one-piece'] -%}
+{%- assign new_arrivals    = collections['new-arrivals'] -%}
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO — split brand panels
+     ══════════════════════════════════════════════════════════ -->
+<section class="qc-hero" aria-label="Featured collections">
+
+  <!-- Pokémon panel -->
+  <div class="qc-hero__panel qc-hero__panel--pokemon zone-pokemon">
+    <div class="qc-hero__illustration" aria-hidden="true">
+      <div class="qc-hero__box">
+        <div class="qc-hero__box-face" style="position:relative;">
+          <div class="qc-hero__box-side"></div>
+        </div>
+      </div>
+    </div>
+    <div class="qc-hero__content">
+      <p class="qc-hero__eyebrow">{{ section.settings.poke_eyebrow }}</p>
+      <h2 class="qc-hero__heading">
+        {{ section.settings.poke_heading_line1 }}<br>
+        <span>{{ section.settings.poke_heading_line2 }}</span>
+      </h2>
+      <div class="qc-hero__actions">
+        <a href="/collections/pokemon" class="qc-hero__btn qc-hero__btn--primary">
+          Shop Pokémon CN
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        {% if section.settings.poke_secondary_text != blank %}
+          <a href="{{ section.settings.poke_secondary_url | default: '/collections/graded' }}" class="qc-hero__btn qc-hero__btn--ghost">
+            {{ section.settings.poke_secondary_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- One Piece panel -->
+  <div class="qc-hero__panel qc-hero__panel--onepiece zone-one-piece">
+    <div class="qc-hero__illustration" aria-hidden="true">
+      <div class="qc-hero__box">
+        <div class="qc-hero__box-face" style="position:relative;">
+          <div class="qc-hero__box-side"></div>
+        </div>
+      </div>
+    </div>
+    <div class="qc-hero__content">
+      <p class="qc-hero__eyebrow">{{ section.settings.op_eyebrow }}</p>
+      <h2 class="qc-hero__heading">
+        {{ section.settings.op_heading_line1 }}<br>
+        <span>{{ section.settings.op_heading_line2 }}</span>
+      </h2>
+      <div class="qc-hero__actions">
+        <a href="/collections/one-piece" class="qc-hero__btn qc-hero__btn--primary">
+          Shop One Piece CN
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        {% if section.settings.op_secondary_text != blank %}
+          <a href="{{ section.settings.op_secondary_url | default: '/collections/one-piece?type=graded' }}" class="qc-hero__btn qc-hero__btn--ghost">
+            {{ section.settings.op_secondary_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TRUST BAR
+     ══════════════════════════════════════════════════════════ -->
+<div class="qc-trust" aria-label="Why Qilin Cards">
+  <div class="container">
+    <div class="qc-trust__grid">
+
+      <div class="qc-trust__item">
+        <svg class="qc-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span class="qc-trust__label">100% Authentic</span>
+        <span class="qc-trust__sub">CN import guarantee</span>
+      </div>
+
+      <div class="qc-trust__item">
+        <svg class="qc-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        <span class="qc-trust__label">Fast Dispatch</span>
+        <span class="qc-trust__sub">Ships from Australia</span>
+      </div>
+
+      <div class="qc-trust__item">
+        <svg class="qc-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+        <span class="qc-trust__label">Graded by PSA / BGS / CGC</span>
+        <span class="qc-trust__sub">Verified cert numbers</span>
+      </div>
+
+      <div class="qc-trust__item">
+        <svg class="qc-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.12 1.18 2 2 0 012.1 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.45-.45a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+        </svg>
+        <span class="qc-trust__label">Specialist Support</span>
+        <span class="qc-trust__sub">Talk to a real collector</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NEW ARRIVALS
+     ══════════════════════════════════════════════════════════ -->
+{% if new_arrivals != blank and new_arrivals.products.size > 0 %}
+<section class="section" id="new-arrivals">
+  <div class="container">
+    <div class="section__header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <p class="section__eyebrow">Just landed</p>
+        <h2 class="text-h2 section__title">New Arrivals</h2>
+      </div>
+      <a href="/collections/new-arrivals" class="btn btn--outline" style="flex-shrink:0;">View all</a>
+    </div>
+
+    <div class="product-grid">
+      {% assign limit = section.settings.new_arrivals_count | default: 8 %}
+      {% for product in new_arrivals.products limit: limit %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══════════════════════════════════════════════════════════
+     POKÉMON CN SECTION
+     ══════════════════════════════════════════════════════════ -->
+<section class="qc-brand-section qc-brand-section--pokemon zone-pokemon" id="pokemon-featured">
+  <div class="container">
+    <div class="qc-brand-section__header">
+      <div>
+        <p class="qc-brand-section__zone-label">
+          <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--poke-red);display:inline-block;" aria-hidden="true"></span>
+          Pokémon CN
+        </p>
+        <h2 class="text-h2">Featured Sets</h2>
+      </div>
+      <a href="/collections/pokemon" class="qc-brand-section__view-all">
+        Browse all Pokémon CN
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+    </div>
+
+    {% if poke_collection != blank and poke_collection.products.size > 0 %}
+      <div class="product-grid">
+        {% for product in poke_collection.products limit: 8 %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Products coming soon.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ONE PIECE CN SECTION
+     ══════════════════════════════════════════════════════════ -->
+<section class="qc-brand-section qc-brand-section--onepiece zone-one-piece" id="onepiece-featured">
+  <div class="container">
+    <div class="qc-brand-section__header">
+      <div>
+        <p class="qc-brand-section__zone-label">
+          <span style="width:0.5rem;height:0.5rem;border-radius:50%;background:var(--op-red);display:inline-block;" aria-hidden="true"></span>
+          One Piece CN Exclusives
+        </p>
+        <h2 class="text-h2">Featured Sets</h2>
+      </div>
+      <a href="/collections/one-piece" class="qc-brand-section__view-all">
+        Browse all One Piece CN
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+    </div>
+
+    {% if op_collection != blank and op_collection.products.size > 0 %}
+      <div class="product-grid">
+        {% for product in op_collection.products limit: 8 %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Products coming soon.</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home",
+  "tag": "main",
+  "class": "section-home",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Pokémon Hero Panel"
+    },
+    {
+      "type": "text",
+      "id": "poke_eyebrow",
+      "label": "Eyebrow text",
+      "default": "Chinese Releases · All Sets"
+    },
+    {
+      "type": "text",
+      "id": "poke_heading_line1",
+      "label": "Heading line 1",
+      "default": "Pokémon"
+    },
+    {
+      "type": "text",
+      "id": "poke_heading_line2",
+      "label": "Heading line 2 (accent color)",
+      "default": "CN Edition"
+    },
+    {
+      "type": "text",
+      "id": "poke_secondary_text",
+      "label": "Secondary button text",
+      "default": "Graded Cards"
+    },
+    {
+      "type": "url",
+      "id": "poke_secondary_url",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "One Piece Hero Panel"
+    },
+    {
+      "type": "text",
+      "id": "op_eyebrow",
+      "label": "Eyebrow text",
+      "default": "China Exclusives Only"
+    },
+    {
+      "type": "text",
+      "id": "op_heading_line1",
+      "label": "Heading line 1",
+      "default": "One Piece"
+    },
+    {
+      "type": "text",
+      "id": "op_heading_line2",
+      "label": "Heading line 2 (accent color)",
+      "default": "CN Exclusive"
+    },
+    {
+      "type": "text",
+      "id": "op_secondary_text",
+      "label": "Secondary button text",
+      "default": "Graded Slabs"
+    },
+    {
+      "type": "url",
+      "id": "op_secondary_url",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "New Arrivals"
+    },
+    {
+      "type": "range",
+      "id": "new_arrivals_count",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "default": 8,
+      "label": "Products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Home",
+      "category": "Homepage"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,301 @@
+{% comment %} Qilin Cards — Product page (graded cards) {% endcomment %}
+
+{%- liquid
+  assign game = product.metafields.custom.game.value
+  assign set_name = product.metafields.custom.set_name.value
+  assign grading_company = product.metafields.custom.grading_company.value
+  assign grade_value = product.metafields.custom.grade_value.value
+  assign cert_number = product.metafields.custom.cert_number.value
+  assign current_variant = product.selected_or_first_available_variant
+  assign company_upper = grading_company | upcase
+
+  assign zone_class = ''
+  if game == 'pokemon'
+    assign zone_class = 'zone-pokemon'
+  elsif game == 'one-piece'
+    assign zone_class = 'zone-one-piece'
+  endif
+
+  assign slab_class = 'qc-slab--psa'
+  if company_upper == 'BGS'
+    assign slab_class = 'qc-slab--bgs'
+  elsif company_upper == 'CGC'
+    assign slab_class = 'qc-slab--cgc'
+  endif
+-%}
+
+<main id="main-content" class="qc-product {{ zone_class }}" style="padding-block: var(--space-8);">
+  <div class="container">
+    <div class="qc-product__inner">
+
+      <!-- ── Slab media column ─────────────────────────────── -->
+      <div class="qc-product__media">
+        <div class="qc-product__main-image qc-product__main-image--graded">
+          <div class="qc-slab {{ slab_class }}">
+            <div class="qc-slab__shell">
+              <div class="qc-slab__header">
+                <span class="qc-slab__company-name">{{ company_upper }}</span>
+              </div>
+
+              <div class="qc-slab__card">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape | default: product.title | escape }}"
+                    width="300"
+                    height="420"
+                    loading="eager"
+                  >
+                {% else %}
+                  <div style="color:oklch(60% 0.004 270);text-align:center;font-size:0.875rem;">
+                    Card image
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="qc-slab__footer">
+                <div>
+                  {% if grade_value %}
+                    <div class="qc-slab__grade-label">Grade</div>
+                    <div class="qc-slab__grade-value">{{ grade_value }}</div>
+                  {% endif %}
+                </div>
+                {% if cert_number %}
+                  <div style="font-size:0.625rem;color:oklch(98% 0.003 90);opacity:0.6;text-align:right;font-weight:500;font-variant-numeric:tabular-nums;">
+                    <div style="letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.125rem;">Cert #</div>
+                    <div>{{ cert_number }}</div>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grading company trust note -->
+        {% if cert_number %}
+        <div style="
+          background: var(--bg-subtle);
+          border-radius: var(--radius);
+          padding: var(--space-4);
+          display: flex;
+          align-items: center;
+          gap: var(--space-3);
+        ">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--fg-muted)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <div style="flex:1;">
+            <p style="font-size:0.8125rem;font-weight:600;margin-bottom:0.25rem;">Certified by {{ company_upper }}</p>
+            <p style="font-size:0.75rem;color:var(--fg-muted);">
+              Cert #{{ cert_number }} —
+              {% case company_upper %}
+                {% when 'PSA' %}
+                  <a href="https://www.psacard.com/cert/{{ cert_number }}" target="_blank" rel="noopener noreferrer" style="color:var(--zone-primary,var(--poke-red));font-weight:600;" aria-label="Verify PSA cert {{ cert_number }} (opens in new tab)">Verify →</a>
+                {% when 'BGS' %}
+                  <a href="https://www.beckett.com/grading/verify" target="_blank" rel="noopener noreferrer" style="color:var(--zone-primary,var(--poke-red));font-weight:600;" aria-label="Verify BGS cert (opens in new tab)">Verify →</a>
+                {% when 'CGC' %}
+                  <a href="https://www.cgccards.com/certlookup/{{ cert_number }}" target="_blank" rel="noopener noreferrer" style="color:var(--zone-primary,var(--poke-red));font-weight:600;" aria-label="Verify CGC cert {{ cert_number }} (opens in new tab)">Verify →</a>
+              {% endcase %}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- ── Info column ──────────────────────────────────── -->
+      <div class="qc-product__info">
+
+        <div class="qc-product__badges">
+          {% if set_name %}
+            <span class="badge badge--subtle">{{ set_name }}</span>
+          {% endif %}
+          {% if game == 'pokemon' or game == 'one-piece' %}
+            <span class="badge badge--cn">CN</span>
+          {% endif %}
+          {% if grading_company %}
+            {% render 'grading-badge', company: grading_company, grade: grade_value, size: 'md' %}
+          {% endif %}
+        </div>
+
+        <h1 class="qc-product__title">{{ product.title }}</h1>
+
+        <!-- Price -->
+        <div class="qc-product__price-block">
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <span class="qc-product__price-compare">{{ current_variant.compare_at_price | money }}</span>
+            <span class="qc-product__price">{{ current_variant.price | money }}</span>
+            <span class="qc-product__price-save">
+              Save {{ current_variant.compare_at_price | minus: current_variant.price | money }}
+            </span>
+          {% else %}
+            <span class="qc-product__price">{{ current_variant.price | money }}</span>
+          {% endif %}
+        </div>
+
+        <!-- Add to cart / OOS -->
+        {% if current_variant.available %}
+          {% form 'product', product, id: 'qc-graded-form' %}
+            <input type="hidden" name="id" value="{{ current_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            {%- comment -%}Hidden properties for cart drawer thumbnail{%- endcomment -%}
+            <input type="hidden" name="properties[_product_type]" value="graded">
+            <input type="hidden" name="properties[_set_name]" value="{{ set_name }}">
+            <input type="hidden" name="properties[_grading_company]" value="{{ grading_company }}">
+            <input type="hidden" name="properties[_grade]" value="{{ grade_value }}">
+            <input type="hidden" name="properties[_game]" value="{{ game }}">
+            <button
+              type="submit"
+              class="qc-add-to-cart"
+              style="margin-top: var(--space-2);"
+            >
+              Add to Cart &mdash; {{ current_variant.price | money }}
+            </button>
+          {% endform %}
+        {% else %}
+          <div class="qc-oos" data-oos-wrapper style="margin-top: var(--space-2);">
+            <div class="qc-oos__status">
+              <span class="qc-oos__dot" aria-hidden="true"></span>
+              Sold out
+            </div>
+            <button
+              class="qc-oos__toggle"
+              id="qc-oos-toggle"
+              data-oos-toggle="qc-oos-form"
+              aria-expanded="false"
+              aria-controls="qc-oos-form"
+            >
+              Notify Me When Available
+            </button>
+            <div class="qc-oos__form-wrap" id="qc-oos-form" aria-hidden="true">
+              {% form 'contact', id: 'qc-oos-contact', data-oos-form: '' %}
+                <input type="hidden" name="contact[subject]" value="Back in Stock: {{ product.title | escape }}">
+                <input type="hidden" name="contact[body]" value="Please notify me when {{ product.title | escape }} (cert: {{ cert_number }}) is back in stock.">
+                <div class="qc-oos__form-inner">
+                  <div class="qc-oos__row">
+                    <input
+                      type="email"
+                      name="contact[email]"
+                      class="qc-oos__input"
+                      placeholder="your@email.com"
+                      aria-label="Email address for restock notification"
+                      autocomplete="email"
+                      required
+                    >
+                    <button type="submit" class="qc-oos__submit">Notify Me</button>
+                  </div>
+                  <p class="qc-oos__hint">One email when back in stock. No spam.</p>
+                </div>
+              {% endform %}
+              <div class="qc-oos__success" data-oos-success style="display:none" role="status">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>You're on the list — we'll email you at <strong data-oos-email></strong> when this is back.</span>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Card details table -->
+        <div>
+          <h2 class="text-h3" style="margin-bottom:var(--space-4);">Card Details</h2>
+          <table class="qc-details-table">
+            {% if game %}
+            <tr>
+              <th scope="row">Game</th>
+              <td>{% if game == 'pokemon' %}Pokémon{% elsif game == 'one-piece' %}One Piece{% else %}{{ game }}{% endif %}</td>
+            </tr>
+            {% endif %}
+            {% if set_name %}
+            <tr>
+              <th scope="row">Set</th>
+              <td>{{ set_name }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Language</th>
+              <td>Simplified Chinese (CN)</td>
+            </tr>
+            {% if grading_company %}
+            <tr>
+              <th scope="row">Graded by</th>
+              <td>{{ company_upper }}</td>
+            </tr>
+            {% endif %}
+            {% if grade_value %}
+            <tr>
+              <th scope="row">Grade</th>
+              <td>{{ grade_value }}</td>
+            </tr>
+            {% endif %}
+            {% if cert_number %}
+            <tr>
+              <th scope="row">Cert number</th>
+              <td style="font-variant-numeric:tabular-nums;">{{ cert_number }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <th scope="row">Condition</th>
+              <td>Professionally graded &amp; slabbed</td>
+            </tr>
+          </table>
+        </div>
+
+        {% if product.description != blank %}
+        <div>
+          <h2 class="text-h3" style="margin-bottom:var(--space-3);">About this Card</h2>
+          <div class="text-body" style="max-width:65ch;color:var(--fg-muted);">{{ product.description }}</div>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</main>
+
+{% assign related_collection = collections[game] %}
+{% if related_collection and related_collection.products.size > 1 %}
+<section class="qc-product__related {{ zone_class }}">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-8);flex-wrap:wrap;gap:1rem;">
+      <h2 class="text-h2">You May Also Like</h2>
+      <a href="/collections/{{ game }}" class="btn btn--outline" style="flex-shrink:0;">View all</a>
+    </div>
+    <div class="product-grid">
+      {% for related in related_collection.products limit: 5 %}
+        {% unless related.id == product.id %}
+          {% render 'product-card', product: related %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<script>
+(function () {
+  // Add to cart → open drawer
+  var form = document.getElementById('qc-graded-form');
+  if (form && window.QilinCart) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var variantId  = form.querySelector('[name="id"]').value;
+      var properties = {};
+      form.querySelectorAll('input[name^="properties["]').forEach(function (input) {
+        var key = input.name.replace(/^properties\[(.+)\]$/, '$1');
+        properties[key] = input.value;
+      });
+      QilinCart.add(variantId, 1, properties);
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Graded Product",
+  "tag": "main",
+  "class": "section-main-product-graded"
+}
+{% endschema %}

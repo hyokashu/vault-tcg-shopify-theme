@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_theme_meta | default: '#1a1a1a' }}">
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
+    {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  {% render 'seo-meta' %}
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Design system -->
+  {{ 'qilin-tokens.css'      | asset_url | stylesheet_tag }}
+  {{ 'qilin-base.css'        | asset_url | stylesheet_tag }}
+
+  <!-- Section styles -->
+  {{ 'section-header.css'         | asset_url | stylesheet_tag }}
+  {{ 'section-home-hero.css'      | asset_url | stylesheet_tag }}
+  {{ 'section-collection.css'     | asset_url | stylesheet_tag }}
+  {{ 'section-product.css'        | asset_url | stylesheet_tag }}
+  {{ 'section-cart-drawer.css'    | asset_url | stylesheet_tag }}
+  {{ 'section-cart.css'           | asset_url | stylesheet_tag }}
+
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {% endif %}
+
+  {{ content_for_header }}
+</head>
+
+<body>
+
+  {% render 'header' %}
+
+  <main id="main-content" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% render 'footer' %}
+
+  <!-- Cart drawer (global, all pages) -->
+  {% render 'cart-drawer' %}
+
+  <!-- Cart drawer JS -->
+  <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+
+  <!-- Cart notification (simple toast) -->
+  <div
+    id="qc-cart-toast"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    style="
+      position: fixed;
+      bottom: calc(1rem + var(--safe-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      background: var(--fg);
+      color: var(--bg);
+      padding: 0.75rem 1.25rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      z-index: var(--z-modal);
+      transition: transform 0.3s cubic-bezier(0.25,1,0.5,1);
+      white-space: nowrap;
+    "
+  >
+    Added to cart
+  </div>
+
+</body>
+</html>
