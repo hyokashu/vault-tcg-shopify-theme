@@ -12,6 +12,10 @@
 
   <!-- Slide 1 -->
   <div class="qc-hero__slide qc-hero__slide--poke is-active" data-slide="0">
+    {% if section.settings.hero_slide_1_bg_image != blank %}
+      {{ section.settings.hero_slide_1_bg_image | image_url: width: 1400 | image_tag: class: 'qc-hero__bg-img', loading: 'eager', alt: '' }}
+      <div class="qc-hero__bg-overlay" aria-hidden="true"></div>
+    {% endif %}
     <div class="qc-hero__glow qc-hero__glow--poke" aria-hidden="true"></div>
 
     <div class="qc-hero__cards" aria-hidden="true">
@@ -51,6 +55,10 @@
 
   <!-- Slide 2 -->
   <div class="qc-hero__slide qc-hero__slide--op" data-slide="1">
+    {% if section.settings.hero_slide_2_bg_image != blank %}
+      {{ section.settings.hero_slide_2_bg_image | image_url: width: 1400 | image_tag: class: 'qc-hero__bg-img', loading: 'lazy', alt: '' }}
+      <div class="qc-hero__bg-overlay" aria-hidden="true"></div>
+    {% endif %}
     <div class="qc-hero__glow qc-hero__glow--op" aria-hidden="true"></div>
 
     <div class="qc-hero__cards" aria-hidden="true">
