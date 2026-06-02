@@ -11,8 +11,41 @@
   "sections": {
     "main": {
       "type": "main-home",
-      "settings": {}
+      "settings": {
+        "new_arrivals_collection": "new-releases",
+        "pokemon_collection": "pokemon-chinese-exclusives",
+        "onepiece_collection": "one-piece-chinese-exclusives",
+        "collection_best_sellers": "best-sellers",
+        "hero_slide_1_headline": "RARITY\nIS A\nVIRTUE",
+        "hero_slide_1_sub": "Authentic Chinese-exclusive Pokémon — unavailable anywhere else in Australia.",
+        "hero_slide_1_cta_label": "Shop New Arrivals",
+        "hero_slide_1_cta_url": "",
+        "hero_badge_text": "",
+        "hero_slide_2_headline": "ONE PIECE\nCN\nDROPS",
+        "hero_slide_2_sub": "Chinese-exclusive One Piece sets, sealed and shipped from Melbourne.",
+        "hero_slide_2_cta_label": "Shop One Piece CN",
+        "hero_slide_2_cta_url": "",
+        "new_arrivals_count": 8,
+        "favourites_count": 6,
+        "exp_1_title": "Only in the Chinese Market",
+        "exp_1_desc": "CN-exclusive sets, promos, and alt arts were never released outside mainland China. Genuinely rare in the West.",
+        "exp_2_title": "Authenticated Direct Import",
+        "exp_2_desc": "We source directly from CN distributors. Every product is verified before listing.",
+        "exp_3_title": "Fast Dispatch from Melbourne",
+        "exp_3_desc": "All stock is held in Melbourne. Orders placed before 2pm AEST ship same day.",
+        "review_1_name": "James T.",
+        "review_1_quote": "Got my Crimson Haze CN display in two days. Legit sealed product, can't find this anywhere else in AU.",
+        "review_2_name": "Sophie M.",
+        "review_2_quote": "Love the specialist support. Asked about a specific One Piece CN set and got a proper answer, not a bot reply.",
+        "review_3_name": "Ryan K.",
+        "review_3_quote": "These CN Pokémon sets are incredible. Couldn't find the Cyber Judge box anywhere. Found it here at a fair price.",
+        "newsletter_headline": "BE FIRST WHEN CN DROPS LAND",
+        "newsletter_sub": "New sets, restocks, and limited runs. We notify you before they go live.",
+        "newsletter_cta_label": "Notify Me"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
