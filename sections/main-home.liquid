@@ -8,7 +8,7 @@
 <!-- ═══════════════════════════════════════════════
      HERO SLIDER
      ═══════════════════════════════════════════════ -->
-<div class="qc-hero" data-hero>
+<div class="qc-hero" data-hero style="--hero-cards-w: {{ section.settings.hero_image_size | default: 24 }}rem">
 
   <!-- Slide 1 -->
   <div class="qc-hero__slide qc-hero__slide--poke is-active" data-slide="0">
@@ -297,7 +297,7 @@
     </div>
   </div>
 
-  <div class="qc-cat-grid">
+  <div class="qc-cat-grid" style="--cat-icon: {{ section.settings.cat_icon_size | default: 28 }}px">
 
     <!-- Pokémon CN — full width -->
     {% if poke_collection != blank %}
