@@ -31,7 +31,7 @@
 
   <!-- Section styles -->
   {{ 'section-header.css'         | asset_url | stylesheet_tag }}
-  {{ 'section-home-hero.css'      | asset_url | stylesheet_tag }}
+  {{ 'section-home-v2.css'        | asset_url | stylesheet_tag }}
   {{ 'section-collection.css'     | asset_url | stylesheet_tag }}
   {{ 'section-product.css'        | asset_url | stylesheet_tag }}
   {{ 'section-cart-drawer.css'    | asset_url | stylesheet_tag }}
@@ -59,6 +59,9 @@
 
   <!-- Cart drawer JS -->
   <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
+
+  <!-- Homepage JS -->
+  <script src="{{ 'section-home-v2.js' | asset_url }}" defer></script>
 
   <!-- Cart notification (simple toast) -->
   <div
