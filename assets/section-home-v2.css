@@ -333,6 +333,10 @@
   .qc-hero__badge-dot { animation: none; }
 }
 
+@media (max-width: 1023px) {
+  .qc-hero__cards--mobile-hidden { display: none; }
+}
+
 /* ─────────────────────────────────────────
    TRUST MARQUEE
 ───────────────────────────────────────── */
