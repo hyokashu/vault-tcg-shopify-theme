@@ -18,7 +18,7 @@
     {% endif %}
     <div class="qc-hero__glow qc-hero__glow--poke" aria-hidden="true"></div>
 
-    <div class="qc-hero__cards" aria-hidden="true">
+    <div class="qc-hero__cards{% if section.settings.hero_hide_image_mobile %} qc-hero__cards--mobile-hidden{% endif %}" aria-hidden="true">
       {% if section.settings.hero_slide_1_image != blank %}
         {{ section.settings.hero_slide_1_image | image_url: width: 400 | image_tag: class: 'qc-hero__img', loading: 'eager', alt: '' }}
       {% else %}
@@ -61,7 +61,7 @@
     {% endif %}
     <div class="qc-hero__glow qc-hero__glow--op" aria-hidden="true"></div>
 
-    <div class="qc-hero__cards" aria-hidden="true">
+    <div class="qc-hero__cards{% if section.settings.hero_hide_image_mobile %} qc-hero__cards--mobile-hidden{% endif %}" aria-hidden="true">
       {% if section.settings.hero_slide_2_image != blank %}
         {{ section.settings.hero_slide_2_image | image_url: width: 400 | image_tag: class: 'qc-hero__img', loading: 'lazy', alt: '' }}
       {% else %}
