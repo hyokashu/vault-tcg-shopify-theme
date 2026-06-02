@@ -662,19 +662,19 @@
 }
 
 .qc-cat-card__icon {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: var(--cat-icon, 1.75rem);
+  height: var(--cat-icon, 1.75rem);
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .qc-cat-card__icon svg {
-  width: 1.375rem;
-  height: 1.375rem;
+  width: 100%;
+  height: 100%;
 }
 .qc-cat-card--poke .qc-cat-card__icon { color: var(--poke-red); }
-.qc-cat-card--op  .qc-cat-card__icon { color: var(--op-blue); }
+.qc-cat-card--op  .qc-cat-card__icon { color: oklch(72% 0.130 263); }
 .qc-cat-card--new .qc-cat-card__icon { color: var(--accent); }
 
 .qc-cat-card__bg-img {
@@ -683,7 +683,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.08;
+  opacity: 0.35;
   z-index: 0;
 }
 .qc-cat-card__icon,
@@ -691,11 +691,11 @@
 .qc-cat-card__sub,
 .qc-cat-card__arrow {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 .qc-cat-card__icon img {
-  width: 1.375rem;
-  height: 1.375rem;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -703,7 +703,7 @@
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1.125rem;
   letter-spacing: 0.02em;
-  color: var(--fg);
+  color: oklch(97% 0.003 90);
   line-height: 1;
   margin-bottom: 0.125rem;
 }
@@ -712,7 +712,7 @@
 .qc-cat-card__sub {
   font-size: 0.59375rem;
   font-weight: 500;
-  color: var(--fg-muted);
+  color: oklch(65% 0.008 90);
 }
 .qc-cat-card__arrow {
   position: absolute;
@@ -721,7 +721,7 @@
   width: 1.625rem;
   height: 1.625rem;
   border-radius: 50%;
-  background: oklch(11% 0.010 270 / 0.07);
+  background: oklch(100% 0 0 / 0.10);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -729,7 +729,7 @@
 .qc-cat-card__arrow svg {
   width: 0.75rem;
   height: 0.75rem;
-  color: var(--fg-muted);
+  color: oklch(80% 0.005 90);
 }
 
 /* ─────────────────────────────────────────
@@ -985,11 +985,14 @@
     position: relative;
     right: auto;
     top: auto;
-    width: 24rem;
-    height: 32rem;
+    width: var(--hero-cards-w, 24rem);
+    height: calc(var(--hero-cards-w, 24rem) * 4 / 3);
     grid-column: 2;
     grid-row: 1;
     margin: auto;
+  }
+  .qc-hero__cards--mobile-hidden {
+    display: flex;
   }
   .qc-hero__badge {
     top: 2.5rem;
