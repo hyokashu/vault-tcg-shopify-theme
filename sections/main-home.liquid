@@ -155,7 +155,7 @@
           <a href="{{ product.url }}" class="qc-scroll-pc__inner" aria-label="{{ product.title }}">
             <div class="qc-scroll-pc__img-wrap">
               {% if product.featured_image %}
-                {{ product.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
+                {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
               {% else %}
                 <div class="qc-scroll-pc__img qc-scroll-pc__img--placeholder qc-scroll-pc__img--{{ zone }}"></div>
               {% endif %}
@@ -206,7 +206,7 @@
             <a href="{{ product.url }}" class="qc-scroll-pc__inner" aria-label="{{ product.title }}">
               <div class="qc-scroll-pc__img-wrap qc-scroll-pc__img-wrap--tall">
                 {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
                 {% else %}
                   <div class="qc-scroll-pc__img qc-scroll-pc__img--placeholder qc-scroll-pc__img--{{ zone }}"></div>
                 {% endif %}
@@ -234,7 +234,7 @@
             <a href="{{ product.url }}" class="qc-scroll-pc__inner" aria-label="{{ product.title }}">
               <div class="qc-scroll-pc__img-wrap qc-scroll-pc__img-wrap--tall">
                 {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
                 {% else %}
                   <div class="qc-scroll-pc__img qc-scroll-pc__img--placeholder qc-scroll-pc__img--pokemon"></div>
                 {% endif %}
@@ -262,7 +262,7 @@
             <a href="{{ product.url }}" class="qc-scroll-pc__inner" aria-label="{{ product.title }}">
               <div class="qc-scroll-pc__img-wrap qc-scroll-pc__img-wrap--tall">
                 {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title, class: 'qc-scroll-pc__img' }}
                 {% else %}
                   <div class="qc-scroll-pc__img qc-scroll-pc__img--placeholder qc-scroll-pc__img--one-piece"></div>
                 {% endif %}
