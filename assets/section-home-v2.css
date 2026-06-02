@@ -88,18 +88,25 @@
   position: relative;
   min-height: 25rem;
   overflow: hidden;
+  display: grid;
 }
 
 .qc-hero__slide {
-  display: none;
+  grid-area: 1 / 1;
+  display: flex;
   flex-direction: column;
   justify-content: flex-end;
   min-height: 25rem;
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 600ms ease;
 }
 .qc-hero__slide.is-active {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 .qc-hero__slide--poke {
@@ -941,7 +948,6 @@
   .qc-hero__slide {
     min-height: 90vh;
   }
-  /* Override display:flex from .is-active */
   .qc-hero__slide.is-active {
     display: grid;
     grid-template-columns: 1fr 1fr;
